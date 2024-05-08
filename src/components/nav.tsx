@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Button, buttonVariants } from './custom/button'
+import { Button, buttonVariants } from './ui/button'
 import {
   Collapsible,
   CollapsibleContent,
@@ -62,7 +62,7 @@ export default function Nav({
     <div
       data-collapsed={isCollapsed}
       className={cn(
-        'bg-background group border-b py-2 transition-[max-height,padding] duration-500 data-[collapsed=true]:py-2 md:border-none',
+        'group border-b bg-background py-2 transition-[max-height,padding] duration-500 data-[collapsed=true]:py-2 md:border-none',
         className
       )}
     >
@@ -106,7 +106,7 @@ function NavLink({
       <div className='mr-2'>{icon}</div>
       {title}
       {label && (
-        <div className='bg-primary text-primary-foreground ml-2 rounded-lg px-1 text-[0.625rem]'>
+        <div className='ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'>
           {label}
         </div>
       )}
@@ -132,7 +132,7 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
         <div className='mr-2'>{icon}</div>
         {title}
         {label && (
-          <div className='bg-primary text-primary-foreground ml-2 rounded-lg px-1 text-[0.625rem]'>
+          <div className='ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'>
             {label}
           </div>
         )}
@@ -179,7 +179,7 @@ function NavLinkIcon({ title, icon, label, href }: NavLinkProps) {
       <TooltipContent side='right' className='flex items-center gap-4'>
         {title}
         {label && (
-          <span className='text-muted-foreground ml-auto'>{label}</span>
+          <span className='ml-auto text-muted-foreground'>{label}</span>
         )}
       </TooltipContent>
     </Tooltip>
@@ -210,9 +210,9 @@ function NavLinkIconDropdown({ title, icon, label, sub }: NavLinkProps) {
         <TooltipContent side='right' className='flex items-center gap-4'>
           {title}{' '}
           {label && (
-            <span className='text-muted-foreground ml-auto'>{label}</span>
+            <span className='ml-auto text-muted-foreground'>{label}</span>
           )}
-          <ChevronDown size={18} className='text-muted-foreground -rotate-90' />
+          <ChevronDown size={18} className='-rotate-90 text-muted-foreground' />
         </TooltipContent>
       </Tooltip>
       <DropdownMenuContent side='right' align='start' sideOffset={4}>

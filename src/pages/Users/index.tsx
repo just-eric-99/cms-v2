@@ -20,7 +20,7 @@ export default function Users() {
           <UserNav />
         </div>
       </LayoutHeader>
-      <LayoutBody>
+      <LayoutBody className='container'>
         <DataTable columns={columns} data={query.data ?? []} />
       </LayoutBody>
     </Layout>

@@ -67,21 +67,23 @@ export default function UserCreatePage() {
         </div>
       </LayoutHeader>
       <LayoutBody>
-        <div className='flex items-center justify-between'>
-          <h1 className='text-2xl font-semibold'>Create User</h1>
-          <div className='flex items-center justify-end gap-4 py-4'>
-            <Link to='/users'>
-              <Button variant={'secondary'}>Back</Button>
-            </Link>
+        <div className='container'>
+          <div className='flex items-center justify-between'>
+            <h1 className='text-2xl font-semibold'>Create User</h1>
+            <div className='flex items-center justify-end gap-4 py-4'>
+              <Link to='/users'>
+                <Button variant={'secondary'}>Back</Button>
+              </Link>
 
-            <Button onClick={onSubmit} loading={loading}>
-              Done
-            </Button>
+              <Button onClick={onSubmit} loading={loading}>
+                Done
+              </Button>
+            </div>
           </div>
+          <FormProvider {...form}>
+            <UserCreateForm />
+          </FormProvider>
         </div>
-        <FormProvider {...form}>
-          <UserCreateForm />
-        </FormProvider>
       </LayoutBody>
     </Layout>
   )

@@ -22,8 +22,8 @@ export default function UserCreateForm() {
 
   return (
     <Form {...form}>
-      <div className='grid grid-cols-12 justify-start gap-8'>
-        <div className='col-span-7 space-y-8'>
+      <div className='flex flex-1 flex-row justify-start gap-8'>
+        <div className='flex-[2] space-y-8'>
           <FormField
             control={form.control}
             name='name'
@@ -80,7 +80,7 @@ export default function UserCreateForm() {
             )}
           />
         </div>
-        <div className='col-span-5 space-y-7'>
+        <div className='flex-1 space-y-7'>
           <FormField
             control={form.control}
             name='avatar'

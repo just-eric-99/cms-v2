@@ -8,18 +8,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ColumnDef } from '@tanstack/react-table'
-import { format } from 'date-fns'
+// import { format } from 'date-fns'
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
+import { UserSummaryType } from '../_data/client/types'
 
-export type User = {
-  id: string
-  name: string
-  email: string
-  image: string
-  lastSeen: string
-}
-
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<UserSummaryType>[] = [
   {
     accessorKey: 'name',
     header: () => <div className='pl-2 text-left'>Name</div>,
@@ -40,14 +33,6 @@ export const columns: ColumnDef<User>[] = [
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       )
-    },
-  },
-  {
-    accessorKey: 'lastSeen',
-    header: () => <div className='text-left'>Last Seen</div>,
-    cell: ({ row }) => {
-      const lastSeen = format(new Date(row.getValue('lastSeen')), 'yyyy-MM-dd')
-      return <div className='text-left font-medium'>{lastSeen}</div>
     },
   },
   {

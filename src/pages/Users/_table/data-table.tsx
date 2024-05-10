@@ -19,9 +19,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { User } from './columns'
-import { DataTablePagination } from '@/pages/Users/table/data-table-pagination'
+import { DataTablePagination } from '@/pages/Users/_table/data-table-pagination'
 import { Input } from '@/components/ui/input'
+import { UserSummaryType } from '../_data/client/types'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -51,7 +53,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className='flex items-center py-4'>
+      <div className='flex items-center justify-between py-4'>
         <Input
           placeholder='Filter'
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
@@ -60,6 +62,9 @@ export function DataTable<TData, TValue>({
           }
           className='max-w-sm'
         />
+        <Link to='/users/create'>
+          <Button>Create</Button>
+        </Link>
       </div>
       <div className='rounded-md border'>
         <Table>
@@ -90,7 +95,7 @@ export function DataTable<TData, TValue>({
                   onClick={() =>
                     console.log(
                       'Row original information:',
-                      row.original as User
+                      row.original as UserSummaryType
                     )
                   }
                 >

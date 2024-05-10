@@ -22,17 +22,17 @@ import {
 import { DataTablePagination } from '@/pages/Users/_table/data-table-pagination'
 import { Input } from '@/components/ui/input'
 import { UserSummaryType } from '../_data/client/types'
-import { Button } from '@/components/ui/button'
-import { Link } from 'react-router-dom'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  createComponent?: React.ReactNode
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  createComponent,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -62,9 +62,7 @@ export function DataTable<TData, TValue>({
           }
           className='max-w-sm'
         />
-        <Link to='/users/create'>
-          <Button>Create</Button>
-        </Link>
+        {createComponent}
       </div>
       <div className='rounded-md border'>
         <Table>
@@ -90,6 +88,7 @@ export function DataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  className='cursor-pointer hover:bg-primary/10'
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   onClick={() =>

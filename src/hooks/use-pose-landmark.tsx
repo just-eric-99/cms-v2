@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react'
 import {
   FilesetResolver,
-  NormalizedLandmark,
   PoseLandmarker,
+  PoseLandmarkerResult,
 } from '@mediapipe/tasks-vision'
 
 export default function usePoseLandMarker(): [
-  NormalizedLandmark[][] | undefined,
+  PoseLandmarkerResult | undefined,
   (imageSrc: string) => void,
 ] {
   const [poseLandmarker, setPoseLandmarker] = useState<PoseLandmarker>()
   const [imageSrc, setImageSrc] = useState<string>()
-  const [landmarks, setLandMarks] = useState<NormalizedLandmark[][]>()
+  const [poseLandmarkerResult, setPoseLandmarkerResult] =
+    useState<PoseLandmarkerResult>()
 
   useEffect(() => {
     FilesetResolver.forVisionTasks(
@@ -34,9 +35,9 @@ export default function usePoseLandMarker(): [
     const image = new Image()
     image.src = imageSrc
     image.onload = () => {
-      poseLandmarker.detect(image, (result) => setLandMarks(result.landmarks))
+      poseLandmarker.detect(image, (result) => setPoseLandmarkerResult(result))
     }
   }, [imageSrc, poseLandmarker])
 
-  return [landmarks, setImageSrc]
+  return [poseLandmarkerResult, setImageSrc]
 }

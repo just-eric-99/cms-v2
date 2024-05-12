@@ -1,0 +1,7 @@
+export enum Permission {
+  PRIVATE,
+  PROTECTED,
+  PROTECTED_READ_ONLY,
+  PUBLIC,
+  PUBLIC_READ_ONLY,
+}

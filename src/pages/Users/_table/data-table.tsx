@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/table'
 import { DataTablePagination } from '@/pages/Users/_table/data-table-pagination'
 import { Input } from '@/components/ui/input'
-import { UserSummaryType } from '../_data/client/types'
+import { UserSummaryType } from '../_data/types'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className='flex items-center justify-between py-4'>
+      <div className='flex items-center justify-between pb-4'>
         <Input
           placeholder='Filter'
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}

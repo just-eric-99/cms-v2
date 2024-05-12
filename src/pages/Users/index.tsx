@@ -5,9 +5,9 @@ import { UserNav } from '@/components/user-nav'
 import { DataTable } from './_table/data-table'
 import { columns } from './_table/columns'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { addNewUser, getUserSummary } from './_data/client/data'
+import { addNewUser, getUserSummary } from './_data/data'
 import { FormProvider, useForm } from 'react-hook-form'
-import { createUserSchema } from './_data/client/schema'
+import { createUserSchema } from './_data/schema'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -52,6 +52,10 @@ export default function Users() {
       console.log(error)
       setLoading(false)
       setOpen(false)
+      toast('Error creating user', {
+        description:
+          error.message ?? 'An error occurred while creating the user.',
+      })
     },
     onSuccess: () => {
       console.log('success')
@@ -94,7 +98,7 @@ export default function Users() {
           createComponent={
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
-                <Button variant='outline'>Create</Button>
+                <Button>Create</Button>
               </DialogTrigger>
               <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>

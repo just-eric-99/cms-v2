@@ -36,12 +36,14 @@ export default function CreateExercisePage() {
             </Link>
             <Button>Done</Button>
           </div>
-          <div className='grid grid-cols-3 gap-4'>
-            <div className='col-span-2'>
+          <div className='grid grid-cols-5 gap-4'>
+            <div className='col-span-3'>
               {!uploadFile && <UploadVideoComponent />}
               {uploadFile && <FrameSelector />}
             </div>
-            <PoseLandmarkPreview />
+            <div className='col-span-2'>
+              <PoseLandmarkPreview />
+            </div>
           </div>
         </div>
       </LayoutBody>

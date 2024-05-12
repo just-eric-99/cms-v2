@@ -71,7 +71,7 @@ export default function FrameSelector() {
             video={selectedVideo}
             crop={crop}
             zoom={zoom}
-            aspect={9 / 16}
+            aspect={11 / 16}
             onCropChange={setCrop}
             onCropComplete={(area, croppedAreaPixels) =>
               onCropComplete(area, croppedAreaPixels)

@@ -43,7 +43,7 @@ export default function PoseLandmarkPreview() {
 
   return (
     <div className='flex flex-col gap-6'>
-      <div className='flex h-[320px] items-center justify-center overflow-hidden rounded-lg border md:h-[400px] lg:h-[500px]'>
+      <div className='flex h-[320px] items-center justify-center overflow-hidden rounded-lg md:h-[400px] lg:h-[500px]'>
         {croppedImage && (
           <>
             <img
@@ -53,7 +53,7 @@ export default function PoseLandmarkPreview() {
             />
             <canvas
               ref={poseLandmarkRef}
-              className='absolute flex aspect-[9/16] h-[320px] self-center overflow-hidden rounded-lg border object-contain md:h-[400px] lg:h-[500px]'
+              className='absolute flex aspect-[11/16] h-[320px] self-center overflow-hidden rounded-lg border object-contain md:h-[400px] lg:h-[500px]'
             />
           </>
         )}

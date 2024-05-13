@@ -13,7 +13,7 @@ export type User = {
 
 export type CreateUserRequest = {
   name: string
-  displayName: string
+  displayName?: string
   email: string
   phone: string
   avatar: number

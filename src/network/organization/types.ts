@@ -7,8 +7,10 @@ export type Organization = {
 
 export type CreateOrganizationRequest = {
   name: string
+  nameEn: string
 }
 
 export type UpdateOrganizationRequest = {
   name?: string
+  nameEn?: string
 }

@@ -2,6 +2,7 @@ import { API_ENDPOINT } from '@/constants/network'
 import { CreateUserRequest, User } from './types'
 
 export async function getAllUsers(): Promise<User[]> {
+  // to add take and skip when implementing server side pagination
   const users = await fetch(API_ENDPOINT + '/user')
   return users.json()
 }

@@ -1,5 +1,5 @@
 import { Permission } from '@/enum/permission'
-import { NormalizedLandmark } from '@mediapipe/tasks-vision'
+import { Landmark, NormalizedLandmark } from '@mediapipe/tasks-vision'
 
 export type Exercise = {
   id: string
@@ -15,7 +15,8 @@ export type Exercise = {
 }
 
 export type PoseLandmarkDto = {
-  landmarks: NormalizedLandmark[][]
+  normalizedLandmarks: NormalizedLandmark[][]
+  worldLandmarks: Landmark[][]
   jointDirectionsWeights: number[]
 }
 
@@ -26,6 +27,7 @@ export type CreateExerciseRequest = {
   speechUrl: string
   difficulty: number
   startLandmark: PoseLandmarkDto
+  endLandmark: PoseLandmarkDto
   permission: Permission
 }
 

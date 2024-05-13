@@ -16,10 +16,9 @@ export async function getOrganizationById(id: string): Promise<Organization> {
 }
 
 export async function createOrganization(
-  organization: CreateOrganizationRequest,
-  id: string
+  organization: CreateOrganizationRequest
 ): Promise<void> {
-  const response = await fetch(API_ENDPOINT + `/organization/${id}`, {
+  const response = await fetch(API_ENDPOINT + `/organization`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -37,7 +36,7 @@ export async function updateOrganization(
   id: string
 ): Promise<void> {
   const response = await fetch(API_ENDPOINT + `/organization/${id}`, {
-    method: 'PATCH',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },

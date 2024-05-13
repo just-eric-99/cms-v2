@@ -36,7 +36,7 @@ export async function editExercise(
   id: string
 ) {
   const response = await fetch(API_ENDPOINT + `/exercise/${id}`, {
-    method: 'PATCH',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },

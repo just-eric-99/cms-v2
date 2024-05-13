@@ -36,6 +36,7 @@ export default function usePoseLandMarker(): [
     image.src = imageSrc
     image.onload = () => {
       poseLandmarker.detect(image, (result) => setPoseLandmarkerResult(result))
+      console.log('normalizedLandmarks', poseLandmarkerResult?.landmarks)
     }
   }, [imageSrc, poseLandmarker])
 

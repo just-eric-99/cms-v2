@@ -73,6 +73,7 @@ export default function Users() {
       form.reset()
     },
   })
+
   const query = useQuery({
     queryKey: ['users'],
     queryFn: () => getUserSummary(),

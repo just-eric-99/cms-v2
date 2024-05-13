@@ -30,7 +30,7 @@ export async function updateCenter(
   id: string
 ): Promise<void> {
   const response = await fetch(API_ENDPOINT + `/center/${id}`, {
-    method: 'PATCH',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },

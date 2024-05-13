@@ -60,7 +60,7 @@ const addToRemoveQueue = (toastId: string) => {
 
   const timeout = setTimeout(() => {
     toastTimeouts.delete(toastId)
-    dispatch({
+    disPUT({
       type: 'REMOVE_TOAST',
       toastId: toastId,
     })
@@ -128,7 +128,7 @@ const listeners: Array<(state: State) => void> = []
 
 let memoryState: State = { toasts: [] }
 
-function dispatch(action: Action) {
+function disPUT(action: Action) {
   memoryState = reducer(memoryState, action)
   listeners.forEach((listener) => {
     listener(memoryState)
@@ -141,13 +141,13 @@ function toast({ ...props }: Toast) {
   const id = genId()
 
   const update = (props: ToasterToast) =>
-    dispatch({
+    disPUT({
       type: 'UPDATE_TOAST',
       toast: { ...props, id },
     })
-  const dismiss = () => dispatch({ type: 'DISMISS_TOAST', toastId: id })
+  const dismiss = () => disPUT({ type: 'DISMISS_TOAST', toastId: id })
 
-  dispatch({
+  disPUT({
     type: 'ADD_TOAST',
     toast: {
       ...props,
@@ -182,7 +182,7 @@ function useToast() {
   return {
     ...state,
     toast,
-    dismiss: (toastId?: string) => dispatch({ type: 'DISMISS_TOAST', toastId }),
+    dismiss: (toastId?: string) => disPUT({ type: 'DISMISS_TOAST', toastId }),
   }
 }
 

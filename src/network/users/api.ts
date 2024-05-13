@@ -1,5 +1,5 @@
 import { API_ENDPOINT } from '@/constants/network'
-import { CreateUserRequest, User } from './types'
+import { CreateUserRequest, UpdateUserRequest, User } from './types'
 
 export async function getAllUsers(): Promise<User[]> {
   // to add take and skip when implementing server side pagination
@@ -27,11 +27,11 @@ export async function createUser(user: CreateUserRequest): Promise<void> {
 }
 
 export async function updateUser(
-  user: CreateUserRequest,
+  user: UpdateUserRequest,
   id: string
 ): Promise<void> {
   const response = await fetch(API_ENDPOINT + `/user/${id}`, {
-    method: 'PATCH',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },

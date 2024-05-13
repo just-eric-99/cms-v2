@@ -42,7 +42,9 @@ export default function PoseLandmarkPreview() {
   }, [croppedImage, drawLandmarks, setImageSrc])
 
   return (
-    <div className='flex flex-col gap-6'>
+    <div
+      className={`flex flex-col gap-6 rounded-lg ${!croppedImage ? 'border' : ''}`}
+    >
       <div className='flex h-[320px] items-center justify-center overflow-hidden rounded-lg md:h-[400px] lg:h-[500px]'>
         {croppedImage && (
           <>

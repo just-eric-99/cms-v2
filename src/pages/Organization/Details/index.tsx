@@ -31,14 +31,6 @@ import {
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { DialogHeader, DialogFooter } from '@/components/ui/dialog'
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from '@radix-ui/react-dialog'
 
 type OrganizationDetailsPageProps = {
   editable: boolean

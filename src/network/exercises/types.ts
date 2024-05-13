@@ -15,8 +15,8 @@ export type Exercise = {
 }
 
 export type PoseLandmarkDto = {
-  normalizedLandmarks: NormalizedLandmark[][]
-  worldLandmarks: Landmark[][]
+  normalizedLandmarks: NormalizedLandmark[]
+  worldLandmarks: Landmark[]
   jointDirectionsWeights: number[]
 }
 

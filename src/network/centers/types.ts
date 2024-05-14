@@ -1,3 +1,5 @@
+import { Organization } from "../organization/types"
+
 export type Center = {
   id: string
   name: string
@@ -5,6 +7,7 @@ export type Center = {
   organizationId: string
   createdAt: string
   updatedAt: string
+  organization: Organization
 }
 
 export type CreateCenterRequest = {

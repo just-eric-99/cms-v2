@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { createOrganizationSchema } from '../_data/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { addNewOrganization } from '../_data/data'
 import { toast } from 'sonner'
 import {
   Dialog,
@@ -17,22 +15,29 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import OrganizationCreateForm from './form'
+import { createCenter } from '@/network/centers/api'
+import { createCenterSchema } from '../_data/schema'
+import CenterCreateForm from './form'
 
-export default function CreateOrganizationPage() {
+export default function CreateCenterPage() {
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
-  const form = useForm<z.infer<typeof createOrganizationSchema>>({
-    resolver: zodResolver(createOrganizationSchema),
+  const form = useForm<z.infer<typeof createCenterSchema>>({
+    resolver: zodResolver(createCenterSchema),
     defaultValues: {
       name: '',
       nameEn: '',
+      address: '',
+      addressEn: '',
+      organizationId: '',
     },
   })
   const queryClient = useQueryClient()
-  const createOrganizationMutation = useMutation({
-    mutationFn: async (data: z.infer<typeof createOrganizationSchema>) => {
-      return addNewOrganization(data)
+  const createCenterMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof createCenterSchema>) => {
+      // convert schema to data
+
+      return createCenter(data)
     },
     onMutate: (data) => {
       console.log(data)
@@ -42,7 +47,7 @@ export default function CreateOrganizationPage() {
       console.log(error)
       setLoading(false)
       setOpen(false)
-      toast('Error creating organization', {
+      toast('Error creating center', {
         description:
           error.message ?? 'An error occurred while creating the user.',
       })
@@ -51,8 +56,8 @@ export default function CreateOrganizationPage() {
       console.log('success')
       setLoading(false)
       setOpen(false)
-      toast('Organization created successfully', {
-        description: 'Organization has been created successfully.',
+      toast('Center created successfully', {
+        description: 'Center has been created successfully.',
       })
       queryClient.invalidateQueries({ queryKey: ['organizations'] })
     },
@@ -65,7 +70,7 @@ export default function CreateOrganizationPage() {
   })
 
   const onSubmit = form.handleSubmit((data) => {
-    createOrganizationMutation.mutate(data)
+    createCenterMutation.mutate(data)
   })
 
   return (
@@ -75,14 +80,14 @@ export default function CreateOrganizationPage() {
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Create Organization</DialogTitle>
+          <DialogTitle>Create Center</DialogTitle>
           <DialogDescription>
-            Create a organization here. Click done when you're finished.
+            Create a center here. Click done when you're finished.
           </DialogDescription>
         </DialogHeader>
         <div className='py-8'>
           <FormProvider {...form}>
-            <OrganizationCreateForm />
+            <CenterCreateForm />
           </FormProvider>
         </div>
         <DialogFooter className='gap-2'>

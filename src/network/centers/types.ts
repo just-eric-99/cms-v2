@@ -1,9 +1,11 @@
-import { Organization } from "../organization/types"
+import { Organization } from '../organization/types'
 
 export type Center = {
   id: string
   name: string
+  nameEn: string
   address: string
+  addressEn: string
   organizationId: string
   createdAt: string
   updatedAt: string

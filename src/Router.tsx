@@ -5,6 +5,8 @@ import Users from './pages/Users'
 import CreateExercisePage from './pages/Exercises/Create'
 import Organisations from './pages/Organization'
 import OrganizationDetailsPage from './pages/Organization/Details'
+import Centers from './pages/Center'
+import CenterDetailsPage from './pages/Center/Details'
 
 export default function Router() {
   return (
@@ -25,6 +27,14 @@ export default function Router() {
             <Route
               path=':id'
               element={<OrganizationDetailsPage editable={false} />}
+            />
+          </Route>
+
+          <Route path='/centers'>
+            <Route index element={<Centers />} />
+            <Route
+              path=':id'
+              element={<CenterDetailsPage editable={false} />}
             />
           </Route>
         </Route>

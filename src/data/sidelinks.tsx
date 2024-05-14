@@ -1,4 +1,9 @@
-import { CircleUserRound, SquareActivity, UsersRound } from 'lucide-react'
+import {
+  Building2,
+  CircleUserRound,
+  SquareActivity,
+  UsersRound,
+} from 'lucide-react'
 
 export interface NavLink {
   title: string
@@ -29,5 +34,11 @@ export const sidelinks: SideLink[] = [
     label: '',
     href: '/organizations',
     icon: <UsersRound size={18} />,
+  },
+  {
+    title: 'Centers',
+    label: '',
+    href: '/centers',
+    icon: <Building2 size={18} />,
   },
 ]

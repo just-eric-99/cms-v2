@@ -15,7 +15,7 @@ export type CreateUserRequest = {
   name: string
   displayName?: string
   email: string
-  phone: string
+  phone?: string
   avatar: number
   userGroupId: string
   centerId: string

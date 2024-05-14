@@ -15,10 +15,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { getAllCenters } from '@/network/centers/api'
+// import { getAllOrganization } from '@/network/organization/api'
+import { useQuery } from '@tanstack/react-query'
 import { useFormContext } from 'react-hook-form'
 
 export default function UserCreateForm() {
   const form = useFormContext()
+
+  // const organizationQuery = useQuery({
+  //   queryKey: ['organizations'],
+  //   queryFn: getAllOrganization,
+  // })
+
+  const centerQuery = useQuery({
+    queryKey: ['centers'],
+    queryFn: getAllCenters,
+  })
 
   return (
     <Form {...form}>
@@ -142,16 +155,11 @@ export default function UserCreateForm() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem
-                            value={'77406df7-51c1-4ec3-b58f-e065222ae1e0'}
-                          >
-                            Center 1
-                          </SelectItem>
-                          <SelectItem
-                            value={'a0d406ad-0d7c-42fd-9061-49ad02efe131'}
-                          >
-                            Center 2
-                          </SelectItem>
+                          {centerQuery.data?.map((center) => (
+                            <SelectItem value={center.id} key={center.id}>
+                              {center.name}
+                            </SelectItem>
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>

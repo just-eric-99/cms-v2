@@ -27,7 +27,7 @@ export const addNewUser = async (
     name: userSchema.name,
     displayName: userSchema.displayName || '',
     email: userSchema.email,
-    phone: userSchema.phone,
+    phone: userSchema.phone || undefined,
     avatar: userSchema.avatar,
     centerId: userSchema.centerId,
     userGroupId: userSchema.userGroupId,

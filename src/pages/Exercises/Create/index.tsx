@@ -23,11 +23,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createExercise } from '@/network/exercises/api'
 import { CreateExerciseRequest } from '@/network/exercises/types'
 import { toast } from 'sonner'
+import { useAtom } from 'jotai'
+import { uploadFileAtom } from './atom'
 
 export default function CreateExercisePage() {
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const [currentTab, setCurrentTab] = useState('form')
+  const [, setUploadFile] = useAtom(uploadFileAtom)
   const form = useForm<z.infer<typeof createExerciseSchema>>({
     resolver: zodResolver(createExerciseSchema),
     defaultValues: {
@@ -108,7 +111,7 @@ export default function CreateExercisePage() {
   })
 
   useEffect(() => {
-    return () => form.reset()
+    form.reset()
   }, [open])
 
   return (
@@ -117,7 +120,10 @@ export default function CreateExercisePage() {
         <DialogTrigger asChild>
           <Button>Create</Button>
         </DialogTrigger>
-        <DialogContent className=' align-top sm:max-w-[1200px]'>
+        <DialogContent
+          className=' align-top sm:max-w-[1200px]'
+          onInteractOutside={(e) => e.preventDefault()}
+        >
           <DialogHeader>
             <DialogTitle>Create Exercise</DialogTitle>
           </DialogHeader>
@@ -140,7 +146,7 @@ export default function CreateExercisePage() {
                   Start Pose
                 </TabsTrigger>
               </TabsList>
-              <div className='min-h-[400px]'>
+              <div className='min-h-[500px]'>
                 <TabsContent
                   forceMount
                   value='form'
@@ -167,6 +173,16 @@ export default function CreateExercisePage() {
             </Tabs>
           </Form>
           <DialogFooter className='gap-2'>
+            <DialogClose asChild>
+              <Button
+                onClick={() => {
+                  setUploadFile(null)
+                }}
+                variant='secondary'
+              >
+                Cancel
+              </Button>
+            </DialogClose>
             <DialogClose asChild>
               <Button loading={loading} onClick={onSubmit}>
                 Done

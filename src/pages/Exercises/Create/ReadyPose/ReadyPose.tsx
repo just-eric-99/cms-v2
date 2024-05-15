@@ -58,16 +58,28 @@ export default function ReadyPose() {
       }
     }
     drawLandmarks()
-  }, [form.getValues('readyLandmark')])
+  }, [form.watch('readyLandmark')])
   // to fix dependency warning
 
+  useEffect(() => {
+    if (form.watch(`readyLandmark`).normalizedLandmarks.length === 0) {
+      const canvas = poseLandmarkRef.current
+      if (!canvas) return
+      const ctx = canvas.getContext('2d')
+      console.log(canvas.clientHeight, canvas.clientWidth)
+      canvas.height = canvas.clientHeight
+      canvas.width = canvas.clientWidth
+      if (!ctx) return
+      ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
+    }
+  }, [form.watch(`readyLandmark`)])
   return (
     <div className='flex flex-1 flex-row py-4'>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogTrigger asChild>
           <canvas
             ref={poseLandmarkRef}
-            className='aspect-[11/16] min-h-[360px] rounded-lg border bg-slate-900'
+            className='aspect-[11/16] h-[400px] rounded-lg border bg-slate-900'
           ></canvas>
         </DialogTrigger>
         <DialogContent className='align-top sm:max-w-[1200px]'>

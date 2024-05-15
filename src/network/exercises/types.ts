@@ -26,8 +26,8 @@ export type CreateExerciseRequest = {
   description: string
   speechUrl: string
   difficulty: number
+  readyLandmark: PoseLandmarkDto
   startLandmark: PoseLandmarkDto
-  endLandmark: PoseLandmarkDto
   permission: Permission
 }
 

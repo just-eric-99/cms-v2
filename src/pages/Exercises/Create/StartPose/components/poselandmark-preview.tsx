@@ -1,24 +1,15 @@
 import { useAtomValue, useSetAtom } from 'jotai'
-import {
-  croppedImageAtom,
-  readyPoseLandmarksAtom,
-  startPoseLandmarksAtom,
-} from '../atom'
-import usePoseLandMarker from '@/hooks/use-pose-landmark'
+import { croppedImageAtom, startPoseLandmarksAtom } from '../../atom'
 import { useCallback, useEffect, useRef } from 'react'
 import { DrawingUtils, PoseLandmarker } from '@mediapipe/tasks-vision'
+import useStartPoseLandMarker from '../StartHooks'
 
-type PoseLandmarkPreviewProps = {
-  landmarkName: 'readyLandmark' | 'startLandmark'
-}
-
-export default function PoseLandmarkPreview(props: PoseLandmarkPreviewProps) {
+export default function StartPoseLandmarkPreview() {
   const croppedImage = useAtomValue(croppedImageAtom)
-  const [poseLandmarkerResult, setImageSrc] = usePoseLandMarker()
+  const [poseLandmarkerResult, setImageSrc] = useStartPoseLandMarker()
   const poseLandmarkRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
 
-  const setReadyPoseLandmarks = useSetAtom(readyPoseLandmarksAtom)
   const setStartPoseLandmarks = useSetAtom(startPoseLandmarksAtom)
 
   const drawLandmarks = useCallback(() => {
@@ -33,26 +24,19 @@ export default function PoseLandmarkPreview(props: PoseLandmarkPreviewProps) {
     const drawingUtils = new DrawingUtils(ctx)
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
     if (!poseLandmarkerResult) return
-    if (props.landmarkName == 'readyLandmark') {
-      console.log('drawing readyLandmark')
-      setReadyPoseLandmarks({
-        worldLandmarks: poseLandmarkerResult.worldLandmarks[0] ?? [],
-        normalizedLandmarks: poseLandmarkerResult.landmarks[0] ?? [],
-      })
-    } else {
-      console.log('drawing startLandmark')
-      setStartPoseLandmarks({
-        worldLandmarks: poseLandmarkerResult.worldLandmarks[0] ?? [],
-        normalizedLandmarks: poseLandmarkerResult.landmarks[0] ?? [],
-      })
-    }
+
+    console.log('drawing startLandmark')
+    setStartPoseLandmarks({
+      worldLandmarks: poseLandmarkerResult.worldLandmarks[0] ?? [],
+      normalizedLandmarks: poseLandmarkerResult.landmarks[0] ?? [],
+    })
     for (const landmark of poseLandmarkerResult.landmarks ?? []) {
       drawingUtils.drawLandmarks(landmark, {
         radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
       })
       drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS, {})
     }
-  }, [poseLandmarkerResult])
+  }, [poseLandmarkerResult, setStartPoseLandmarks])
 
   useEffect(() => {
     const canvas = poseLandmarkRef.current

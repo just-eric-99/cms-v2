@@ -6,7 +6,7 @@ export const createExerciseSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
   difficulty: z.number().int().min(1).max(5),
-  startLandmark: z.object({
+  readyLandmark: z.object({
     normalizedLandmarks: z.array(
       z.object({
         x: z.number(),
@@ -25,7 +25,7 @@ export const createExerciseSchema = z.object({
     ),
     jointDirectionsWeights: z.array(z.number()),
   }),
-  endLandmark: z.object({
+  startLandmark: z.object({
     normalizedLandmarks: z.array(
       z.object({
         x: z.number(),

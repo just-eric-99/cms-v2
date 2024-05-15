@@ -63,6 +63,7 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
     queryKey: ['center'],
     queryFn: async () => fetchCenterById(id ?? ''),
   })
+
   const updatecenterMutation = useMutation({
     mutationFn: async (data: z.infer<typeof updateCenterSchema>) => {
       return updateCenterById(id ?? '', data)

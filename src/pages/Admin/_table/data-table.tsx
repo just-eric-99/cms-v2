@@ -21,8 +21,8 @@ import {
 } from '@/components/ui/table'
 import { DataTablePagination } from '@/pages/Users/_table/data-table-pagination'
 import { Input } from '@/components/ui/input'
-import { UserSummaryType } from '../_data/types'
 import { useNavigate } from 'react-router-dom'
+import { AdminSummaryType } from '../_data/types'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -97,9 +97,9 @@ export function DataTable<TData, TValue>({
                   onClick={() => {
                     console.log(
                       'Row original information:',
-                      row.original as UserSummaryType
+                      row.original as AdminSummaryType
                     )
-                    navigate(`/users/${(row.original as UserSummaryType).id}`)
+                    navigate(`/admin/${(row.original as AdminSummaryType).id}`)
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (

@@ -5,7 +5,7 @@ import {
   PoseLandmarkerResult,
 } from '@mediapipe/tasks-vision'
 
-export default function usePoseLandMarker(): [
+export default function useStartPoseLandMarker(): [
   PoseLandmarkerResult | undefined,
   (imageSrc: string) => void,
 ] {

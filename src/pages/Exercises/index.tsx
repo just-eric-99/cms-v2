@@ -6,9 +6,7 @@ import { DataTable } from './_table/data-table'
 import { columns } from './_table/columns'
 import { useQuery } from '@tanstack/react-query'
 import { getExercisesTableData } from './_data/data'
-// import ExerciseCreateDialog from './Create/dialog'
-import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
+import CreateExercisePage from './Create'
 
 export default function Exercises() {
   const query = useQuery({
@@ -27,14 +25,7 @@ export default function Exercises() {
         <DataTable
           columns={columns}
           data={query.data ?? []}
-          createComponent={
-            <>
-              <Link to={'/exercises/create'}>
-                <Button>Create</Button>
-              </Link>
-              {/* <ExerciseCreateDialog /> */}
-            </>
-          }
+          createComponent={<CreateExercisePage />}
         />
       </LayoutBody>
     </Layout>

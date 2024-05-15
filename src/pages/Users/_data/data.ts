@@ -1,8 +1,17 @@
 import { z } from 'zod'
 import { UserSummaryType } from './types'
-import { createUserSchema } from './schema'
-import { createUser, getAllUsers } from '@/network/users/api'
-import { CreateUserRequest, User } from '@/network/users/types'
+import { createUserSchema, updateUserSchema } from './schema'
+import {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+} from '@/network/users/api'
+import {
+  CreateUserRequest,
+  UpdateUserRequest,
+  User,
+} from '@/network/users/types'
 
 export const getUserSummary = async (): Promise<UserSummaryType[]> => {
   const users = await getAllUsers()
@@ -34,4 +43,25 @@ export const addNewUser = async (
   }
 
   await createUser(user)
+}
+
+export const updateUserById = async (
+  userSchema: z.infer<typeof updateUserSchema>,
+  id: string
+): Promise<void> => {
+  const user: UpdateUserRequest = {
+    name: userSchema.name,
+    displayName: userSchema.displayName || '',
+    email: userSchema.email,
+    phone: userSchema.phone || undefined,
+    avatar: userSchema.avatar,
+    centerId: userSchema.centerId,
+    userGroupId: userSchema.userGroupId,
+  }
+
+  await updateUser(user, id)
+}
+
+export const getUserByUserId = async (id: string): Promise<User> => {
+  return await getUserById(id)
 }

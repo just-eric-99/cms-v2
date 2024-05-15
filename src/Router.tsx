@@ -7,6 +7,7 @@ import Organisations from './pages/Organization'
 import OrganizationDetailsPage from './pages/Organization/Details'
 import Centers from './pages/Center'
 import CenterDetailsPage from './pages/Center/Details'
+import UserDetailsPage from './pages/Users/Details'
 
 export default function Router() {
   return (
@@ -20,6 +21,7 @@ export default function Router() {
           </Route>
           <Route path='/users'>
             <Route index element={<Users />} />
+            <Route path=':id' element={<UserDetailsPage editable={false} />} />
           </Route>
 
           <Route path='/organizations'>

@@ -24,8 +24,8 @@ export async function addNewExercise(
     name: exerciseSchema.name,
     description: exerciseSchema.description,
     difficulty: exerciseSchema.difficulty,
+    readyLandmark: exerciseSchema.readyLandmark,
     startLandmark: exerciseSchema.startLandmark,
-    endLandmark: exerciseSchema.endLandmark,
     permission: exerciseSchema.permission,
     speechUrl: '',
   }

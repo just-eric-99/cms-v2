@@ -2,7 +2,6 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { useFormContext } from 'react-hook-form'
 import { createExerciseSchema } from '../../_data/schema'
 import { z } from 'zod'
-// import { useEffect } from 'react'
 import { FormField } from '@/components/ui/form'
 import { Slider } from '@/components/ui/slider'
 import { useEffect, useRef } from 'react'
@@ -46,8 +45,7 @@ export default function ReadyPose() {
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
       const normalizedLandmarks = readyPoseLandmarks.normalizedLandmarks
       console.log('its readyLandmark')
-
-      if (!normalizedLandmarks) return
+      if (normalizedLandmarks.length === 0) return
       for (const landmark of [normalizedLandmarks]) {
         drawingUtils.drawLandmarks(landmark, {
           radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
@@ -60,14 +58,17 @@ export default function ReadyPose() {
       }
     }
     drawLandmarks()
-  }, [form.watch('readyLandmark')])
+  }, [form.getValues('readyLandmark')])
   // to fix dependency warning
 
   return (
     <div className='flex flex-1 flex-row py-4'>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogTrigger asChild>
-          <div className='aspect-[11/16] min-h-[360px] border'></div>
+          <canvas
+            ref={poseLandmarkRef}
+            className='aspect-[11/16] min-h-[360px] rounded-lg border bg-slate-900'
+          ></canvas>
         </DialogTrigger>
         <DialogContent className='align-top sm:max-w-[1200px]'>
           <ReadySelectPoseDialog />

@@ -5,7 +5,7 @@ export const createExerciseSchema = z.object({
   centerId: z.string().min(1),
   name: z.string().min(1),
   description: z.string().min(1),
-  difficulty: z.number().int().min(1).max(5),
+  difficulty: z.number().int().min(1).max(10),
   readyLandmark: z.object({
     normalizedLandmarks: z.array(
       z.object({

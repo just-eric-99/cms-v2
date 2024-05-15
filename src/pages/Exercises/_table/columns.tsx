@@ -2,6 +2,7 @@ import { Permission } from '@/enum/permission'
 import { ColumnDef } from '@tanstack/react-table'
 
 export type ExerciseColumnDef = {
+  id: string
   centerId: string
   name: string
   createdByAdminId: string
@@ -10,6 +11,14 @@ export type ExerciseColumnDef = {
 }
 
 export const columns: ColumnDef<ExerciseColumnDef>[] = [
+  {
+    accessorKey: 'id',
+    header: () => <div className='pl-2 text-left'>ID</div>,
+    cell: ({ row }) => {
+      const name = row.getValue('id') as string
+      return <div className='pl-2 text-left font-medium'>{name}</div>
+    },
+  },
   {
     accessorKey: 'name',
     header: () => <div className='pl-2 text-left'>Name</div>,

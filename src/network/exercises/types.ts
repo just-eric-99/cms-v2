@@ -24,7 +24,6 @@ export type CreateExerciseRequest = {
   centerId: string
   name: string
   description: string
-  speechUrl: string
   difficulty: number
   readyLandmark: PoseLandmarkDto
   startLandmark: PoseLandmarkDto
@@ -35,7 +34,6 @@ export type UpdateExerciseRequest = {
   centerId?: string
   name?: string
   description?: string
-  speechUrl?: string
   difficulty?: number
   startLandmark?: PoseLandmarkDto
   permission?: Permission

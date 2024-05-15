@@ -23,6 +23,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
+import { Permission } from '@/enum/permission'
 
 export default function CreateExerciseForm() {
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
@@ -132,6 +133,52 @@ export default function CreateExerciseForm() {
               <FormMessage />
             </FormItem>
           )}
+        />
+
+        <Controller
+          control={form.control}
+          name='permission'
+          render={({ field, fieldState }) => {
+            return (
+              <FormControl>
+                <FormItem>
+                  <Label className={fieldState.error && 'text-destructive'}>
+                    Permission
+                  </Label>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value.toString()}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder='Select Permission' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {[
+                          Permission.PRIVATE,
+                          Permission.PROTECTED,
+                          Permission.PROTECTED_READ_ONLY,
+                          Permission.PUBLIC,
+                          Permission.PUBLIC_READ_ONLY,
+                        ].map((perm) => (
+                          <SelectItem value={perm.toString()} key={perm}>
+                            {perm}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage {...field} />
+
+                  {fieldState.error && (
+                    <p className={'text-sm font-medium text-destructive'}>
+                      {fieldState.error?.message}
+                    </p>
+                  )}
+                </FormItem>
+              </FormControl>
+            )
+          }}
         />
       </div>
     </Form>

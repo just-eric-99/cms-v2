@@ -7,6 +7,7 @@ import { CreateExerciseRequest } from '@/network/exercises/types'
 export async function getExercisesTableData(): Promise<ExerciseColumnDef[]> {
   const exercises = await getAllExercises()
   const exercisesTableData: ExerciseColumnDef[] = exercises.map((exercise) => ({
+    id: exercise.id,
     centerId: exercise.centerId,
     name: exercise.name,
     createdByAdminId: exercise.createdByAdminId,
@@ -27,7 +28,6 @@ export async function addNewExercise(
     readyLandmark: exerciseSchema.readyLandmark,
     startLandmark: exerciseSchema.startLandmark,
     permission: exerciseSchema.permission,
-    speechUrl: '',
   }
 
   await createExercise(exercise)

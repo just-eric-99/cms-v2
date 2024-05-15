@@ -15,11 +15,18 @@ import { createExerciseSchema } from '../_data/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Permission } from '@/enum/permission'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CreateExerciseForm from './form'
 import StartPose from './StartPose/StartPose'
 import ReadyPose from './ReadyPose/ReadyPose'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createExercise } from '@/network/exercises/api'
+import { CreateExerciseRequest } from '@/network/exercises/types'
+import { toast } from 'sonner'
+
 export default function CreateExercisePage() {
+  const [loading, setLoading] = useState(false)
+  const [open, setOpen] = useState(false)
   const [currentTab, setCurrentTab] = useState('form')
   const form = useForm<z.infer<typeof createExerciseSchema>>({
     resolver: zodResolver(createExerciseSchema),
@@ -44,10 +51,69 @@ export default function CreateExercisePage() {
       },
     },
   })
+  const queryClient = useQueryClient()
+  const createExerciseMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof createExerciseSchema>) => {
+      const createExerciseRequest: CreateExerciseRequest = {
+        centerId: data.centerId,
+        name: data.name,
+        description: data.description,
+        difficulty: data.difficulty,
+        permission: data.permission,
+        readyLandmark: {
+          normalizedLandmarks: data.readyLandmark.normalizedLandmarks,
+          worldLandmarks: data.readyLandmark.worldLandmarks,
+          jointDirectionsWeights: data.readyLandmark.jointDirectionsWeights,
+        },
+        startLandmark: {
+          normalizedLandmarks: data.startLandmark.normalizedLandmarks,
+          worldLandmarks: data.startLandmark.worldLandmarks,
+          jointDirectionsWeights: data.startLandmark.jointDirectionsWeights,
+        },
+      }
+      return createExercise(createExerciseRequest)
+    },
+    onMutate: (data) => {
+      console.log(data)
+      setLoading(true)
+    },
+    onError: (error) => {
+      console.log(error)
+      setLoading(false)
+      setOpen(false)
+      toast('Error creating center', {
+        description:
+          error.message ?? 'An error occurred while creating the user.',
+      })
+    },
+    onSuccess: () => {
+      console.log('success')
+      setLoading(false)
+      setOpen(false)
+      toast('Center created successfully', {
+        description: 'Center has been created successfully.',
+      })
+      queryClient.invalidateQueries({ queryKey: ['organizations'] })
+    },
+    onSettled: () => {
+      console.log('settled')
+      setLoading(false)
+      setOpen(false)
+      form.reset()
+    },
+  })
+
+  const onSubmit = form.handleSubmit((data) => {
+    createExerciseMutation.mutate(data)
+  })
+
+  useEffect(() => {
+    return () => form.reset()
+  }, [open])
 
   return (
     <FormProvider {...form}>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>Create</Button>
         </DialogTrigger>
@@ -58,7 +124,7 @@ export default function CreateExercisePage() {
           <Form {...form}>
             <Tabs
               className=''
-              defaultValue='form'
+              value={currentTab}
               onValueChange={(value) => {
                 setCurrentTab(value)
               }}
@@ -102,9 +168,11 @@ export default function CreateExercisePage() {
           </Form>
           <DialogFooter className='gap-2'>
             <DialogClose asChild>
-              <Button>Done</Button>
+              <Button loading={loading} onClick={onSubmit}>
+                Done
+              </Button>
             </DialogClose>
-            <Button
+            {/* <Button
               onClick={() => {
                 console.log(
                   "form.getValues('readyLandmark.normalizedLandmarks')",
@@ -117,7 +185,7 @@ export default function CreateExercisePage() {
               }}
             >
               Print
-            </Button>
+            </Button> */}
           </DialogFooter>
         </DialogContent>
       </Dialog>

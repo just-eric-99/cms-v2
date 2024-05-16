@@ -1,4 +1,4 @@
-import { Permission } from '@/enum/permission'
+import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import { Landmark, NormalizedLandmark } from '@mediapipe/tasks-vision'
 
 export type Exercise = {
@@ -9,7 +9,7 @@ export type Exercise = {
   speechUrl: string
   createdByAdminId: string
   difficulty: number
-  permission: Permission
+  permission: ExercisePermission
   createdAt: string
   updatedAt: string
 }
@@ -27,7 +27,7 @@ export type CreateExerciseRequest = {
   difficulty: number
   readyLandmark: PoseLandmarkDto
   startLandmark: PoseLandmarkDto
-  permission: Permission
+  permission: ExercisePermission
 }
 
 export type UpdateExerciseRequest = {
@@ -36,5 +36,5 @@ export type UpdateExerciseRequest = {
   description?: string
   difficulty?: number
   startLandmark?: PoseLandmarkDto
-  permission?: Permission
+  permission?: ExercisePermission
 }

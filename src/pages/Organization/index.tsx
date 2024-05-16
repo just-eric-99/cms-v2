@@ -6,12 +6,14 @@ import { UserNav } from '@/components/user-nav'
 import { columns } from './_table/columns'
 import { DataTable } from './_table/data-table'
 import CreateOrganizationPage from './Create'
+import Loader from "@/components/loader.tsx";
 
 export default function Organisations() {
   const query = useQuery({
     queryKey: ['organizations'],
     queryFn: () => getOrganizationSummary(),
   })
+  if (query.isLoading) return <Loader />
   return (
     <Layout>
       <LayoutHeader>

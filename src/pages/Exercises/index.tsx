@@ -7,12 +7,14 @@ import { columns } from './_table/columns'
 import { useQuery } from '@tanstack/react-query'
 import { getExercisesTableData } from './_data/data'
 import CreateExercisePage from './Create'
+import Loader from '@/components/loader.tsx'
 
 export default function Exercises() {
   const query = useQuery({
     queryKey: ['exercises'],
     queryFn: () => getExercisesTableData(),
   })
+  if (query.isLoading) return <Loader />
   return (
     <Layout>
       <LayoutHeader>

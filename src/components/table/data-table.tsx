@@ -20,7 +20,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination } from '@/pages/Users/_table/data-table-pagination'
-import { Input } from '@/components/ui/input'
+// import { Input } from '@/components/ui/input'
 import { useNavigate } from 'react-router'
 
 interface DataTableProps<TData, TValue> {
@@ -57,14 +57,16 @@ export function DataTable<TData, TValue>({
   return (
     <>
       <div className='flex items-center justify-between pb-4'>
-        <Input
-          placeholder='Filter'
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
-          }
-          className='max-w-sm'
-        />
+        <div></div>
+        {/* todo: to parse in to filter field here */}
+        {/*<Input*/}
+        {/*  placeholder='Filter'*/}
+        {/*  value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}*/}
+        {/*  onChange={(event) =>*/}
+        {/*    table.getColumn('name')?.setFilterValue(event.target.value)*/}
+        {/*  }*/}
+        {/*  className='max-w-sm'*/}
+        {/*/>*/}
         {createComponent}
       </div>
       <div className='rounded-md border'>

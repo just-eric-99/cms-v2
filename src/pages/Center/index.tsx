@@ -6,12 +6,14 @@ import { columns } from './_table/columns'
 import CreateCenterPage from './Create'
 import { getAllCenters } from '@/network/centers/api.ts'
 import { DataTable } from '@/components/table/data-table.tsx'
+import Loader from '@/components/loader.tsx'
 
 export default function Centers() {
   const query = useQuery({
     queryKey: ['centers'],
     queryFn: getAllCenters,
   })
+  if (query.isLoading) return <Loader />
   return (
     <Layout>
       <LayoutHeader>

@@ -1,4 +1,4 @@
-import { Permission } from '@/enum/permission'
+import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import { z } from 'zod'
 
 export const createExerciseSchema = z.object({
@@ -44,5 +44,5 @@ export const createExerciseSchema = z.object({
     ),
     jointDirectionsWeights: z.array(z.number()),
   }),
-  permission: z.nativeEnum(Permission),
+  permission: z.nativeEnum(ExercisePermission),
 })

@@ -1,6 +1,8 @@
 import {
   Building2,
   CircleUserRound,
+  FileKey2,
+  ScanFace,
   SquareActivity,
   UsersRound,
 } from 'lucide-react'
@@ -40,5 +42,17 @@ export const sidelinks: SideLink[] = [
     label: '',
     href: '/centers',
     icon: <Building2 size={18} />,
+  },
+  {
+    title: 'Admins',
+    label: '',
+    href: '/admins',
+    icon: <ScanFace size={18} />,
+  },
+  {
+    title: 'Roles',
+    label: '',
+    href: '/roles',
+    icon: <FileKey2 size={18} />,
   },
 ]

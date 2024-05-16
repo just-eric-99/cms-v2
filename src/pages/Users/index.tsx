@@ -6,13 +6,14 @@ import { columns } from './_table/columns'
 import { useQuery } from '@tanstack/react-query'
 import { getUserSummary } from './_data/data'
 import CreateUserPage from './Create'
+import Loader from '@/components/loader.tsx'
 
 export default function Users() {
   const query = useQuery({
     queryKey: ['users'],
     queryFn: () => getUserSummary(),
   })
-
+  if (query.isLoading) return <Loader />
   return (
     <Layout>
       <LayoutHeader>

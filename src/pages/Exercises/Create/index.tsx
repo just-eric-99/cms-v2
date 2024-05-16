@@ -13,7 +13,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { createExerciseSchema } from '../_data/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Permission } from '@/enum/permission'
+import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useEffect, useState } from 'react'
 import CreateExerciseForm from './form'
@@ -39,7 +39,7 @@ export default function CreateExercisePage() {
       name: '',
       description: '',
       difficulty: 0,
-      permission: Permission.PRIVATE,
+      permission: ExercisePermission.PRIVATE,
 
       readyLandmark: {
         normalizedLandmarks: [],

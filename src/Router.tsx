@@ -1,13 +1,18 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import AppShell from './components/app-shell'
-import Exercises from './pages/Exercises'
-import Users from './pages/Users'
-import CreateExercisePage from './pages/Exercises/Create'
-import Organisations from './pages/Organization'
-import OrganizationDetailsPage from './pages/Organization/Details'
-import Centers from './pages/Center'
-import CenterDetailsPage from './pages/Center/Details'
-import UserDetailsPage from './pages/Users/Details'
+import AppShell from '@/components/app-shell'
+import Exercises from '@/pages/Exercises'
+import Users from '@/pages/Users'
+import CreateExercisePage from '@/pages/Exercises/Create'
+import Organisations from '@/pages/Organization'
+import OrganizationDetailsPage from '@/pages/Organization/Details'
+import Centers from '@/pages/Center'
+import CenterDetailsPage from '@/pages/Center/Details'
+import UserDetailsPage from '@/pages/Users/Details'
+import Admins from '@/pages/Admin'
+import AdminDetailsPage from '@/pages/Admin/Details'
+import Roles from '@/pages/Roles'
+import NotFoundError from '@/components/error/not-found.tsx'
+import RoleDetailsPage from '@/pages/Roles/Details'
 
 export default function Router() {
   return (
@@ -39,9 +44,18 @@ export default function Router() {
               element={<CenterDetailsPage editable={false} />}
             />
           </Route>
-          <Route path='*' element={<div>not found</div>} />
+          <Route path='/admins'>
+            <Route index element={<Admins />} />
+            <Route path=':id' element={<AdminDetailsPage editable={false} />} />
+          </Route>
+
+          <Route path='/roles'>
+            <Route index element={<Roles />} />
+            <Route path=':id' element={<RoleDetailsPage editable={false} />} />
+          </Route>
+          {/*<Route path='*' element={<div>not found</div>} />*/}
         </Route>
-        {/*<Route path='*' element={<div>not found</div>} />*/}
+        <Route path='*' element={<NotFoundError />} />
       </Routes>
     </BrowserRouter>
   )

@@ -1,4 +1,8 @@
-import { Admin, CreateAdminRequest, UpdateAdminDto } from '@/network/admin/types.ts'
+import {
+  Admin,
+  CreateAdminRequest,
+  UpdateAdminDto,
+} from '@/network/admin/types.ts'
 import { API_ENDPOINT } from '@/constants/network.ts'
 
 export const getAllAdmins = async (): Promise<Admin[]> => {
@@ -23,7 +27,9 @@ export const getAdminById = async (id: string): Promise<Admin> => {
   return admin.json()
 }
 
-export const createAdmin = async (createAdminRequest: CreateAdminRequest): Promise<void> => {
+export const createAdmin = async (
+  createAdminRequest: CreateAdminRequest
+): Promise<void> => {
   const response = await fetch(API_ENDPOINT + '/admin', {
     method: 'POST',
     headers: {
@@ -38,7 +44,10 @@ export const createAdmin = async (createAdminRequest: CreateAdminRequest): Promi
   }
 }
 
-export const updateAdmin = async (updateAdminDto: UpdateAdminDto, id: string): Promise<void> => {
+export const updateAdmin = async (
+  updateAdminDto: UpdateAdminDto,
+  id: string
+): Promise<void> => {
   const response = await fetch(API_ENDPOINT + `/admin/${id}`, {
     method: 'PUT',
     headers: {
@@ -50,5 +59,16 @@ export const updateAdmin = async (updateAdminDto: UpdateAdminDto, id: string): P
   if (!response.ok) {
     const error = await response.json()
     throw new Error(error.message ?? 'Failed to update admin')
+  }
+}
+
+export const deleteAdmin = async (id: string): Promise<void> => {
+  const response = await fetch(API_ENDPOINT + `/admin/${id}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.message ?? 'Failed to delete admin')
   }
 }

@@ -1,4 +1,4 @@
-import { Permission } from '@/enum/permission'
+import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import { ColumnDef } from '@tanstack/react-table'
 
 export type ExerciseColumnDef = {
@@ -7,7 +7,7 @@ export type ExerciseColumnDef = {
   name: string
   createdByAdminId: string
   difficulty: number
-  permission: Permission
+  permission: ExercisePermission
 }
 
 export const columns: ColumnDef<ExerciseColumnDef>[] = [

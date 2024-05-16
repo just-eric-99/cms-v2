@@ -23,7 +23,7 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
-import { Permission } from '@/enum/permission'
+import { ExercisePermission } from '@/enum/exercisePermission.ts'
 
 export default function CreateExerciseForm() {
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
@@ -155,11 +155,11 @@ export default function CreateExerciseForm() {
                     <SelectContent>
                       <SelectGroup>
                         {[
-                          Permission.PRIVATE,
-                          Permission.PROTECTED,
-                          Permission.PROTECTED_READ_ONLY,
-                          Permission.PUBLIC,
-                          Permission.PUBLIC_READ_ONLY,
+                          ExercisePermission.PRIVATE,
+                          ExercisePermission.PROTECTED,
+                          ExercisePermission.PROTECTED_READ_ONLY,
+                          ExercisePermission.PUBLIC,
+                          ExercisePermission.PUBLIC_READ_ONLY,
                         ].map((perm) => (
                           <SelectItem value={perm.toString()} key={perm}>
                             {perm}

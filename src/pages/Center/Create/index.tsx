@@ -17,7 +17,10 @@ import { createCenter } from '@/network/centers/api'
 import { createCenterSchema } from '../_data/schema'
 import CenterCreateForm from './form'
 
-export default function CreateCenterPage() {
+type CreateCenterPageProps = {
+  preDefinedOrganizationId?: string
+}
+export default function CreateCenterPage(props: CreateCenterPageProps) {
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const form = useForm<z.infer<typeof createCenterSchema>>({
@@ -27,7 +30,7 @@ export default function CreateCenterPage() {
       nameEn: '',
       address: '',
       addressEn: '',
-      organizationId: '',
+      organizationId: props.preDefinedOrganizationId ?? '',
     },
   })
   const queryClient = useQueryClient()
@@ -79,7 +82,9 @@ export default function CreateCenterPage() {
           <div className='text-xl font-bold'>Create Center</div>
         </DialogHeader>
         <FormProvider {...form}>
-          <CenterCreateForm />
+          <CenterCreateForm
+            preDefinedOrganizationId={props.preDefinedOrganizationId}
+          />
         </FormProvider>
         <DialogFooter className='gap-2 pt-2'>
           <DialogClose asChild>

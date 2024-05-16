@@ -1,9 +1,4 @@
 import { Layout, LayoutBody, LayoutHeader } from '@/components/custom/layout'
-import {
-  deleteOrganizationByOrgId,
-  getOrganizationByOrgId,
-  updateOrganizationById,
-} from '../_data/data'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -14,10 +9,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import ThemeSwitch from '@/components/theme-switch'
 import { UserNav } from '@/components/user-nav'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import OrganizationDetailsForm from './form'
+import {
+  deleteOrganization,
+  getOrganizationById,
+  updateOrganization,
+} from '@/network/organization/api.ts'
+import Loader from '@/components/loader.tsx'
+import { useState } from 'react'
+import OrganizationDetailsCenterSummary from '@/pages/Organization/Details/centers'
 
 type OrganizationDetailsPageProps = {
   editable: boolean
@@ -34,11 +36,18 @@ export default function OrganizationDetailsPage(
   const queryClient = useQueryClient()
   const query = useQuery({
     queryKey: ['organization'],
-    queryFn: async () => getOrganizationByOrgId(id ?? ''),
+    queryFn: async () => {
+      const org = await getOrganizationById(id ?? '')
+      form.reset({
+        name: org.name,
+        nameEn: org.nameEn,
+      })
+      return org
+    },
   })
   const updateOrganizationMutation = useMutation({
     mutationFn: async (data: z.infer<typeof updateOrganizationSchema>) => {
-      return updateOrganizationById(data, id ?? '')
+      return updateOrganization(data, id ?? '')
     },
     onMutate: (data) => {
       console.log(data)
@@ -48,26 +57,20 @@ export default function OrganizationDetailsPage(
       console.log(error)
       setLoading(false)
       // setOpen(false)
-      toast('Error updating organization', {
-        description:
-          error.message ?? 'An error occurred while updating organization.',
-      })
+      toast.error(error.message ?? 'Error updating organization')
     },
     onSuccess: () => {
       console.log('success')
       setLoading(false)
-      toast('Organization updated successfully', {
-        description: 'Organization has been updated successfully.',
-      })
-      queryClient.invalidateQueries({ queryKey: ['organization'] })
+      toast.success('Organization updated successfully')
+      queryClient.invalidateQueries({ queryKey: ['organization', id] })
       setCanEdit(false)
-      navigate('/organizations')
     },
   })
 
   const deleteOrganizationMutation = useMutation({
     mutationFn: async () => {
-      return deleteOrganizationByOrgId(id ?? '')
+      return deleteOrganization(id ?? '')
     },
     onMutate: (data) => {
       console.log(data)
@@ -76,36 +79,26 @@ export default function OrganizationDetailsPage(
     onError: (error) => {
       console.log(error)
       setErrorLoading(false)
-      // setOpen(false)
-      toast('Error deleting organization', {
-        description:
-          error.message ?? 'An error occurred while deleting organization.',
-      })
+      toast.error(error.message ?? 'Error deleting organization')
     },
     onSuccess: () => {
       console.log('success')
       setErrorLoading(false)
-      toast('Organization deleted successfully', {
-        description: 'Organization has been deleted successfully.',
-      })
+      toast.success('Organization deleted successfully')
       queryClient.invalidateQueries({ queryKey: ['organizations'] })
+      navigate('/organizations')
       setCanEdit(false)
     },
   })
 
   const form = useForm<z.infer<typeof updateOrganizationSchema>>({
     resolver: zodResolver(updateOrganizationSchema),
+    mode: `all`,
     defaultValues: {
       name: '',
       nameEn: '',
     },
   })
-
-  useEffect(() => {
-    if (!query.data) return
-    form.setValue('name', query.data.name)
-    form.setValue('nameEn', query.data.nameEn)
-  }, [form, query.data])
 
   const cancelEdit = () => {
     query.refetch().then(() => {
@@ -127,6 +120,8 @@ export default function OrganizationDetailsPage(
   const deleteOrg = () => {
     deleteOrganizationMutation.mutate()
   }
+
+  if (query.isLoading) return <Loader />
 
   return (
     <Layout>
@@ -173,6 +168,15 @@ export default function OrganizationDetailsPage(
             <FormProvider {...form}>
               <OrganizationDetailsForm canEdit={canEdit} />
             </FormProvider>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>Users</CardHeader>
+          <CardContent>
+            <OrganizationDetailsCenterSummary
+              centerSummary={query.data?.centers ?? []}
+              organizationId={query.data?.id ?? ''}
+            />
           </CardContent>
         </Card>
       </LayoutBody>

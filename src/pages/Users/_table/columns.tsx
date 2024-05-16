@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
-import { UserSummaryType } from '../_data/types'
+import { User } from '@/network/users/types.ts'
 
-export const columns: ColumnDef<UserSummaryType>[] = [
+export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => (

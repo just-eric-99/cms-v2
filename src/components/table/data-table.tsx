@@ -19,14 +19,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTablePagination } from '@/pages/Users/_table/data-table-pagination'
+
 // import { Input } from '@/components/ui/input'
 import { useNavigate } from 'react-router'
+import { DataTablePagination } from '@/components/table/data-table-pagination.tsx'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  navigationPath?: string // example: '/organizations/' + id
+  navigationPath: string
   createComponent?: React.ReactNode
 }
 

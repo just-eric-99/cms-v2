@@ -84,18 +84,13 @@ export default function CreateExercisePage() {
       console.log(error)
       setLoading(false)
       setOpen(false)
-      toast('Error creating center', {
-        description:
-          error.message ?? 'An error occurred while creating the user.',
-      })
+      toast.error(error.message ?? 'Error creating exercise')
     },
     onSuccess: () => {
       console.log('success')
       setLoading(false)
       setOpen(false)
-      toast('Center created successfully', {
-        description: 'Center has been created successfully.',
-      })
+      toast.success('Exercise created successfully')
       queryClient.invalidateQueries({ queryKey: ['organizations'] })
     },
     onSettled: () => {
@@ -188,52 +183,9 @@ export default function CreateExercisePage() {
                 Done
               </Button>
             </DialogClose>
-            {/* <Button
-              onClick={() => {
-                console.log(
-                  "form.getValues('readyLandmark.normalizedLandmarks')",
-                  form.getValues('readyLandmark.normalizedLandmarks')
-                )
-                console.log(
-                  "form.getValues('startLandmark.normalizedLandmarks')",
-                  form.getValues('startLandmark.normalizedLandmarks')
-                )
-              }}
-            >
-              Print
-            </Button> */}
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </FormProvider>
   )
 }
-
-// const [uploadFile, setUploadFile] = useAtom(uploadFileAtom)
-// const setCroppedImage = useSetAtom(croppedImageAtom)
-/* 
-<div className='container flex flex-col gap-4'>
-  <div className='flex flex-row justify-end gap-4'>
-    <Link to={'/exercises'}>
-      <Button
-        variant={'secondary'}
-        onClick={() => {
-          setUploadFile(null)
-          setCroppedImage(null)
-        }}
-      >
-        Backs
-      </Button>
-    </Link>
-    <Button>Done</Button>
-  </div>
-  <div className='grid grid-cols-5 gap-4'>
-    <div className='col-span-3'>
-      {!uploadFile && <UploadVideoComponent />}
-      {uploadFile && <FrameSelector />}
-    </div>
-    <div className='col-span-2'>
-      <PoseLandmarkPreview />
-    </div>
-  </div>
-</div> */

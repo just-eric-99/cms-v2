@@ -4,13 +4,11 @@ import { z } from 'zod'
 import { createOrganizationSchema } from '../_data/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { addNewOrganization } from '../_data/data'
 import { toast } from 'sonner'
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -18,6 +16,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import OrganizationCreateForm from './form'
+import { createOrganization } from '@/network/organization/api.ts'
 
 export default function CreateOrganizationPage() {
   const [loading, setLoading] = useState(false)
@@ -32,7 +31,7 @@ export default function CreateOrganizationPage() {
   const queryClient = useQueryClient()
   const createOrganizationMutation = useMutation({
     mutationFn: async (data: z.infer<typeof createOrganizationSchema>) => {
-      return addNewOrganization(data)
+      return createOrganization(data)
     },
     onMutate: (data) => {
       console.log(data)
@@ -42,19 +41,14 @@ export default function CreateOrganizationPage() {
       console.log(error)
       setLoading(false)
       setOpen(false)
-      toast('Error creating organization', {
-        description:
-          error.message ?? 'An error occurred while creating the user.',
-      })
+      toast.error(error.message ?? 'Error creating organization')
     },
     onSuccess: () => {
       console.log('success')
       setLoading(false)
-      setOpen(false)
-      toast('Organization created successfully', {
-        description: 'Organization has been created successfully.',
-      })
+      toast.success(`Organization created successfully`)
       queryClient.invalidateQueries({ queryKey: ['organizations'] })
+      setOpen(false)
     },
     onSettled: () => {
       console.log('settled')
@@ -76,11 +70,8 @@ export default function CreateOrganizationPage() {
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>Create Organization</DialogTitle>
-          <DialogDescription>
-            Create a organization here. Click done when you're finished.
-          </DialogDescription>
         </DialogHeader>
-        <div className='py-8'>
+        <div className='py-5'>
           <FormProvider {...form}>
             <OrganizationCreateForm />
           </FormProvider>

@@ -18,10 +18,10 @@ import {
 import { Input } from '@/components/ui/input'
 import { Controller, useFormContext } from 'react-hook-form'
 import { useQuery } from '@tanstack/react-query'
-import { getOrganizationSummary } from '@/pages/Organization/_data/data'
 import { Label } from '@/components/ui/label'
 import { z } from 'zod'
 import { updateCenterSchema } from '../_data/schema'
+import { getAllOrganization } from '@/network/organization/api.ts'
 
 type CenterDetailsFormProps = {
   canEdit: boolean
@@ -31,7 +31,7 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
   const form = useFormContext<z.infer<typeof updateCenterSchema>>()
   const organizationQuery = useQuery({
     queryKey: ['organizations'],
-    queryFn: async () => getOrganizationSummary(),
+    queryFn: async () => getAllOrganization(),
   })
   return (
     <Form {...form}>

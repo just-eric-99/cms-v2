@@ -20,13 +20,22 @@ import { getAllOrganization } from '@/network/organization/api'
 import { useQuery } from '@tanstack/react-query'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Label } from '@/components/ui/label.tsx'
+import { useEffect } from 'react'
 
-export default function CenterCreateForm() {
+type CenterCreateFormProps = {
+  preDefinedOrganizationId?: string
+}
+export default function CenterCreateForm(props: CenterCreateFormProps) {
   const form = useFormContext()
   const organizationQuery = useQuery({
     queryKey: ['organizations'],
     queryFn: getAllOrganization,
   })
+
+  useEffect(() => {
+    if (props.preDefinedOrganizationId)
+      form.setValue('organizationId', props.preDefinedOrganizationId)
+  }, [props.preDefinedOrganizationId])
 
   return (
     <Form {...form}>
@@ -95,7 +104,11 @@ export default function CenterCreateForm() {
                 <Label className={fieldState.error && 'text-destructive'}>
                   Organization
                 </Label>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  disabled={props.preDefinedOrganizationId !== undefined}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder='Select Organization' />
                   </SelectTrigger>

@@ -1,16 +1,7 @@
-import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import { ColumnDef } from '@tanstack/react-table'
+import { Exercise } from '@/network/exercises/types.ts'
 
-export type ExerciseColumnDef = {
-  id: string
-  centerId: string
-  name: string
-  createdByAdminId: string
-  difficulty: number
-  permission: ExercisePermission
-}
-
-export const columns: ColumnDef<ExerciseColumnDef>[] = [
+export const columns: ColumnDef<Exercise>[] = [
   {
     accessorKey: 'id',
     header: () => <div className='pl-2 text-left'>ID</div>,

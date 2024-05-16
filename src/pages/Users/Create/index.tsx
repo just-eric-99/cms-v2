@@ -16,8 +16,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { addNewUser } from '../_data/data'
 import { toast } from 'sonner'
+import { createUser } from '@/network/users/api.ts'
 
 type CreateUserPageProps = {
   centerId?: string
@@ -32,8 +32,8 @@ export default function CreateUserPage(props: CreateUserPageProps) {
       name: '',
       displayName: '',
       email: '',
-      phone: undefined,
-      avatar: -1,
+      phone: '',
+      avatar: 0,
       centerId: props.centerId ?? '',
       userGroupId: '',
     },
@@ -41,7 +41,7 @@ export default function CreateUserPage(props: CreateUserPageProps) {
   const queryClient = useQueryClient()
   const createUserMutation = useMutation({
     mutationFn: async (data: z.infer<typeof createUserSchema>) => {
-      return addNewUser(data)
+      return createUser(data)
     },
     onMutate: (data) => {
       console.log(data)
@@ -90,7 +90,7 @@ export default function CreateUserPage(props: CreateUserPageProps) {
       <DialogTrigger asChild>
         <Button>Create</Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Create User</DialogTitle>
           <DialogDescription>
@@ -99,7 +99,7 @@ export default function CreateUserPage(props: CreateUserPageProps) {
         </DialogHeader>
         <div className='py-8'>
           <FormProvider {...form}>
-            <UserCreateForm preDefinedCenterId={props.centerId}/>
+            <UserCreateForm preDefinedCenterId={props.centerId} />
           </FormProvider>
         </div>
         <DialogFooter className='gap-2'>

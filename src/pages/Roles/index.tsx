@@ -10,6 +10,7 @@ import { getAllRoles } from '@/network/roles/api.ts'
 import { useQuery } from '@tanstack/react-query'
 import { columns } from '@/pages/Roles/_table/columns.tsx'
 import Loader from '@/components/loader.tsx'
+import RoleCreatePage from '@/pages/Roles/Create'
 
 export default function Roles() {
   const query = useQuery({
@@ -30,7 +31,7 @@ export default function Roles() {
           columns={columns}
           data={query.data ?? []}
           navigationPath={'/roles'}
-          // createComponent={<CreateRolePage />}
+          createComponent={<RoleCreatePage />}
         />
       </LayoutBody>
     </Layout>

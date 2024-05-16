@@ -1,7 +1,7 @@
 import CreateUserPage from '@/pages/Users/Create'
 import { User } from '@/network/users/types'
-import { DataTable } from '@/pages/Users/_table/data-table'
 import { columns } from '@/pages/Users/_table/columns'
+import { DataTable } from '@/components/table/data-table.tsx'
 
 type CenterDetailsUserSummaryProps = {
   userSummary: User[]
@@ -16,6 +16,7 @@ export default function CenterDetailsUserSummary({
     <DataTable
       columns={columns}
       data={userSummary}
+      navigationPath={'/users'}
       createComponent={<CreateUserPage centerId={centerId} />}
     />
   )

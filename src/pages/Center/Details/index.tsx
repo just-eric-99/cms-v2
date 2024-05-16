@@ -5,22 +5,21 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-// import ThemeSwitch from '@/components/theme-switch'
-// import { UserNav } from '@/components/user-nav'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { updateCenterSchema } from '../_data/schema'
-import {
-  deleteCenterByCenterId,
-  fetchCenterById,
-  updateCenterById,
-} from '../_data/data'
 import CenterDetailsForm from './form'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CenterDetailsUserSummary from './users'
 import CenterDetailsAdminSummary from './admins'
+import {
+  deleteCenter,
+  getCenterById,
+  updateCenter,
+} from '@/network/centers/api.ts'
+import Loader from '@/components/loader.tsx'
 
 type CenterDetailsPageProps = {
   editable: boolean
@@ -35,13 +34,23 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
   const queryClient = useQueryClient()
 
   const query = useQuery({
-    queryKey: ['center'],
-    queryFn: async () => fetchCenterById(id ?? ''),
+    queryKey: ['center', id],
+    queryFn: async () => {
+      const center = await getCenterById(id ?? '')
+      form.reset({
+        name: center.name,
+        nameEn: center.nameEn,
+        address: center.address,
+        addressEn: center.addressEn,
+        organizationId: center.organizationId,
+      })
+      return center
+    },
   })
 
-  const updatecenterMutation = useMutation({
+  const updateCenterMutation = useMutation({
     mutationFn: async (data: z.infer<typeof updateCenterSchema>) => {
-      return updateCenterById(id ?? '', data)
+      return updateCenter(data, id ?? '')
     },
     onMutate: (data) => {
       console.log(data)
@@ -67,9 +76,7 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
   })
 
   const deleteCenterMutation = useMutation({
-    mutationFn: async () => {
-      return deleteCenterByCenterId(id ?? '')
-    },
+    mutationFn: async () => deleteCenter(id ?? ''),
     onMutate: (data) => {
       console.log(data)
       setErrorLoading(true)
@@ -97,24 +104,15 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
 
   const form = useForm<z.infer<typeof updateCenterSchema>>({
     resolver: zodResolver(updateCenterSchema),
-    mode: `onChange`,
+    mode: `all`,
     defaultValues: {
-      name: '',
-      nameEn: '',
-      address: '',
-      addressEn: '',
-      organizationId: '',
+      name: query.data?.name ?? '',
+      nameEn: query.data?.nameEn ?? '',
+      address: query.data?.address ?? '',
+      addressEn: query.data?.addressEn ?? '',
+      organizationId: query.data?.organizationId ?? '',
     },
   })
-
-  useEffect(() => {
-    if (!query.data) return
-    form.setValue('name', query.data.name)
-    form.setValue('nameEn', query.data.nameEn)
-    form.setValue('address', query.data.address)
-    form.setValue('addressEn', query.data.addressEn)
-    form.setValue('organizationId', query.data.organizationId)
-  }, [form, query.data])
 
   const cancelEdit = () => {
     query.refetch().then(() => {
@@ -128,7 +126,7 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
   }
 
   const save = () => {
-    updatecenterMutation.mutate(form.getValues())
+    updateCenterMutation.mutate(form.getValues())
   }
 
   const back = () => {
@@ -140,14 +138,11 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
     deleteCenterMutation.mutate()
   }
 
+  if (query.isLoading) return <Loader />
+
   return (
     <Layout>
-      <LayoutHeader>
-        {/* <div className='ml-auto flex items-center space-x-4'>
-          <ThemeSwitch />
-          <UserNav />
-        </div> */}
-      </LayoutHeader>
+      <LayoutHeader></LayoutHeader>
       <LayoutBody className='flex flex-col gap-8'>
         <Card className=''>
           <CardHeader className='flex flex-col justify-between gap-6'>
@@ -179,7 +174,7 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
                 )}
               </div>
             </div>
-            <div className='text-xl'>Center Details</div>
+            <div className='text-xl font-bold'>Center Details</div>
           </CardHeader>
           <CardContent>
             <FormProvider {...form}>
@@ -208,7 +203,10 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
                 />
               </TabsContent>
               <TabsContent value='admins'>
-                <CenterDetailsAdminSummary />
+                <CenterDetailsAdminSummary
+                  adminSummary={query.data?.admins ?? []}
+                  centerId={query.data?.id ?? ''}
+                />
               </TabsContent>
             </Tabs>
           </CardContent>

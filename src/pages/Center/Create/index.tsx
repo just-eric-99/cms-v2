@@ -8,10 +8,8 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
@@ -35,8 +33,6 @@ export default function CreateCenterPage() {
   const queryClient = useQueryClient()
   const createCenterMutation = useMutation({
     mutationFn: async (data: z.infer<typeof createCenterSchema>) => {
-      // convert schema to data
-
       return createCenter(data)
     },
     onMutate: (data) => {
@@ -78,19 +74,14 @@ export default function CreateCenterPage() {
       <DialogTrigger asChild>
         <Button>Create</Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Center</DialogTitle>
-          <DialogDescription>
-            Create a center here. Click done when you're finished.
-          </DialogDescription>
+          <div className='text-xl font-bold'>Create Center</div>
         </DialogHeader>
-        <div className='py-8'>
-          <FormProvider {...form}>
-            <CenterCreateForm />
-          </FormProvider>
-        </div>
-        <DialogFooter className='gap-2'>
+        <FormProvider {...form}>
+          <CenterCreateForm />
+        </FormProvider>
+        <DialogFooter className='gap-2 pt-2'>
           <DialogClose asChild>
             <Button loading={loading} type='submit' onClick={onSubmit}>
               Done

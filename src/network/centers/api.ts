@@ -1,12 +1,19 @@
 import { API_ENDPOINT } from '@/constants/network'
-import { Center, CreateCenterRequest, UpdateCenterRequest } from './types'
+import {
+  Center,
+  CenterWithUsersAndAdmins,
+  CreateCenterRequest,
+  UpdateCenterRequest,
+} from './types'
 
 export async function getAllCenters(): Promise<Center[]> {
   const centers = await fetch(API_ENDPOINT + '/center')
   return centers.json()
 }
 
-export async function getCenterById(id: string): Promise<Center> {
+export async function getCenterById(
+  id: string
+): Promise<CenterWithUsersAndAdmins> {
   const center = await fetch(API_ENDPOINT + `/center/${id}`)
   return center.json()
 }

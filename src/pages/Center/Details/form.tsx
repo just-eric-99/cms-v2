@@ -41,7 +41,6 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
           name='name'
           render={({ field }) => (
             <FormItem className='flex-1'>
-              {/* <div className='grid grid-cols-7 items-center gap-4 text-end'> */}
               <FormLabel className='col-span-2'>Chinese Name</FormLabel>
               <FormControl className='col-span-5'>
                 <Input
@@ -50,10 +49,7 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
                   disabled={!canEdit}
                 />
               </FormControl>
-              {/* </div> */}
-              {/* <div className='grid grid-cols-7 gap-4'> */}
               <FormMessage className='col-span-5 col-start-3' />
-              {/* </div> */}
             </FormItem>
           )}
         />
@@ -62,7 +58,6 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
           name='nameEn'
           render={({ field }) => (
             <FormItem className='flex-1'>
-              {/* <div className='grid grid-cols-7 items-center gap-4 text-end'> */}
               <FormLabel className='col-span-2'>English Name</FormLabel>
               <FormControl className='col-span-5'>
                 <Input
@@ -71,10 +66,7 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
                   disabled={!canEdit}
                 />
               </FormControl>
-              {/* </div> */}
-              {/* <div className='grid grid-cols-7 gap-4'> */}
               <FormMessage className='col-span-5 col-start-3' />
-              {/* </div> */}
             </FormItem>
           )}
         />
@@ -84,7 +76,6 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
           name='address'
           render={({ field }) => (
             <FormItem className='flex-1'>
-              {/* <div className='grid grid-cols-7 items-center gap-4 text-end'> */}
               <FormLabel className='col-span-2'>Address (Chinese)</FormLabel>
               <FormControl className='col-span-5'>
                 <Textarea
@@ -93,10 +84,7 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
                   disabled={!canEdit}
                 />
               </FormControl>
-              {/* </div> */}
-              {/* <div className='grid grid-cols-7 gap-4'> */}
               <FormMessage className='col-span-5 col-start-3' />
-              {/* </div> */}
             </FormItem>
           )}
         />
@@ -105,7 +93,6 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
           name='addressEn'
           render={({ field }) => (
             <FormItem className='flex-1'>
-              {/* <div className='grid grid-cols-7 items-center gap-4 text-end'> */}
               <FormLabel className='col-span-2'>Address (English)</FormLabel>
 
               <FormControl className='col-span-5'>
@@ -115,10 +102,7 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
                   disabled={!canEdit}
                 />
               </FormControl>
-              {/* </div> */}
-              {/* <div className='grid grid-cols-7 gap-4'> */}
               <FormMessage className='col-span-5 col-start-3' />
-              {/* </div> */}
             </FormItem>
           )}
         />

@@ -39,7 +39,9 @@ export default function Router() {
               element={<CenterDetailsPage editable={false} />}
             />
           </Route>
+          <Route path='*' element={<div>not found</div>} />
         </Route>
+        {/*<Route path='*' element={<div>not found</div>} />*/}
       </Routes>
     </BrowserRouter>
   )

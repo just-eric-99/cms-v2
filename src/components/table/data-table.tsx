@@ -21,19 +21,19 @@ import {
 } from '@/components/ui/table'
 import { DataTablePagination } from '@/pages/Users/_table/data-table-pagination'
 import { Input } from '@/components/ui/input'
-
 import { useNavigate } from 'react-router'
-import { CenterSummaryType } from '../_data/types'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  navigationPath?: string // example: '/organizations/' + id
   createComponent?: React.ReactNode
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  navigationPath,
   createComponent,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -95,13 +95,9 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   onClick={() => {
-                    console.log(
-                      'Row original information:',
-                      row.original as CenterSummaryType
-                    )
-                    navigate(
-                      `/centers/${(row.original as CenterSummaryType).id}`
-                    )
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    navigate(navigationPath + '/' + row.original.id)
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (

@@ -17,7 +17,12 @@ import { createAdmin } from '@/network/admin/api.ts'
 import { toast } from 'sonner'
 import AdminCreateForm from '@/pages/Admin/Create/form.tsx'
 
-export default function AdminCreatePage() {
+type AdminCreatePageProps = {
+  preDefinedRoleId?: string
+  preDefinedCenterId?: string
+}
+
+export default function AdminCreatePage(props: AdminCreatePageProps) {
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const form = useForm<z.infer<typeof createAdminSchema>>({
@@ -28,8 +33,8 @@ export default function AdminCreatePage() {
       displayName: '',
       email: '',
       phone: '',
-      centerId: '',
-      roleId: '',
+      centerId: props.preDefinedCenterId ?? '',
+      roleId: props.preDefinedRoleId ?? '',
     },
   })
   const queryClient = useQueryClient()
@@ -75,7 +80,7 @@ export default function AdminCreatePage() {
           <div className='text-xl font-bold'>Create Admin</div>
         </DialogHeader>
         <FormProvider {...form}>
-          <AdminCreateForm />
+          <AdminCreateForm preDefinedRoleId={props.preDefinedRoleId} preDefinedCenterId={props.preDefinedCenterId}/>
         </FormProvider>
         <DialogFooter className='gap-2 pt-2'>
           <DialogClose asChild>

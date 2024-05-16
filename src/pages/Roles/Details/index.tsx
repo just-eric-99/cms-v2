@@ -16,6 +16,9 @@ import {
 import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import RoleDetailsForm from '@/pages/Roles/Details/form.tsx'
+import RoleDetailsPermissions from '@/pages/Roles/Details/permissions'
+import { Permission, Scope } from '@/enum/exercisePermission.ts'
+import RoleDetailsAdminSummary from '@/pages/Roles/Details/admins'
 
 type RoleDetailsPageProps = {
   editable: boolean
@@ -35,7 +38,12 @@ export default function RoleDetailsPage(props: RoleDetailsPageProps) {
     defaultValues: {
       title: '',
       titleEn: '',
-      permissions: [],
+      permissions: [
+        {
+          permission: Permission.USER_READ,
+          scope: Scope.CENTER,
+        },
+      ],
     },
   })
 
@@ -46,6 +54,12 @@ export default function RoleDetailsPage(props: RoleDetailsPageProps) {
     onMutate: (data) => {
       console.log(data)
       setLoading(true)
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['role', id] })
+      setLoading(false)
+      toast.success(`Role updated successfully`)
+      setCanEdit(false)
     },
     onError: (error) => {
       console.log(error)
@@ -147,16 +161,18 @@ export default function RoleDetailsPage(props: RoleDetailsPageProps) {
               <RoleDetailsForm canEdit={canEdit} />
             </CardContent>
           </Card>
-          <div className={'grid grid-cols-7 gap-8'}>
-            <Card className={'col-span-2'}>
-              {query.data?.rolePermissions.map((permission, index) => (
-                <div key={index}>
-                  <div>{permission.permission}</div>
-                  <div>{permission.scope}</div>
-                </div>
-              ))}
-            </Card>
-            <Card className={'col-span-5'}></Card>
+          <div className={'flex flex-row gap-8'}>
+            {!query.data?.super && (
+              <div className={'flex-[2]'}>
+                <RoleDetailsPermissions canEdit={canEdit} />
+              </div>
+            )}
+            <div className={'flex-[5]'}>
+              <RoleDetailsAdminSummary
+                adminSummary={query.data?.admins ?? []}
+                roleId={id ?? ''}
+              />
+            </div>
           </div>
         </LayoutBody>
       </Layout>

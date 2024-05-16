@@ -99,7 +99,7 @@ export default function CreateUserPage(props: CreateUserPageProps) {
         </DialogHeader>
         <div className='py-8'>
           <FormProvider {...form}>
-            <UserCreateForm />
+            <UserCreateForm preDefinedCenterId={props.centerId}/>
           </FormProvider>
         </div>
         <DialogFooter className='gap-2'>

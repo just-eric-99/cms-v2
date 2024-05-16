@@ -56,8 +56,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className='flex items-center justify-between pb-4'>
-        <div></div>
+      <div className='flex flex-row-reverse items-center justify-between pb-4'>
         {/* todo: to parse in to filter field here */}
         {/*<Input*/}
         {/*  placeholder='Filter'*/}

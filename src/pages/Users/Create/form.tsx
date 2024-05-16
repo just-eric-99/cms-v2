@@ -20,7 +20,10 @@ import { getAllCenters } from '@/network/centers/api'
 import { useQuery } from '@tanstack/react-query'
 import { useFormContext } from 'react-hook-form'
 
-export default function UserCreateForm() {
+type UserCreateFormProps = {
+  preDefinedCenterId?: string
+}
+export default function UserCreateForm(props: UserCreateFormProps) {
   const form = useFormContext()
 
   // const organizationQuery = useQuery({
@@ -152,6 +155,7 @@ export default function UserCreateForm() {
                     <Select
                       defaultValue={field.value}
                       onValueChange={(value) => field.onChange(value)}
+                      disabled={props.preDefinedCenterId !== undefined}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder='Select Center' />

@@ -1,4 +1,5 @@
 import { Permission, Scope } from '@/enum/exercisePermission.ts'
+import {Admin} from "@/network/admin/types.ts";
 
 export type Role = {
   id: string
@@ -16,7 +17,7 @@ export type RoleDetails = {
   super: boolean
   createdAt: string
   updatedAt: string
-  admins: string
+  admins: Admin[]
   rolePermissions: RolePermission[]
 }
 

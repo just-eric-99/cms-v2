@@ -17,6 +17,7 @@ type RoleDetailsFormProps = {
 
 export default function RoleDetailsForm({ canEdit }: RoleDetailsFormProps) {
   const form = useFormContext<z.infer<typeof updateRoleSchema>>()
+
   return (
     <Form {...form}>
       <div className='flex flex-1 flex-col justify-start gap-5'>

@@ -22,8 +22,13 @@ import { createAdminSchema } from '@/pages/Admin/_data/schema.ts'
 import { getAllCenters } from '@/network/centers/api.ts'
 import { useQuery } from '@tanstack/react-query'
 import { getAllRoles } from '@/network/roles/api.ts'
+import { useEffect } from 'react'
 
-export default function AdminCreateForm() {
+type AdminCreateFormProps = {
+  preDefinedRoleId?: string
+  preDefinedCenterId?: string
+}
+export default function AdminCreateForm(props: AdminCreateFormProps) {
   const form = useFormContext<z.infer<typeof createAdminSchema>>()
   const centerQuery = useQuery({
     queryKey: ['centers'],
@@ -34,6 +39,16 @@ export default function AdminCreateForm() {
     queryKey: ['roles'],
     queryFn: async () => getAllRoles(),
   })
+
+  useEffect(() => {
+    if (props.preDefinedRoleId) form.setValue('roleId', props.preDefinedRoleId)
+  }, [props.preDefinedRoleId])
+
+  useEffect(() => {
+    if (props.preDefinedCenterId)
+      form.setValue('centerId', props.preDefinedCenterId)
+  }, [props.preDefinedCenterId])
+
   return (
     <Form {...form}>
       <div className='flex flex-1 flex-col justify-start gap-5'>
@@ -114,7 +129,11 @@ export default function AdminCreateForm() {
                 <Label className={fieldState.error && 'text-destructive'}>
                   Center
                 </Label>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={props.preDefinedCenterId ?? field.value}
+                  disabled={props.preDefinedCenterId !== undefined}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder='Select Center' />
                   </SelectTrigger>
@@ -149,7 +168,11 @@ export default function AdminCreateForm() {
                 <Label className={fieldState.error && 'text-destructive'}>
                   Role
                 </Label>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={props.preDefinedRoleId ?? field.value}
+                  disabled={props.preDefinedRoleId !== undefined}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder='Select Role' />
                   </SelectTrigger>

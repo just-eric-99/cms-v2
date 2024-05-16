@@ -58,6 +58,7 @@ export default function StartPose() {
       }
     }
     drawLandmarks()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch(`startLandmark`)])
   // to fix dependency warning
 
@@ -72,6 +73,7 @@ export default function StartPose() {
       if (!ctx) return
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch(`startLandmark`)])
 
   return (

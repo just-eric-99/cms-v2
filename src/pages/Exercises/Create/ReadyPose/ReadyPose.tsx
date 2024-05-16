@@ -58,6 +58,7 @@ export default function ReadyPose() {
       }
     }
     drawLandmarks()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch('readyLandmark')])
   // to fix dependency warning
 
@@ -72,6 +73,7 @@ export default function ReadyPose() {
       if (!ctx) return
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch(`readyLandmark`)])
   return (
     <div className='flex flex-1 flex-row py-4'>

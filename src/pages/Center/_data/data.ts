@@ -10,7 +10,10 @@ import { updateCenterSchema } from './schema'
 import { z } from 'zod'
 
 export const fetchCenters = async (): Promise<CenterSummaryType[]> => {
+  console.log('fetchCenters')
+
   const centers = await getAllCenters()
+  console.log('centers', centers)
 
   const centerSummary: CenterSummaryType[] = centers.map((center: Center) => ({
     id: center.id,
@@ -21,6 +24,8 @@ export const fetchCenters = async (): Promise<CenterSummaryType[]> => {
     organizationName: center.organization.name,
     organizationNameEn: center.organization.nameEn,
   }))
+
+  console.log(centerSummary)
 
   return centerSummary
 }

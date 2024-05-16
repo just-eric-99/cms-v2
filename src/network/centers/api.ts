@@ -38,7 +38,8 @@ export async function updateCenter(
   })
 
   if (!response.ok) {
-    throw new Error('Failed to update center')
+    const error = await response.json()
+    throw new Error(error.message ?? 'Failed to update center')
   }
 }
 
@@ -48,6 +49,7 @@ export async function deleteCenter(id: string): Promise<void> {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to delete center')
+    const error = await response.json()
+    throw new Error(error.message ?? 'Failed to delete center') // server side error
   }
 }

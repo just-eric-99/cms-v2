@@ -149,7 +149,10 @@ export default function UserCreateForm() {
                 <FormLabel className='col-span-2'>Center</FormLabel>
                 <div className='col-span-5'>
                   <FormControl>
-                    <Select onValueChange={(value) => field.onChange(value)}>
+                    <Select
+                      defaultValue={field.value}
+                      onValueChange={(value) => field.onChange(value)}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder='Select Center' />
                       </SelectTrigger>

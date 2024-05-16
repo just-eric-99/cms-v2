@@ -112,7 +112,7 @@ export default function UserDetailsPage(props: UserDetailPageProps) {
       })
       queryClient.invalidateQueries({ queryKey: ['users'] })
       setCanEdit(false)
-      navigate('/users')
+      navigate(-1)
     },
   })
 

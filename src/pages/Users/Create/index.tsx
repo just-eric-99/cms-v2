@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import UserCreateForm from './form'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createUserSchema } from '../_data/schema'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,7 +19,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addNewUser } from '../_data/data'
 import { toast } from 'sonner'
 
-export default function CreateUserPage() {
+type CreateUserPageProps = {
+  centerId?: string
+}
+
+export default function CreateUserPage(props: CreateUserPageProps) {
   const [loading, setLoading] = React.useState(false)
   const [open, setOpen] = React.useState(false)
   const form = useForm<z.infer<typeof createUserSchema>>({
@@ -30,7 +34,7 @@ export default function CreateUserPage() {
       email: '',
       phone: undefined,
       avatar: -1,
-      centerId: '',
+      centerId: props.centerId ?? '',
       userGroupId: '',
     },
   })
@@ -60,6 +64,7 @@ export default function CreateUserPage() {
         description: 'The user has been created successfully.',
       })
       queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ['center'] })
     },
     onSettled: () => {
       console.log('settled')
@@ -72,6 +77,14 @@ export default function CreateUserPage() {
     console.log('inside onsubmit', data)
     createUserMutation.mutate(data)
   })
+
+  useEffect(() => {
+    form.reset()
+  }, [])
+
+  useEffect(() => {
+    form.setValue('centerId', props.centerId ?? '')
+  }, [form, props.centerId])
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

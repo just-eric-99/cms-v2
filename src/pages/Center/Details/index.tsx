@@ -1,28 +1,13 @@
 import { Layout, LayoutBody, LayoutHeader } from '@/components/custom/layout'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import ThemeSwitch from '@/components/theme-switch'
-import { UserNav } from '@/components/user-nav'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+// import ThemeSwitch from '@/components/theme-switch'
+// import { UserNav } from '@/components/user-nav'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
@@ -32,16 +17,10 @@ import {
   fetchCenterById,
   updateCenterById,
 } from '../_data/data'
-import { Textarea } from '@/components/ui/textarea'
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-} from '@/components/ui/select'
-import { getOrganizationSummary } from '@/pages/Organization/_data/data'
+import CenterDetailsForm from './form'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import CenterDetailsUserSummary from './users'
+import CenterDetailsAdminSummary from './admins'
 
 type CenterDetailsPageProps = {
   editable: boolean
@@ -49,15 +28,11 @@ type CenterDetailsPageProps = {
 
 export default function CenterDetailsPage(props: CenterDetailsPageProps) {
   const [loading, setLoading] = useState(false)
+  const [errorLoading, setErrorLoading] = useState(false)
   const [canEdit, setCanEdit] = useState(props.editable)
   const navigate = useNavigate()
   const { id } = useParams()
   const queryClient = useQueryClient()
-
-  const organizationQuery = useQuery({
-    queryKey: ['organizations'],
-    queryFn: async () => getOrganizationSummary(),
-  })
 
   const query = useQuery({
     queryKey: ['center'],
@@ -75,7 +50,6 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
     onError: (error) => {
       console.log(error)
       setLoading(false)
-      // setOpen(false)
       toast('Error updating center', {
         description:
           error.message ?? 'An error occurred while updating center.',
@@ -89,7 +63,6 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
       })
       queryClient.invalidateQueries({ queryKey: ['center'] })
       setCanEdit(false)
-      navigate('/centers')
     },
   })
 
@@ -99,11 +72,11 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
     },
     onMutate: (data) => {
       console.log(data)
-      setLoading(true)
+      setErrorLoading(true)
     },
     onError: (error) => {
       console.log(error)
-      setLoading(false)
+      setErrorLoading(false)
       // setOpen(false)
       toast('Error deleting center', {
         description:
@@ -112,7 +85,7 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
     },
     onSuccess: () => {
       console.log('success')
-      setLoading(false)
+      setErrorLoading(false)
       toast('Center deleted successfully', {
         description: 'Center has been deleted successfully.',
       })
@@ -170,196 +143,76 @@ export default function CenterDetailsPage(props: CenterDetailsPageProps) {
   return (
     <Layout>
       <LayoutHeader>
-        <div className='ml-auto flex items-center space-x-4'>
+        {/* <div className='ml-auto flex items-center space-x-4'>
           <ThemeSwitch />
           <UserNav />
-        </div>
+        </div> */}
       </LayoutHeader>
-      <LayoutBody>
-        <div className='container flex justify-center align-middle'>
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between'>
-              <CardTitle>center Details</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Form {...form}>
-                <div className='flex flex-1 flex-col justify-start gap-8'>
-                  <FormField
-                    control={form.control}
-                    name='name'
-                    render={({ field }) => (
-                      <FormItem className='flex-1'>
-                        <div className='grid grid-cols-7 items-center gap-4 text-end'>
-                          <FormLabel className='col-span-2'>
-                            Chinese Name
-                          </FormLabel>
-                          <FormControl className='col-span-5'>
-                            <Input
-                              {...field}
-                              placeholder='chinese name'
-                              disabled={!canEdit}
-                            />
-                          </FormControl>
-                        </div>
-                        <div className='grid grid-cols-7 gap-4'>
-                          <FormMessage className='col-span-5 col-start-3' />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='nameEn'
-                    render={({ field }) => (
-                      <FormItem className='flex-1'>
-                        <div className='grid grid-cols-7 items-center gap-4 text-end'>
-                          <FormLabel className='col-span-2'>
-                            English Name
-                          </FormLabel>
-                          <FormControl className='col-span-5'>
-                            <Input
-                              {...field}
-                              placeholder='english name'
-                              disabled={!canEdit}
-                            />
-                          </FormControl>
-                        </div>
-                        <div className='grid grid-cols-7 gap-4'>
-                          <FormMessage className='col-span-5 col-start-3' />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='address'
-                    render={({ field }) => (
-                      <FormItem className='flex-1'>
-                        <div className='grid grid-cols-7 items-center gap-4 text-end'>
-                          <FormLabel className='col-span-2'>
-                            Address (Chinese)
-                          </FormLabel>
-                          <FormControl className='col-span-5'>
-                            <Textarea
-                              {...field}
-                              placeholder='address (chinese)'
-                              disabled={!canEdit}
-                            />
-                          </FormControl>
-                        </div>
-                        <div className='grid grid-cols-7 gap-4'>
-                          <FormMessage className='col-span-5 col-start-3' />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='addressEn'
-                    render={({ field }) => (
-                      <FormItem className='flex-1'>
-                        <div className='grid grid-cols-7 items-center gap-4 text-end'>
-                          <FormLabel className='col-span-2'>
-                            Address (English)
-                          </FormLabel>
-
-                          <FormControl className='col-span-5'>
-                            <Textarea
-                              {...field}
-                              placeholder='address (english)'
-                              disabled={!canEdit}
-                            />
-                          </FormControl>
-                        </div>
-                        <div className='grid grid-cols-7 gap-4'>
-                          <FormMessage className='col-span-5 col-start-3' />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name='organizationId'
-                    render={({ field }) => {
-                      console.log(query.data?.organizationId)
-
-                      return (
-                        <FormItem className='flex-1'>
-                          <div className='grid grid-cols-7 items-center gap-4 text-end'>
-                            <FormLabel className='col-span-2'>
-                              Organization
-                            </FormLabel>
-                            <div className='col-span-5'>
-                              <FormControl className='col-span-5'>
-                                <Select
-                                  {...field}
-                                  onValueChange={(value) => {
-                                    field.onChange(value)
-                                  }}
-                                  disabled={!canEdit}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder='Select Organization' />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectGroup>
-                                      {organizationQuery.data?.map(
-                                        (organization) => (
-                                          <SelectItem
-                                            value={organization.id}
-                                            key={organization.id}
-                                          >
-                                            {organization.name}
-                                          </SelectItem>
-                                        )
-                                      )}
-                                    </SelectGroup>
-                                  </SelectContent>
-                                </Select>
-                              </FormControl>
-                            </div>
-                          </div>
-                          <div className='grid grid-cols-7 gap-4'>
-                            <FormMessage className='col-span-5 col-start-3' />
-                          </div>
-                        </FormItem>
-                      )
-                    }}
-                  />
-                </div>
-              </Form>
-            </CardContent>
-            <CardFooter>
-              <Button
-                variant={'destructive'}
-                onClick={deleteOrg}
-                loading={loading}
-              >
-                Delete
+      <LayoutBody className='flex flex-col gap-8'>
+        <Card className=''>
+          <CardHeader className='flex flex-col justify-between gap-6'>
+            <div className='flex flex-row'>
+              <Button variant={'outline'} onClick={back}>
+                Back
               </Button>
+              <div className='flex flex-1 justify-end gap-4'>
+                <Button
+                  variant={'destructive'}
+                  onClick={deleteOrg}
+                  loading={errorLoading}
+                >
+                  Delete
+                </Button>
+                {canEdit && (
+                  <>
+                    <Button loading={loading} onClick={save}>
+                      Save
+                    </Button>
+                    <Button variant={'outline'} onClick={cancelEdit}>
+                      Cancel
+                    </Button>
+                  </>
+                )}
 
-              {!canEdit && (
-                <div className='flex flex-1 justify-end gap-4'>
-                  <Button variant={'outline'} onClick={back}>
-                    Back
-                  </Button>
-
+                {!canEdit && (
                   <Button onClick={() => setCanEdit(true)}>Edit</Button>
-                </div>
-              )}
-              {canEdit && (
-                <div className='flex flex-1 justify-end gap-4'>
-                  <Button variant={'outline'} onClick={cancelEdit}>
-                    Cancel
-                  </Button>
-                  <Button loading={loading} onClick={save}>
-                    Save
-                  </Button>
-                </div>
-              )}
-            </CardFooter>
-          </Card>
-        </div>
+                )}
+              </div>
+            </div>
+            <div className='text-xl'>Center Details</div>
+          </CardHeader>
+          <CardContent>
+            <FormProvider {...form}>
+              <CenterDetailsForm canEdit={canEdit} />
+            </FormProvider>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader></CardHeader>
+          <CardContent>
+            <Tabs defaultValue='users' className='w-full'>
+              <TabsList>
+                <TabsTrigger className='min-w-32' value='users'>
+                  Users
+                </TabsTrigger>
+                <TabsTrigger className='min-w-32' value='admins'>
+                  Admins
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value='users'>
+                <CenterDetailsUserSummary
+                  userSummary={query.data?.users ?? []}
+                  centerId={query.data?.id ?? ''}
+                />
+              </TabsContent>
+              <TabsContent value='admins'>
+                <CenterDetailsAdminSummary />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
       </LayoutBody>
     </Layout>
   )

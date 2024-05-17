@@ -1,4 +1,5 @@
 import {
+  Boxes,
   Building2,
   CircleUserRound,
   FileKey2,
@@ -54,5 +55,11 @@ export const sidelinks: SideLink[] = [
     label: '',
     href: '/roles',
     icon: <FileKey2 size={18} />,
+  },
+  {
+    title: 'User Groups',
+    label: '',
+    href: '/user-groups',
+    icon: <Boxes size={18} />,
   },
 ]

@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/select.tsx'
 import { getAllCenters } from '@/network/centers/api.ts'
 import { useQuery } from '@tanstack/react-query'
+import { getAllUserGroup } from '@/network/user-groups/api.ts'
 
 type UserDetailsFormProps = {
   canEdit: boolean
@@ -29,6 +30,11 @@ export default function UserDetailsForm({ canEdit }: UserDetailsFormProps) {
   const centerQuery = useQuery({
     queryKey: ['centers'],
     queryFn: getAllCenters,
+  })
+
+  const userGroupQuery = useQuery({
+    queryKey: ['user-groups'],
+    queryFn: getAllUserGroup,
   })
 
   return (
@@ -156,26 +162,11 @@ export default function UserDetailsForm({ canEdit }: UserDetailsFormProps) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem
-                        value={'62f84b5e-05d0-47a9-aaae-95c100c94099'}
-                      >
-                        User Group 1
-                      </SelectItem>
-                      <SelectItem
-                        value={'088a93fa-be3f-44b3-8ec1-cb11d70356d2'}
-                      >
-                        User Group 2
-                      </SelectItem>
-                      <SelectItem
-                        value={'6e2a01d8-37d1-4d63-afbd-ffc93c4135d0'}
-                      >
-                        User Group 3
-                      </SelectItem>
-                      <SelectItem
-                        value={'0b827cb1-ec30-44b1-ae9a-ae23ffc31a5f'}
-                      >
-                        User Group 4
-                      </SelectItem>
+                      {userGroupQuery.data?.map((userGroup) => (
+                        <SelectItem value={userGroup.id} key={userGroup.id}>
+                          {userGroup.name}
+                        </SelectItem>
+                      ))}
                       {/*  todo: usergroup query */}
                     </SelectGroup>
                   </SelectContent>

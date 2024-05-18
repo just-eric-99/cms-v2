@@ -171,7 +171,7 @@ export default function OrganizationDetailsPage(
           </CardContent>
         </Card>
         <Card>
-          <CardHeader>Users</CardHeader>
+          <CardHeader>Center</CardHeader>
           <CardContent>
             <OrganizationDetailsCenterSummary
               centerSummary={query.data?.centers ?? []}

@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/dialog.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import UserGroupsCreateForm from '@/pages/UserGroup/Create/form.tsx'
+import { CreateUserGroupRequest } from '@/network/user-groups/types.ts'
 
 export default function CreateUserGroupPage() {
   const [loading, setLoading] = useState(false)
@@ -26,14 +27,23 @@ export default function CreateUserGroupPage() {
     defaultValues: {
       name: '',
       centerId: '',
-      userIds: [],
+      userIds: [
+        {
+          userId: '',
+        },
+      ],
     },
   })
 
   const queryClient = useQueryClient()
   const createUserGroupMutation = useMutation({
     mutationFn: async (data: z.infer<typeof createUserGroupSchema>) => {
-      return createUserGroup(data)
+      const request: CreateUserGroupRequest = {
+        name: data.name,
+        centerId: data.centerId,
+        userIds: data.userIds.map((user) => user.userId),
+      }
+      return createUserGroup(request)
     },
     onMutate: (data) => {
       console.log(data)
@@ -49,7 +59,7 @@ export default function CreateUserGroupPage() {
       console.log('success')
       setLoading(false)
       toast.success(`User group created successfully`)
-      queryClient.invalidateQueries({ queryKey: ['userGroups'] })
+      queryClient.invalidateQueries({ queryKey: ['user-groups'] })
       setOpen(false)
     },
     onSettled: () => {

@@ -14,6 +14,7 @@ import Roles from '@/pages/Roles'
 import NotFoundError from '@/components/error/not-found.tsx'
 import RoleDetailsPage from '@/pages/Roles/Details'
 import UserGroups from '@/pages/UserGroup'
+import UserGroupDetailsPage from '@/pages/UserGroup/Details'
 
 export default function Router() {
   return (
@@ -57,7 +58,10 @@ export default function Router() {
 
           <Route path='/user-groups'>
             <Route index element={<UserGroups />} />
-            {/*<Route path=':id' element={<RoleDetailsPage editable={false} />} />*/}
+            <Route
+              path=':id'
+              element={<UserGroupDetailsPage editable={false} />}
+            />
           </Route>
           {/*<Route path='*' element={<div>not found</div>} />*/}
         </Route>

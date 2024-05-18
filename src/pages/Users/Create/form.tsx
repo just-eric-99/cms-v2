@@ -23,6 +23,7 @@ import { getAllUserGroup } from '@/network/user-groups/api.ts'
 
 type UserCreateFormProps = {
   preDefinedCenterId?: string
+  preDefinedUserGroupId?: string
 }
 export default function UserCreateForm(props: UserCreateFormProps) {
   const form = useFormContext()
@@ -146,7 +147,8 @@ export default function UserCreateForm(props: UserCreateFormProps) {
                 </Label>
                 <Select
                   onValueChange={field.onChange}
-                  value={field.value}
+                  value={props.preDefinedUserGroupId ?? field.value}
+                  disabled={props.preDefinedUserGroupId !== undefined}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder='Select User Group' />

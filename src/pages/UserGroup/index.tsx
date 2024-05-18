@@ -10,12 +10,15 @@ import { columns } from '@/pages/UserGroup/_table/columns.tsx'
 import { useQuery } from '@tanstack/react-query'
 import { getAllUserGroup } from '@/network/user-groups/api.ts'
 import CreateUserGroupPage from '@/pages/UserGroup/Create'
+import Loader from '@/components/loader.tsx'
 
 export default function UserGroups() {
   const query = useQuery({
     queryKey: ['user-groups'],
     queryFn: () => getAllUserGroup(),
   })
+
+  if (query.isLoading) return <Loader />
   return (
     <Layout>
       <LayoutHeader>

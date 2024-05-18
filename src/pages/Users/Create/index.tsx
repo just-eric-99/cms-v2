@@ -21,6 +21,7 @@ import { createUser } from '@/network/users/api.ts'
 
 type CreateUserPageProps = {
   centerId?: string
+  userGroupId?: string
 }
 
 export default function CreateUserPage(props: CreateUserPageProps) {

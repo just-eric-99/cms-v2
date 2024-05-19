@@ -7,6 +7,7 @@ import CreateUserPage from './Create'
 import Loader from '@/components/loader.tsx'
 import { DataTable } from '@/components/table/data-table.tsx'
 import { getAllUsers } from '@/network/users/api.ts'
+import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
 
 export default function Users() {
   const query = useQuery({
@@ -27,7 +28,12 @@ export default function Users() {
           columns={columns}
           data={query.data ?? []}
           navigationPath={'/users'}
-          createComponent={<CreateUserPage />}
+          createComponent={
+            <div className={'flex flex-row gap-4'}>
+              <ExerciseAssignmentPage type={'user'} />
+              <CreateUserPage />
+            </div>
+          }
         />
       </LayoutBody>
     </Layout>

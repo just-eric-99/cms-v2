@@ -6,8 +6,8 @@ export type Exercise = {
   centerId: string
   name: string
   description: string
-  speechUrl: string
-  createdByAdminId: string
+  // speechUrl: string
+  // createdByAdminId: string
   difficulty: number
   permission: ExercisePermission
   createdAt: string

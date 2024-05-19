@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getAllUserGroup } from '@/network/user-groups/api.ts'
 import CreateUserGroupPage from '@/pages/UserGroup/Create'
 import Loader from '@/components/loader.tsx'
+import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
 
 export default function UserGroups() {
   const query = useQuery({
@@ -32,7 +33,12 @@ export default function UserGroups() {
           columns={columns}
           data={query.data ?? []}
           navigationPath={'/user-groups'}
-          createComponent={<CreateUserGroupPage />}
+          createComponent={
+            <div className={'flex flex-row gap-4'}>
+              <ExerciseAssignmentPage type={'userGroup'} />
+              <CreateUserGroupPage />
+            </div>
+          }
         />
       </LayoutBody>
     </Layout>

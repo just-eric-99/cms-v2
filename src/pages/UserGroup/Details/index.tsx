@@ -20,7 +20,7 @@ import {
 import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import Loader from '@/components/loader.tsx'
-// import { DataTable } from '@/components/table/data-table.tsx'
+// import { DataTable } from '@/sortable/table/data-table.tsx'
 // import { columns } from '@/pages/Users/_table/columns.tsx'
 // import CreateUserPage from '@/pages/Users/Create'
 import {
@@ -83,7 +83,7 @@ export default function UserGroupDetailsPage(props: UserGroupDetailsPageProps) {
   const deleteUserGroupMutation = useMutation({
     mutationFn: async () => deleteUserGroup(id ?? ''),
     onMutate: () => {
-      setErrorLoading(false)
+      setErrorLoading(true)
     },
     onError: (error) => {
       setErrorLoading(false)

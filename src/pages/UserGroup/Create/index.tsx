@@ -81,7 +81,7 @@ export default function CreateUserGroupPage() {
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Create Organization</DialogTitle>
+          <DialogTitle>Create User Group</DialogTitle>
         </DialogHeader>
         <div className='py-5'>
           <FormProvider {...form}>

@@ -91,7 +91,7 @@ export default function CreateExercisePage() {
       setLoading(false)
       setOpen(false)
       toast.success('Exercise created successfully')
-      queryClient.invalidateQueries({ queryKey: ['organizations'] })
+      queryClient.invalidateQueries({ queryKey: ['exercises'] })
     },
     onSettled: () => {
       console.log('settled')

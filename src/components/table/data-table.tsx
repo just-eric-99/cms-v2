@@ -20,7 +20,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-// import { Input } from '@/components/ui/input'
+// import { Input } from '@/sortable/ui/input'
 import { useNavigate } from 'react-router'
 import { DataTablePagination } from '@/components/table/data-table-pagination.tsx'
 

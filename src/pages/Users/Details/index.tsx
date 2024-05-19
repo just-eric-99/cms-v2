@@ -2,7 +2,7 @@ import { Layout, LayoutBody, LayoutHeader } from '@/components/custom/layout'
 import ThemeSwitch from '@/components/theme-switch'
 import { UserNav } from '@/components/user-nav'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -30,7 +30,17 @@ export default function UserDetailsPage(props: UserDetailPageProps) {
 
   const query = useQuery({
     queryKey: ['user'],
-    queryFn: async () => getUserById(id ?? ''),
+    queryFn: async () => {
+      const user = await getUserById(id ?? '')
+      form.setValue('name', user.name)
+      form.setValue('displayName', user.displayName)
+      form.setValue('email', user.email)
+      form.setValue('phone', user.phone)
+      form.setValue('avatar', user.avatar)
+      form.setValue('centerId', user.centerId)
+      form.setValue('userGroupId', user.userGroupId)
+      return user
+    },
   })
 
   const updateUserMutation = useMutation({
@@ -103,16 +113,16 @@ export default function UserDetailsPage(props: UserDetailPageProps) {
     },
   })
 
-  useEffect(() => {
-    if (!query.data) return
-    form.setValue('name', query.data.name)
-    form.setValue('displayName', query.data.displayName)
-    form.setValue('email', query.data.email)
-    form.setValue('phone', query.data.phone)
-    form.setValue('avatar', query.data.avatar)
-    form.setValue('centerId', query.data.centerId)
-    form.setValue('userGroupId', query.data.userGroupId)
-  }, [form, query.data])
+  // useEffect(() => {
+  //   if (!query.data) return
+  //   form.setValue('name', query.data.name)
+  //   form.setValue('displayName', query.data.displayName)
+  //   form.setValue('email', query.data.email)
+  //   form.setValue('phone', query.data.phone)
+  //   form.setValue('avatar', query.data.avatar)
+  //   form.setValue('centerId', query.data.centerId)
+  //   form.setValue('userGroupId', query.data.userGroupId)
+  // }, [form, query.data])
 
   const handleCancel = () => {
     query.refetch().then(() => {

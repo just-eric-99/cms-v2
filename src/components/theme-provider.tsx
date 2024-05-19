@@ -63,7 +63,7 @@ export function ThemeProvider({
   )
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
+// eslint-disable-next-line react-refresh/only-export-sortable
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext)
 

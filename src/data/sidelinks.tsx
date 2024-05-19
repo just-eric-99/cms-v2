@@ -5,6 +5,7 @@ import {
   FileKey2,
   ScanFace,
   SquareActivity,
+  UserCog,
   UsersRound,
 } from 'lucide-react'
 
@@ -61,5 +62,11 @@ export const sidelinks: SideLink[] = [
     label: '',
     href: '/user-groups',
     icon: <Boxes size={18} />,
+  },
+  {
+    title: 'Exercise Assignments',
+    label: '',
+    href: '/exercise-assignments',
+    icon: <UserCog size={18} />,
   },
 ]

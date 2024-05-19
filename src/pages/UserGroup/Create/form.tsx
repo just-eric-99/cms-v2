@@ -180,6 +180,7 @@ export default function UserGroupsCreateForm(props: UserGroupsCreateFormProps) {
                         <Button
                           onClick={() => userIdsFieldArray.remove(index)}
                           size={'icon'}
+                          variant={"destructive"}
                         >
                           <Trash2 />
                         </Button>

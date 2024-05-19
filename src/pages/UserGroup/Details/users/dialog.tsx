@@ -25,15 +25,6 @@ export default function UserGroupDetailsUserDialog(
     queryFn: getAllUsers,
   })
   return (
-    // <Dialog>
-    //   <DialogTrigger asChild>
-    //     <Button>Modify Users</Button>
-    //   </DialogTrigger>
-    //   <DialogContent className={'min-w-[1200px]'}>
-    //     <DialogHeader></DialogHeader>
-    //
-    //   </DialogContent>
-    // </Dialog>
     <div className={'flex h-96 flex-row gap-2'}>
       <Card className={'flex flex-1 flex-col overflow-y-scroll'}>
         <CardHeader>
@@ -65,37 +56,36 @@ export default function UserGroupDetailsUserDialog(
             ))}
         </CardContent>
       </Card>
-      <div className={'flex flex-1 flex-col'}>
-        <Card className={'flex flex-1 flex-col overflow-y-scroll'}>
-          <CardHeader>
-            <div className={'text-xl font-bold'}>Selected Users</div>
-          </CardHeader>
-          <CardContent className={'flex flex-col gap-5 '}>
-            {userIdsFieldArray.fields.map((field, index) => (
-              <div
-                key={index}
-                className={
-                  'flex flex-row items-center justify-between rounded-lg border p-5'
-                }
-              >
-                <div>
-                  {userQuery.data
-                    ?.filter((user) => user.id === field.userId)
-                    .map((user) => <div key={user.id}>{user.name}</div>)}
-                </div>
-                <Button
-                  disabled={!props.canEdit}
-                  onClick={() => userIdsFieldArray.remove(index)}
-                  size={'icon'}
-                  variant={'destructive'}
-                >
-                  <Trash2 />
-                </Button>
+
+      <Card className={'flex flex-1 flex-col overflow-y-scroll'}>
+        <CardHeader>
+          <div className={'text-xl font-bold'}>Selected Users</div>
+        </CardHeader>
+        <CardContent className={'flex flex-col gap-5 '}>
+          {userIdsFieldArray.fields.map((field, index) => (
+            <div
+              key={index}
+              className={
+                'flex flex-row items-center justify-between rounded-lg border p-5'
+              }
+            >
+              <div>
+                {userQuery.data
+                  ?.filter((user) => user.id === field.userId)
+                  .map((user) => <div key={user.id}>{user.name}</div>)}
               </div>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
+              <Button
+                disabled={!props.canEdit}
+                onClick={() => userIdsFieldArray.remove(index)}
+                size={'icon'}
+                variant={'destructive'}
+              >
+                <Trash2 />
+              </Button>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
     </div>
   )
 }

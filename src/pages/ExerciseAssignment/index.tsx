@@ -24,9 +24,10 @@ import {
 import {
   AssignExerciseToUser,
   AssignExerciseToUserGroup,
+  ExerciseAssignment,
 } from '@/network/exercise-assignment/types.ts'
 import { toast } from 'sonner'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Plus } from 'lucide-react'
@@ -64,6 +65,7 @@ import { getAllUserGroup } from '@/network/user-groups/api.ts'
 
 type ExerciseAssignmentPageProps = {
   type: 'user' | 'userGroup'
+  assignedExercises: ExerciseAssignment[]
 }
 
 export default function ExerciseAssignmentPage(
@@ -84,6 +86,15 @@ export default function ExerciseAssignmentPage(
       userGroupId: '',
       exercises: [],
     },
+  })
+
+  useEffect(() => {
+    // if (props.type === 'user') {
+    //   form.setValue('userId', props.assignedExercises[0].id)
+    // } else {
+    //   form.setValue('userGroupId', props.assignedExercises[0].id)
+    // }
+    // form.setValue('exercises', props.assignedExercises)
   })
 
   const exercisesFieldArray = useFieldArray({

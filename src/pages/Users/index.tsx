@@ -30,7 +30,7 @@ export default function Users() {
           navigationPath={'/users'}
           createComponent={
             <div className={'flex flex-row gap-4'}>
-              <ExerciseAssignmentPage type={'user'} />
+              <ExerciseAssignmentPage type={'user'}  assignedExercises={[]}/>
               <CreateUserPage />
             </div>
           }

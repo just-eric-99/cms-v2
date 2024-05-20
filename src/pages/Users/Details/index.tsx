@@ -14,6 +14,7 @@ import { toast } from 'sonner'
 import { deleteUser, getUserById, updateUser } from '@/network/users/api'
 import UserDetailsForm from '@/pages/Users/Details/form.tsx'
 import Loader from '@/components/loader.tsx'
+import UserDetailsExercisesPage from '@/pages/Users/Details/Exercises'
 
 type UserDetailPageProps = {
   editable: boolean
@@ -162,44 +163,52 @@ export default function UserDetailsPage(props: UserDetailPageProps) {
         </div>
       </LayoutHeader>
       <LayoutBody>
-        <Card>
-          <CardHeader className='flex flex-col justify-between gap-6'>
-            <div className='flex flex-row'>
-              <Button variant={'outline'} onClick={handleBack}>
-                Back
-              </Button>
-              <div className='flex flex-1 justify-end gap-4'>
-                <Button
-                  variant={'destructive'}
-                  onClick={handleDelete}
-                  loading={deleteLoading}
-                >
-                  Delete
+        <div className={'flex flex-col gap-8'}>
+          <Card>
+            <CardHeader className='flex flex-col justify-between gap-6'>
+              <div className='flex flex-row'>
+                <Button variant={'outline'} onClick={handleBack}>
+                  Back
                 </Button>
-                {canEdit && (
-                  <>
-                    <Button loading={loading} onClick={handleSave}>
-                      Save
-                    </Button>
-                    <Button variant={'outline'} onClick={handleCancel}>
-                      Cancel
-                    </Button>
-                  </>
-                )}
+                <div className='flex flex-1 justify-end gap-4'>
+                  <Button
+                    variant={'destructive'}
+                    onClick={handleDelete}
+                    loading={deleteLoading}
+                  >
+                    Delete
+                  </Button>
+                  {canEdit && (
+                    <>
+                      <Button loading={loading} onClick={handleSave}>
+                        Save
+                      </Button>
+                      <Button variant={'outline'} onClick={handleCancel}>
+                        Cancel
+                      </Button>
+                    </>
+                  )}
 
-                {!canEdit && (
-                  <Button onClick={() => setCanEdit(true)}>Edit</Button>
-                )}
+                  {!canEdit && (
+                    <Button onClick={() => setCanEdit(true)}>Edit</Button>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className='text-xl'>User Details</div>
-          </CardHeader>
-          <CardContent>
-            <FormProvider {...form}>
-              <UserDetailsForm canEdit={canEdit} />
-            </FormProvider>
-          </CardContent>
-        </Card>
+              <div className='text-xl'>User Details</div>
+            </CardHeader>
+            <CardContent>
+              <FormProvider {...form}>
+                <UserDetailsForm canEdit={canEdit} />
+              </FormProvider>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader></CardHeader>
+            <CardContent>
+              <UserDetailsExercisesPage userId={id ?? ''} />
+            </CardContent>
+          </Card>
+        </div>
       </LayoutBody>
     </Layout>
   )

@@ -34,3 +34,14 @@ export default {
 ```http
 https://pain2-dev-7bb5a80950e6.herokuapp.com/api#/
 ```
+
+## How to run the project
+
+```bash
+node -v
+# v20.11.1
+
+npm install
+
+npm run dev
+```

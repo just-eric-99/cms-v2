@@ -280,6 +280,7 @@ export default function ExerciseAssignmentPage(
                 <CardContent className={'flex flex-col gap-5'}>
                   {exercisesQuery.data
                     ?.filter((exercise) => {
+                      if (!form.watch('exercises')) return true
                       return !form
                         .watch('exercises')
                         .find((field) => field.id === exercise.id)

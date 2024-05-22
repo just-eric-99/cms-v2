@@ -33,6 +33,7 @@ import {
 import { Input } from '@/components/ui/input.tsx'
 import { Label } from '@/components/ui/label.tsx'
 import UserGroupDetailsUserDialog from '@/pages/UserGroup/Details/users/dialog.tsx'
+import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
 
 type UserGroupDetailsPageProps = {
   editable: boolean
@@ -212,10 +213,19 @@ export default function UserGroupDetailsPage(props: UserGroupDetailsPageProps) {
           <Card>
             <CardHeader>Users</CardHeader>
             <CardContent>
-              <UserGroupDetailsUserDialog
-                centerId={query.data?.centerId ?? ''}
-                canEdit={canEdit}
-              />
+              <div className={'flex flex-col gap-5'}>
+                <div className={'flex flex-row justify-end'}>
+                  <ExerciseAssignmentPage
+                    type={'userGroup'}
+                    assignedExercises={[]}
+                    userGroupId={id ?? ''}
+                  />
+                </div>
+                <UserGroupDetailsUserDialog
+                  centerId={query.data?.centerId ?? ''}
+                  canEdit={canEdit}
+                />
+              </div>
             </CardContent>
           </Card>
           {/*</div>*/}

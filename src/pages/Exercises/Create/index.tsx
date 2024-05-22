@@ -37,7 +37,7 @@ export default function CreateExercisePage() {
       centerId: '',
       name: '',
       description: '',
-      difficulty: 0,
+      difficulty: 1,
       permission: ExercisePermission.PRIVATE,
 
       readyLandmark: {

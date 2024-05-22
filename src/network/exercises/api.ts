@@ -37,7 +37,7 @@ export async function createExercise(
   }
 }
 
-export async function editExercise(
+export async function updateExercise(
   exercise: UpdateExerciseRequest,
   id: string
 ) {

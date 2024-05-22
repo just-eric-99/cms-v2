@@ -54,7 +54,6 @@ export default function StartPose() {
       const normalizedLandmarks = startPoseLandmarks.normalizedLandmarks
       console.log('its startlandmark')
       if (normalizedLandmarks.length === 0) return
-      console.log(normalizedLandmarks)
       for (const landmark of [normalizedLandmarks]) {
         drawingUtils.drawLandmarks(landmark, {
           radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),

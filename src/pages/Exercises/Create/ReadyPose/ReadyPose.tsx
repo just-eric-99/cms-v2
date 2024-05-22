@@ -46,7 +46,6 @@ export default function ReadyPose() {
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
       const normalizedLandmarks = readyPoseLandmarks.normalizedLandmarks
       console.log('its readyLandmark')
-      console.log(normalizedLandmarks)
       if (normalizedLandmarks.length === 0) return
       for (const landmark of [normalizedLandmarks]) {
         drawingUtils.drawLandmarks(landmark, {

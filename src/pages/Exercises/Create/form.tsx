@@ -24,6 +24,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
 import { ExercisePermission } from '@/enum/exercisePermission.ts'
+import Loader from '@/components/loader.tsx'
 
 export default function CreateExerciseForm() {
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
@@ -45,6 +46,10 @@ export default function CreateExerciseForm() {
   //   })
   // }, [form])
 
+  if (centerQuery.isLoading) {
+    return <Loader />
+  }
+
   return (
     <Form {...form}>
       <div className='flex flex-1 flex-col justify-start gap-8'>
@@ -60,7 +65,7 @@ export default function CreateExerciseForm() {
                   </Label>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder='Select Center' />
@@ -147,7 +152,7 @@ export default function CreateExerciseForm() {
                   </Label>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value.toString()}
+                    value={field.value.toString()}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder='Select Permission' />

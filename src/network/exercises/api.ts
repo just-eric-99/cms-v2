@@ -1,5 +1,11 @@
 import { API_ENDPOINT } from '@/constants/network'
-import { CreateExerciseRequest, Exercise, UpdateExerciseRequest } from './types'
+import {
+  CreateExerciseRequest,
+  Exercise,
+  ExerciseDetails,
+  UpdateExerciseRequest,
+} from './types'
+
 // import { toast } from 'sonner'
 
 export async function getAllExercises(): Promise<Exercise[]> {
@@ -7,7 +13,7 @@ export async function getAllExercises(): Promise<Exercise[]> {
   return response.json()
 }
 
-export async function getExerciseById(id: string): Promise<Exercise> {
+export async function getExerciseById(id: string): Promise<ExerciseDetails> {
   const response = await fetch(API_ENDPOINT + `/exercise/${id}`)
   return response.json()
 }

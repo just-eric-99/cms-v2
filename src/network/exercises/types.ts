@@ -6,12 +6,23 @@ export type Exercise = {
   centerId: string
   name: string
   description: string
-  // speechUrl: string
-  // createdByAdminId: string
   difficulty: number
   permission: ExercisePermission
   createdAt: string
   updatedAt: string
+}
+
+export type ExerciseDetails = {
+  id: string
+  centerId: string
+  name: string
+  description: string
+  difficulty: number
+  permission: ExercisePermission
+  createdAt: string
+  updatedAt: string
+  readyPose: PoseLandmarkDto
+  startPose: PoseLandmarkDto
 }
 
 export type PoseLandmarkDto = {
@@ -31,10 +42,11 @@ export type CreateExerciseRequest = {
 }
 
 export type UpdateExerciseRequest = {
-  centerId?: string
-  name?: string
-  description?: string
-  difficulty?: number
-  startLandmark?: PoseLandmarkDto
-  permission?: ExercisePermission
+  centerId: string
+  name: string
+  description: string
+  difficulty: number
+  readyLandmark: PoseLandmarkDto
+  startLandmark: PoseLandmarkDto
+  permission: ExercisePermission
 }

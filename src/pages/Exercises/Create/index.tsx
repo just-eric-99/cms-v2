@@ -34,7 +34,6 @@ export default function CreateExercisePage() {
   const form = useForm<z.infer<typeof createExerciseSchema>>({
     resolver: zodResolver(createExerciseSchema),
     defaultValues: {
-      // centerId: '217730e7-de64-4e8c-900b-3e7df698680c',
       centerId: '',
       name: '',
       description: '',
@@ -97,6 +96,7 @@ export default function CreateExercisePage() {
       console.log('settled')
       setLoading(false)
       setOpen(false)
+      setUploadFile(null)
       form.reset()
     },
   })
@@ -124,11 +124,8 @@ export default function CreateExercisePage() {
           </DialogHeader>
           <Form {...form}>
             <Tabs
-              className=''
               value={currentTab}
-              onValueChange={(value) => {
-                setCurrentTab(value)
-              }}
+              onValueChange={(value) => setCurrentTab(value)}
             >
               <TabsList>
                 <TabsTrigger className='min-w-32' value='form'>

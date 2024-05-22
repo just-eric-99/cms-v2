@@ -36,15 +36,17 @@ export default function ReadyPose() {
       const canvas = poseLandmarkRef.current
       if (!canvas) return
       const ctx = canvas.getContext('2d')
-      console.log(canvas.clientHeight, canvas.clientWidth)
-      canvas.height = canvas.clientHeight
-      canvas.width = canvas.clientWidth
+      // canvas.height = canvas.clientHeight
+      // canvas.width = canvas.clientWidth
+      canvas.height = 400
+      canvas.width = (400 * 11) / 16
 
       if (!ctx) return
       const drawingUtils = new DrawingUtils(ctx)
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
       const normalizedLandmarks = readyPoseLandmarks.normalizedLandmarks
       console.log('its readyLandmark')
+      console.log(normalizedLandmarks)
       if (normalizedLandmarks.length === 0) return
       for (const landmark of [normalizedLandmarks]) {
         drawingUtils.drawLandmarks(landmark, {
@@ -58,9 +60,7 @@ export default function ReadyPose() {
       }
     }
     drawLandmarks()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch('readyLandmark')])
-  // to fix dependency warning
+  }, [readyPoseLandmarks.normalizedLandmarks])
 
   useEffect(() => {
     if (form.watch(`readyLandmark`).normalizedLandmarks.length === 0) {
@@ -73,8 +73,8 @@ export default function ReadyPose() {
       if (!ctx) return
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch(`readyLandmark`)])
+  }, [form])
+
   return (
     <div className='flex flex-1 flex-row py-4'>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>

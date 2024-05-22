@@ -15,6 +15,7 @@ import NotFoundError from '@/components/error/not-found.tsx'
 import RoleDetailsPage from '@/pages/Roles/Details'
 import UserGroups from '@/pages/UserGroup'
 import UserGroupDetailsPage from '@/pages/UserGroup/Details'
+import ExerciseDetailsPage from '@/pages/Exercises/Details'
 // import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
 
 export default function Router() {
@@ -26,6 +27,10 @@ export default function Router() {
           <Route path='/exercises'>
             <Route index element={<Exercises />} />
             <Route path='create' element={<CreateExercisePage />} />
+            <Route
+              path=':id'
+              element={<ExerciseDetailsPage editable={false} />}
+            />
           </Route>
           <Route path='/users'>
             <Route index element={<Users />} />
@@ -64,11 +69,6 @@ export default function Router() {
               element={<UserGroupDetailsPage editable={false} />}
             />
           </Route>
-
-          {/*<Route path='/exercise-assignments'>*/}
-          {/*  <Route index element={<ExerciseAssignmentPage />} />*/}
-          {/*</Route>*/}
-          {/*<Route path='*' element={<div>not found</div>} />*/}
         </Route>
         <Route path='*' element={<NotFoundError />} />
       </Routes>

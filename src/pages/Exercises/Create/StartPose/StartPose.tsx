@@ -34,11 +34,19 @@ export default function StartPose() {
   useEffect(() => {
     const drawLandmarks = () => {
       const canvas = poseLandmarkRef.current
+      console.log()
       if (!canvas) return
       const ctx = canvas.getContext('2d')
-      console.log(canvas.clientHeight, canvas.clientWidth)
-      canvas.height = canvas.clientHeight
-      canvas.width = canvas.clientWidth
+      // console.log(
+      //   'canvas.clientHeight, canvas.clientWidth: ',
+      //   canvas.clientHeight,
+      //   canvas.clientWidth
+      // )
+      // console.log('canvas.height, canvas.width: ', canvas.height, canvas.width)
+      // canvas.height = canvas.clientHeight
+      // canvas.width = canvas.clientWidth
+      canvas.height = 400
+      canvas.width = (400 * 11) / 16
 
       if (!ctx) return
       const drawingUtils = new DrawingUtils(ctx)
@@ -46,6 +54,7 @@ export default function StartPose() {
       const normalizedLandmarks = startPoseLandmarks.normalizedLandmarks
       console.log('its startlandmark')
       if (normalizedLandmarks.length === 0) return
+      console.log(normalizedLandmarks)
       for (const landmark of [normalizedLandmarks]) {
         drawingUtils.drawLandmarks(landmark, {
           radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1),
@@ -59,7 +68,7 @@ export default function StartPose() {
     }
     drawLandmarks()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch(`startLandmark`)])
+  }, [form.watch(`startLandmark.normalizedLandmarks`)])
   // to fix dependency warning
 
   useEffect(() => {

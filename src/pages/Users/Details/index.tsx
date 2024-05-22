@@ -30,7 +30,7 @@ export default function UserDetailsPage(props: UserDetailPageProps) {
   const queryClient = useQueryClient()
 
   const query = useQuery({
-    queryKey: ['user'],
+    queryKey: ['user' + id],
     queryFn: async () => {
       const user = await getUserById(id ?? '')
       form.setValue('name', user.name)
@@ -203,7 +203,7 @@ export default function UserDetailsPage(props: UserDetailPageProps) {
             </CardContent>
           </Card>
           <Card>
-            <CardHeader></CardHeader>
+            <CardHeader>User Exercises</CardHeader>
             <CardContent>
               <UserDetailsExercisesPage userId={id ?? ''} />
             </CardContent>

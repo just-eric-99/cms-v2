@@ -1,11 +1,3 @@
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogHeader,
-//   DialogTrigger,
-// } from '@/sortable/ui/dialog.tsx'
-// import { Button } from '@/sortable/ui/button.tsx'
-
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { getAllExercises } from '@/network/exercises/api.ts'
 import {
@@ -27,7 +19,7 @@ import {
   ExerciseAssignment,
 } from '@/network/exercise-assignment/types.ts'
 import { toast } from 'sonner'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Plus } from 'lucide-react'
@@ -62,9 +54,12 @@ import {
   SelectValue,
 } from '@/components/ui/select.tsx'
 import { getAllUserGroup } from '@/network/user-groups/api.ts'
+import { queryClient } from '@/main.tsx'
 
 type ExerciseAssignmentPageProps = {
   type: 'user' | 'userGroup'
+  userId?: string
+  userGroupId?: string
   assignedExercises: ExerciseAssignment[]
 }
 
@@ -82,19 +77,10 @@ export default function ExerciseAssignmentPage(
     resolver: zodResolver(createExerciseAssignmentSchema),
     mode: `all`,
     defaultValues: {
-      userId: '',
-      userGroupId: '',
-      exercises: [],
+      userId: props.userId ?? '',
+      userGroupId: props.userGroupId ?? '',
+      exercises: props.assignedExercises,
     },
-  })
-
-  useEffect(() => {
-    // if (props.type === 'user') {
-    //   form.setValue('userId', props.assignedExercises[0].id)
-    // } else {
-    //   form.setValue('userGroupId', props.assignedExercises[0].id)
-    // }
-    // form.setValue('exercises', props.assignedExercises)
   })
 
   const exercisesFieldArray = useFieldArray({
@@ -132,6 +118,7 @@ export default function ExerciseAssignmentPage(
       setLoading(false)
       toast.success(`Exercise assigned successfully`)
       setOpen(false)
+      queryClient.invalidateQueries({ queryKey: ['assigned-exercises'] })
     },
   })
 
@@ -239,7 +226,15 @@ export default function ExerciseAssignmentPage(
                     <Label className={fieldState.error && 'text-destructive'}>
                       {props.type === 'user' ? 'User' : 'User Group'}
                     </Label>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={
+                        props.type === 'user'
+                          ? props.userId !== undefined
+                          : props.userGroupId !== undefined
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue
                           placeholder={`Select ${props.type === 'user' ? 'User' : 'User Group'}`}

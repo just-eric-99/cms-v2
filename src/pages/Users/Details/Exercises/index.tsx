@@ -2,11 +2,9 @@ import { DataTable } from '@/components/table/data-table.tsx'
 import { useQuery } from '@tanstack/react-query'
 import { getExerciseAssignmentsByUserId } from '@/network/exercise-assignment/api.ts'
 import { columns } from '@/pages/Users/Details/Exercises/_table/columns.tsx'
-// import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
-// import { useState } from 'react'
-// import { ExerciseAssignment } from '@/network/exercise-assignment/types.ts'
 import Loader from '@/components/loader.tsx'
-import {useEffect} from "react";
+import { useEffect } from 'react'
+import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
 
 type UserDetailsExercisesPageProps = {
   userId: string
@@ -15,35 +13,18 @@ type UserDetailsExercisesPageProps = {
 export default function UserDetailsExercisesPage(
   props: UserDetailsExercisesPageProps
 ) {
-  // const [assignedExercises, setAssignedExercises] = useState<
-  //   ExerciseAssignment[]
-  // >([])
-
-  useEffect(()=> {
+  useEffect(() => {
     console.log('UserDetailsExercisesPage', props.userId)
-
   })
 
   const query = useQuery({
-    queryKey: ['exercises'],
+    queryKey: ['assigned-exercises'],
     queryFn: async () => {
-      const exercisesAssignmentDetails = await getExerciseAssignmentsByUserId(
+      const assignedExercises = await getExerciseAssignmentsByUserId(
         props.userId
       )
-
-      // const assignedExercises: ExerciseAssignment[] =
-      //   exercisesAssignmentDetails.map((exercise) => {
-      //     return {
-      //       id: exercise.id,
-      //       name: exercise.exercise.name,
-      //       recurrence: exercise.recurrence,
-      //       duration: exercise.duration,
-      //     }
-      //   })
-
-      // setAssignedExercises(assignedExercises)
-
-      return exercisesAssignmentDetails
+      console.log(assignedExercises)
+      return assignedExercises
     },
   })
   if (query.isLoading) return <Loader />
@@ -54,11 +35,18 @@ export default function UserDetailsExercisesPage(
       data={query.data ?? []}
       navigationPath={'/exercises'}
       createComponent={
-        // <ExerciseAssignmentPage
-        //   type={'user'}
-        //   assignedExercises={assignedExercises}
-        // />
-        <></>
+        <ExerciseAssignmentPage
+          type={'user'}
+          userId={props.userId}
+          assignedExercises={
+            query.data?.map((exercise) => ({
+              id: exercise.exerciseId,
+              name: exercise.exercise.name,
+              duration: exercise.duration,
+              recurrence: exercise.recurrence,
+            })) ?? []
+          }
+        />
       }
     />
   )

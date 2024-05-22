@@ -11,7 +11,8 @@ export const columns: ColumnDef<ExerciseAssignmentDetails>[] = [
     },
   },
   // {
-  //   accessorKey: 'name',
+  //   // accessorKey: 'exercise.name',
+  //   id: 'exercise.name',
   //   header: () => <div className='pl-2 text-left'>Name</div>,
   //   cell: ({ row }) => {
   //     const name = row.original.exercise.name

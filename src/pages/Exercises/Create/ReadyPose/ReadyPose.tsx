@@ -25,7 +25,11 @@ const landmarkBodyParts = [
   { index: 11, name: 'Right Foot' },
 ]
 
-export default function ReadyPose() {
+type ReadyPoseProps = {
+  canEdit?: boolean
+}
+
+export default function ReadyPose(props: ReadyPoseProps) {
   const poseLandmarkRef = useRef<HTMLCanvasElement>(null)
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
   const [openDialog, setOpenDialog] = useAtom(openReadyDialogAtom)
@@ -77,7 +81,10 @@ export default function ReadyPose() {
   return (
     <div className='flex flex-1 flex-row py-4'>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogTrigger asChild>
+        <DialogTrigger
+          asChild
+          disabled={props.canEdit != undefined && !props.canEdit}
+        >
           <canvas
             ref={poseLandmarkRef}
             className='aspect-[11/16] h-[400px] rounded-lg border bg-slate-900'
@@ -101,6 +108,7 @@ export default function ReadyPose() {
                   </div>
                   <div className='flex flex-row items-center gap-1'>
                     <Slider
+                      disabled={props.canEdit != undefined && !props.canEdit}
                       min={0}
                       max={10}
                       step={1}

@@ -225,7 +225,7 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                     value='form'
                     className={`${currentTab === 'form' ? 'block' : 'hidden'}`}
                   >
-                    <CreateExerciseForm />
+                    <CreateExerciseForm canEdit={canEdit} />
                   </TabsContent>
 
                   <TabsContent

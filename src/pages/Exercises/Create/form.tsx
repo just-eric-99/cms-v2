@@ -26,7 +26,11 @@ import { Slider } from '@/components/ui/slider'
 import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import Loader from '@/components/loader.tsx'
 
-export default function CreateExerciseForm() {
+type CreateExerciseFormProps = {
+  canEdit?: boolean
+}
+
+export default function CreateExerciseForm(props: CreateExerciseFormProps) {
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
   const centerQuery = useQuery({
     queryKey: ['centers'],
@@ -66,6 +70,7 @@ export default function CreateExerciseForm() {
                   <Select
                     onValueChange={field.onChange}
                     value={field.value}
+                    disabled={props.canEdit != undefined && !props.canEdit}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder='Select Center' />
@@ -99,7 +104,7 @@ export default function CreateExerciseForm() {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder='name' {...field} />
+                <Input placeholder='name' {...field} disabled={props.canEdit != undefined && !props.canEdit}/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -112,7 +117,7 @@ export default function CreateExerciseForm() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder='description' {...field} />
+                <Textarea placeholder='description' {...field} disabled={props.canEdit != undefined && !props.canEdit}/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -126,6 +131,7 @@ export default function CreateExerciseForm() {
               <FormLabel>Difficulty - {field.value}</FormLabel>
               <FormControl>
                 <Slider
+                  disabled={props.canEdit != undefined && !props.canEdit}
                   min={1}
                   max={10}
                   name='difficulty'
@@ -153,6 +159,7 @@ export default function CreateExerciseForm() {
                   <Select
                     onValueChange={field.onChange}
                     value={field.value.toString()}
+                    disabled={props.canEdit != undefined && !props.canEdit}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder='Select Permission' />

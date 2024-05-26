@@ -36,6 +36,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx'
 import { Button } from '@/components/ui/button.tsx'
 
 import { toast } from 'sonner'
+import { getAllCenters } from '@/network/centers/api.ts'
 
 type ExerciseDetailsPageProps = {
   editable: boolean
@@ -73,12 +74,20 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
     },
   })
 
+  const centerQuery = useQuery({
+    queryKey: ['centers'],
+    queryFn: getAllCenters,
+  })
+
   const query = useQuery({
     queryKey: ['exercise'],
     retryOnMount: true,
     queryFn: async () => {
       const exercise = await getExerciseById(id ?? '')
       form.reset({
+        organizationId: centerQuery.data?.find(
+          (center) => center.id === exercise.centerId
+        )?.organizationId,
         centerId: exercise.centerId,
         name: exercise.name,
         description: exercise.description,
@@ -200,7 +209,7 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                 )}
               </div>
             </div>
-            <div className='text-xl'>User Details</div>
+            <div className='text-xl'>Exercise Details</div>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -233,14 +242,14 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                     value='readyPose'
                     className={`${currentTab === 'readyPose' ? 'block' : 'hidden'}`}
                   >
-                    <ReadyPose />
+                    <ReadyPose canEdit={canEdit} />
                   </TabsContent>
                   <TabsContent
                     forceMount
                     value='startPose'
                     className={`${currentTab === 'startPose' ? 'block' : 'hidden'}`}
                   >
-                    <StartPose />
+                    <StartPose canEdit={canEdit} />
                   </TabsContent>
                 </div>
               </Tabs>

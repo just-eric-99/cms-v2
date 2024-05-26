@@ -1,15 +1,14 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { Exercise } from '@/network/exercises/types.ts'
 
-export const columns: ColumnDef<Exercise>[] = [
-  {
-    accessorKey: 'id',
-    header: () => <div className='pl-2 text-left'>ID</div>,
-    cell: ({ row }) => {
-      const name = row.getValue('id') as string
-      return <div className='pl-2 text-left font-medium'>{name}</div>
-    },
-  },
+export type ExerciseColumn = {
+  name: string
+  organization: string
+  center: string
+  difficulty:  number
+  permission: string
+}
+
+export const columns: ColumnDef<ExerciseColumn>[] = [
   {
     accessorKey: 'name',
     header: () => <div className='pl-2 text-left'>Name</div>,
@@ -19,10 +18,18 @@ export const columns: ColumnDef<Exercise>[] = [
     },
   },
   {
-    accessorKey: 'centerId',
-    header: () => <div className='pl-2 text-left'>Center Id</div>,
+    accessorKey: 'organization',
+    header: () => <div className='pl-2 text-left'>Organization</div>,
     cell: ({ row }) => {
-      const centerId = row.getValue('centerId') as string
+      const organization = row.getValue('organization') as string
+      return <div className='pl-2 text-left font-medium'>{organization}</div>
+    },
+  },
+  {
+    accessorKey: 'center',
+    header: () => <div className='pl-2 text-left'>Center</div>,
+    cell: ({ row }) => {
+      const centerId = row.getValue('center') as string
       return <div className='pl-2 text-left font-medium'>{centerId}</div>
     },
   },
@@ -32,6 +39,14 @@ export const columns: ColumnDef<Exercise>[] = [
     cell: ({ row }) => {
       const difficulty = row.getValue('difficulty') as string
       return <div className='pl-2 text-left font-medium'>{difficulty}</div>
+    },
+  },
+  {
+    accessorKey: 'permission',
+    header: () => <div className='pl-2 text-left'>Permission</div>,
+    cell: ({ row }) => {
+      const permission = row.getValue('permission') as string
+      return <div className='pl-2 text-left font-medium'>{permission}</div>
     },
   },
 ]

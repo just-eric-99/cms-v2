@@ -25,6 +25,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
 import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import Loader from '@/components/loader.tsx'
+import { getAllOrganization } from '@/network/organization/api.ts'
 
 type CreateExerciseFormProps = {
   canEdit?: boolean
@@ -32,31 +33,65 @@ type CreateExerciseFormProps = {
 
 export default function CreateExerciseForm(props: CreateExerciseFormProps) {
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
+
+  const organizationQuery = useQuery({
+    queryKey: ['organizations'],
+    queryFn: getAllOrganization,
+  })
+
   const centerQuery = useQuery({
     queryKey: ['centers'],
     queryFn: getAllCenters,
   })
 
-  // centerId: '',
-  // name: '',
-  // description: '',
-  // difficulty: 0,
-  // permission
-
-  // useEffect(() => {
-  //   form.setError('centerId', {
-  //     type: 'manual',
-  //     message: 'Center is required',
-  //   })
-  // }, [form])
-
-  if (centerQuery.isLoading) {
+  if (centerQuery.isLoading || organizationQuery.isLoading) {
     return <Loader />
   }
 
   return (
     <Form {...form}>
       <div className='flex flex-1 flex-col justify-start gap-8'>
+        <Controller
+          control={form.control}
+          name='organizationId'
+          render={({ field, fieldState }) => {
+            return (
+              <FormControl>
+                <FormItem>
+                  <Label className={fieldState.error && 'text-destructive'}>
+                    Organisation
+                  </Label>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={props.canEdit != undefined && !props.canEdit}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder='Select Organisation' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {organizationQuery.data?.map((org) => (
+                          <SelectItem value={org.id} key={org.id}>
+                            {org.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage {...field} />
+
+                  {fieldState.error && (
+                    <p className={'text-sm font-medium text-destructive'}>
+                      {fieldState.error?.message}
+                    </p>
+                  )}
+                </FormItem>
+              </FormControl>
+            )
+          }}
+        />
+
         <Controller
           control={form.control}
           name='centerId'
@@ -77,11 +112,17 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {centerQuery.data?.map((center) => (
-                          <SelectItem value={center.id} key={center.id}>
-                            {center.name}
-                          </SelectItem>
-                        ))}
+                        {centerQuery.data
+                          ?.filter(
+                            (center) =>
+                              form.watch('organizationId') ===
+                              center.organizationId
+                          )
+                          ?.map((center) => (
+                            <SelectItem value={center.id} key={center.id}>
+                              {center.name}
+                            </SelectItem>
+                          ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -104,7 +145,11 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder='name' {...field} disabled={props.canEdit != undefined && !props.canEdit}/>
+                <Input
+                  placeholder='name'
+                  {...field}
+                  disabled={props.canEdit != undefined && !props.canEdit}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -117,7 +162,11 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder='description' {...field} disabled={props.canEdit != undefined && !props.canEdit}/>
+                <Textarea
+                  placeholder='description'
+                  {...field}
+                  disabled={props.canEdit != undefined && !props.canEdit}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

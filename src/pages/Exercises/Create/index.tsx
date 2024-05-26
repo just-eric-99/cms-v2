@@ -54,6 +54,8 @@ export default function CreateExercisePage() {
     },
   })
   const queryClient = useQueryClient()
+  const [errMsg, setErrMsg] = useState('')
+
   const createExerciseMutation = useMutation({
     mutationFn: async (data: z.infer<typeof createExerciseSchema>) => {
       const createExerciseRequest: CreateExerciseRequest = {
@@ -101,12 +103,39 @@ export default function CreateExercisePage() {
     },
   })
 
-  const onSubmit = form.handleSubmit((data) => {
-    createExerciseMutation.mutate(data)
-  })
+  const onSubmit = form.handleSubmit(
+    (data) => {
+      createExerciseMutation.mutate(data)
+    },
+    (errors) => {
+      let errorMessages = ''
+      if (
+        errors.name ||
+        errors.description ||
+        errors.difficulty ||
+        errors.permission ||
+        errors.centerId
+      ) {
+        errorMessages += 'Please fill all required fields'
+      }
+
+      if (
+        errors.readyLandmark?.jointDirectionsWeights ||
+        errors.startLandmark?.jointDirectionsWeights
+      ) {
+        if (errorMessages == '') {
+          errorMessages += 'Sum of weights must be greater than 1'
+        } else {
+          errorMessages += ', Sum of weights must be greater than 1'
+        }
+      }
+      setErrMsg(errorMessages)
+    }
+  )
 
   useEffect(() => {
     form.reset()
+    setErrMsg('')
   }, [open])
 
   return (
@@ -127,17 +156,20 @@ export default function CreateExercisePage() {
               value={currentTab}
               onValueChange={(value) => setCurrentTab(value)}
             >
-              <TabsList>
-                <TabsTrigger className='min-w-32' value='form'>
-                  Details
-                </TabsTrigger>
-                <TabsTrigger className='min-w-32' value='readyPose'>
-                  Ready Pose
-                </TabsTrigger>
-                <TabsTrigger className='min-w-32' value='startPose'>
-                  Start Pose
-                </TabsTrigger>
-              </TabsList>
+              <div className={'flex flex-row items-center justify-between'}>
+                <TabsList>
+                  <TabsTrigger className='min-w-32' value='form'>
+                    Details
+                  </TabsTrigger>
+                  <TabsTrigger className='min-w-32' value='readyPose'>
+                    Ready Pose
+                  </TabsTrigger>
+                  <TabsTrigger className='min-w-32' value='startPose'>
+                    Start Pose
+                  </TabsTrigger>
+                </TabsList>
+                <div className={'text-destructive'}>{errMsg}</div>
+              </div>
               <div className='min-h-[500px]'>
                 <TabsContent
                   forceMount

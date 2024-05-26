@@ -20,6 +20,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Label } from '@/components/ui/label.tsx'
 import { getAllUserGroup } from '@/network/user-groups/api.ts'
+import { getAllOrganization } from '@/network/organization/api.ts'
 
 type UserCreateFormProps = {
   preDefinedCenterId?: string
@@ -27,6 +28,11 @@ type UserCreateFormProps = {
 }
 export default function UserCreateForm(props: UserCreateFormProps) {
   const form = useFormContext()
+
+  const organizationQuery = useQuery({
+    queryKey: ['organizations'],
+    queryFn: getAllOrganization,
+  })
 
   const centerQuery = useQuery({
     queryKey: ['centers'],
@@ -99,6 +105,45 @@ export default function UserCreateForm(props: UserCreateFormProps) {
 
         <Controller
           control={form.control}
+          name='organizationId'
+          render={({ field, fieldState }) => {
+            return (
+              <FormControl>
+                <FormItem>
+                  <Label className={fieldState.error && 'text-destructive'}>
+                    Organisation
+                  </Label>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder='Select Organisation' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {organizationQuery.data?.map((org) => (
+                          <SelectItem value={org.id} key={org.id}>
+                            {org.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage {...field} />
+
+                  {fieldState.error && (
+                    <p className={'text-sm font-medium text-destructive'}>
+                      {fieldState.error?.message}
+                    </p>
+                  )}
+                </FormItem>
+              </FormControl>
+            )
+          }}
+        />
+        <Controller
+          control={form.control}
           name='centerId'
           render={({ field, fieldState }) => (
             <FormControl>
@@ -116,11 +161,17 @@ export default function UserCreateForm(props: UserCreateFormProps) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {centerQuery.data?.map((center) => (
-                        <SelectItem value={center.id} key={center.id}>
-                          {center.name}
-                        </SelectItem>
-                      ))}
+                      {centerQuery.data
+                        ?.filter(
+                          (center) =>
+                            form.watch('organizationId') ===
+                            center.organizationId
+                        )
+                        ?.map((center) => (
+                          <SelectItem value={center.id} key={center.id}>
+                            {center.name}
+                          </SelectItem>
+                        ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>

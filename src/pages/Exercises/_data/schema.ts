@@ -18,10 +18,15 @@ export const landmarkObject = z.object({
       visibility: z.number(),
     })
   ),
-  jointDirectionsWeights: z.array(z.number()),
+  jointDirectionsWeights: z
+    .array(z.number())
+    .refine((weights) => weights.reduce((a, b) => a + b, 0) > 1, {
+      message: 'Sum of weights must be greater than 1',
+    }),
 })
 
 export const createExerciseSchema = z.object({
+  organizationId: z.string().min(1),
   centerId: z.string().min(1),
   name: z.string().min(1),
   description: z.string().min(1),

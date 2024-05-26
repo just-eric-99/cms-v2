@@ -8,11 +8,30 @@ import CreateExercisePage from './Create'
 import Loader from '@/components/loader.tsx'
 import { DataTable } from '@/components/table/data-table.tsx'
 import { getAllExercises } from '@/network/exercises/api.ts'
+import { getAllCenters } from '@/network/centers/api.ts'
 
 export default function Exercises() {
+  const centerQuery = useQuery({
+    queryKey: ['centers'],
+    queryFn: getAllCenters,
+  })
+
   const query = useQuery({
     queryKey: ['exercises'],
-    queryFn: () => getAllExercises(),
+    queryFn: async () => {
+      const exercises = await getAllExercises()
+      return exercises.map((exercise) => ({
+        name: exercise.name,
+        organization:
+          centerQuery.data?.find((center) => center.id === exercise.centerId)
+            ?.organization.name ?? '',
+        center:
+          centerQuery.data?.find((center) => center.id === exercise.centerId)
+            ?.name ?? '',
+        difficulty: exercise.difficulty,
+        permission: exercise.permission,
+      }))
+    },
   })
   if (query.isLoading) return <Loader />
   return (
@@ -23,7 +42,7 @@ export default function Exercises() {
           <UserNav />
         </div>
       </LayoutHeader>
-      <LayoutBody className='container justify-start'>
+      <LayoutBody>
         <DataTable
           columns={columns}
           data={query.data ?? []}

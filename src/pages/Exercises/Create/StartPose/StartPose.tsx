@@ -25,7 +25,11 @@ const landmarkBodyParts = [
   { index: 11, name: 'Right Foot' },
 ]
 
-export default function StartPose() {
+type StartPoseProps = {
+  canEdit?: boolean
+}
+
+export default function StartPose(props: StartPoseProps) {
   const poseLandmarkRef = useRef<HTMLCanvasElement>(null)
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
   const [openDialog, setOpenDialog] = useAtom(openStartDialogAtom)
@@ -97,6 +101,9 @@ export default function StartPose() {
           <StartSelectPoseDialog />
         </DialogContent>
       </Dialog>
+      {props.canEdit != undefined && !props.canEdit && (
+        <div className={'absolute aspect-[11/16] h-[400px]'}></div>
+      )}
       <div className='flex justify-center align-middle'>
         <div className='grid w-max grid-cols-3 justify-center gap-2 px-5'>
           {landmarkBodyParts.map((bodyParts) => (
@@ -115,6 +122,7 @@ export default function StartPose() {
                       max={10}
                       step={1}
                       className='w-24'
+                      disabled={props.canEdit != undefined && !props.canEdit}
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-expect-error
                       value={[field.value]}

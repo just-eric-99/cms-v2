@@ -1,6 +1,6 @@
 import {
   HoverCard,
-  HoverCardContent,
+  // HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import * as Slider from '@radix-ui/react-slider'
@@ -46,17 +46,17 @@ const FrameSlider = (props: FrameSliderProps) => {
           <HoverCardTrigger>
             <Triangle />
           </HoverCardTrigger>
-          <HoverCardContent
-            side='bottom'
-            avoidCollisions={false}
-            className='flex h-10 w-auto items-center justify-center rounded-lg align-middle hover:cursor-pointer'
-          >
-            {(() => {
-              const minutes = Math.floor(value[0] / 60)
-              const seconds = Math.floor(value[0] % 60)
-              return `${minutes}:${seconds.toString().padStart(2, '0')}`
-            })()}
-          </HoverCardContent>
+          {/*<HoverCardContent*/}
+          {/*  side='bottom'*/}
+          {/*  avoidCollisions={false}*/}
+          {/*  className='flex h-10 w-auto items-center justify-center rounded-lg align-middle hover:cursor-pointer'*/}
+          {/*>*/}
+          {/*  {(() => {*/}
+          {/*    const minutes = Math.floor(value[0] / 60)*/}
+          {/*    const seconds = Math.floor(value[0] % 60)*/}
+          {/*    return `${minutes}:${seconds.toString().padStart(2, '0')}`*/}
+          {/*  })()}*/}
+          {/*</HoverCardContent>*/}
         </HoverCard>
       </Slider.Thumb>
     </Slider.Root>

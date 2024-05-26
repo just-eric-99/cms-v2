@@ -5,14 +5,6 @@ import { Button } from '@/components/ui/button.tsx'
 
 export const columns: ColumnDef<Role>[] = [
   {
-    accessorKey: 'id',
-    header: () => <div className='pl-2 text-left'>ID</div>,
-    cell: ({ row }) => {
-      const id = row.getValue('id') as string
-      return <div className='pl-2 text-left font-medium'>{id}</div>
-    },
-  },
-  {
     accessorKey: 'title',
     header: ({ column }) => {
       return (
@@ -49,6 +41,22 @@ export const columns: ColumnDef<Role>[] = [
     },
   },
   {
+    accessorKey: 'center',
+    header: () => <div className='pl-2 text-left'>Center</div>,
+    cell: ({ row }) => {
+      const name = row.original.center?.name
+      return <div className='pl-2 text-left font-medium'>{name}</div>
+    },
+  },
+  {
+    accessorKey: 'organization',
+    header: () => <div className='pl-2 text-left'>Organisation</div>,
+    cell: ({ row }) => {
+      const name = row.original.organization?.name
+      return <div className='pl-2 text-left font-medium'>{name}</div>
+    },
+  },
+  {
     accessorKey: 'super',
     header: () => <div className='pl-2 text-left'>Super</div>,
     cell: ({ row }) => {
@@ -58,22 +66,6 @@ export const columns: ColumnDef<Role>[] = [
           {superRole ? <CircleCheck /> : <CircleX />}
         </div>
       )
-    },
-  },
-  {
-    accessorKey: 'createdAt',
-    header: () => <div className='pl-2 text-left'>Created At</div>,
-    cell: ({ row }) => {
-      const createdAt = row.getValue('createdAt') as string
-      return <div className='pl-2 text-left font-medium'>{createdAt}</div>
-    },
-  },
-  {
-    accessorKey: 'updatedAt',
-    header: () => <div className='pl-2 text-left'>Updated At</div>,
-    cell: ({ row }) => {
-      const updatedAt = row.getValue('updatedAt') as string
-      return <div className='pl-2 text-left font-medium'>{updatedAt}</div>
     },
   },
 ]

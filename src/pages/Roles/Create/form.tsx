@@ -22,12 +22,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select.tsx'
+import { Label } from '@/components/ui/label.tsx'
+import { getAllOrganization } from '@/network/organization/api.ts'
+import { getAllCenters } from '@/network/centers/api.ts'
+import { useQuery } from '@tanstack/react-query'
 
 export default function RoleCreateForm() {
   const form = useFormContext<z.infer<typeof createRoleSchema>>()
   const rolePermissionsFieldArray = useFieldArray({
     name: 'permissions',
     control: form.control,
+  })
+
+  const organizationQuery = useQuery({
+    queryKey: ['organizations'],
+    queryFn: getAllOrganization,
+  })
+
+  const centerQuery = useQuery({
+    queryKey: ['centers'],
+    queryFn: getAllCenters,
   })
   return (
     <Form {...form}>
@@ -58,6 +72,84 @@ export default function RoleCreateForm() {
             </FormItem>
           )}
         />
+
+        <Controller
+          control={form.control}
+          name='organizationId'
+          render={({ field, fieldState }) => {
+            return (
+              <FormControl>
+                <FormItem>
+                  <Label className={fieldState.error && 'text-destructive'}>
+                    Organisation
+                  </Label>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder='Select Organisation' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {organizationQuery.data?.map((org) => (
+                          <SelectItem value={org.id} key={org.id}>
+                            {org.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage {...field} />
+
+                  {fieldState.error && (
+                    <p className={'text-sm font-medium text-destructive'}>
+                      {fieldState.error?.message}
+                    </p>
+                  )}
+                </FormItem>
+              </FormControl>
+            )
+          }}
+        />
+        <Controller
+          control={form.control}
+          name='centerId'
+          render={({ field, fieldState }) => (
+            <FormControl>
+              <FormItem>
+                <Label className={fieldState.error && 'text-destructive'}>
+                  Center
+                </Label>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select Center' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {centerQuery.data
+                        ?.filter(
+                          (center) =>
+                            form.watch('organizationId') ===
+                            center.organizationId
+                        )
+                        ?.map((center) => (
+                          <SelectItem value={center.id} key={center.id}>
+                            {center.name}
+                          </SelectItem>
+                        ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <FormMessage {...field} />
+
+                {fieldState.error && (
+                  <p className={'text-sm font-medium text-destructive'}>
+                    {fieldState.error?.message}
+                  </p>
+                )}
+              </FormItem>
+            </FormControl>
+          )}
+        />
+
         <Card>
           <CardHeader>
             <div className={'flex flex-row justify-between'}>

@@ -29,6 +29,8 @@ export default function RoleCreatePage() {
     defaultValues: {
       title: '',
       titleEn: '',
+      organizationId: '',
+      centerId: '',
       permissions: [
         {
           permission: Permission.USER_READ,

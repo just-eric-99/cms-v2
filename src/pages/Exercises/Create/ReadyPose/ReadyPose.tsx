@@ -94,6 +94,9 @@ export default function ReadyPose(props: ReadyPoseProps) {
           <ReadySelectPoseDialog />
         </DialogContent>
       </Dialog>
+      {props.canEdit != undefined && !props.canEdit && (
+        <div className={'absolute aspect-[11/16] h-[400px]'}></div>
+      )}
       <div className='flex justify-center align-middle'>
         <div className='grid w-max grid-cols-3 justify-center gap-2 px-5'>
           {landmarkBodyParts.map((bodyParts) => (
@@ -108,11 +111,11 @@ export default function ReadyPose(props: ReadyPoseProps) {
                   </div>
                   <div className='flex flex-row items-center gap-1'>
                     <Slider
-                      disabled={props.canEdit != undefined && !props.canEdit}
                       min={0}
                       max={10}
                       step={1}
                       className='w-24'
+                      disabled={props.canEdit != undefined && !props.canEdit}
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-expect-error
                       value={[field.value]}

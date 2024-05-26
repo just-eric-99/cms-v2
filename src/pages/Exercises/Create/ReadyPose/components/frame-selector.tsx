@@ -5,7 +5,7 @@ import Cropper, { Area, Point } from 'react-easy-crop'
 import { croppedImageAtom, uploadFileAtom } from '../../atom'
 import { Button } from '@/components/ui/button'
 import FrameSlider from './frame-slider'
-import { Trash2 } from 'lucide-react'
+import { Pause, Play, Trash2 } from 'lucide-react'
 
 export default function FrameSelector() {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
@@ -16,6 +16,7 @@ export default function FrameSelector() {
   const cropperRef = useMemo(() => createRef<Cropper>(), [])
   const [uploadFile, setUploadFile] = useAtom(uploadFileAtom)
   const [selectedVideo, setSelectedVideo] = useState<string>('')
+  const [playing, setPlaying] = useState<boolean | null>(null)
 
   useEffect(() => {
     const video = cropperRef.current?.videoRef.current
@@ -23,6 +24,13 @@ export default function FrameSelector() {
     video.onloadedmetadata = () => {
       setDuration(video.duration)
     }
+    video.addEventListener('play', () => {
+      setPlaying(true)
+    })
+
+    video.addEventListener('pause', () => {
+      setPlaying(false)
+    })
   }, [cropperRef, selectedVideo])
 
   useEffect(() => {
@@ -97,6 +105,25 @@ export default function FrameSelector() {
         </Button>
       </div>
       <div className='relative flex w-full items-center gap-8 pb-14'>
+        {cropperRef.current?.videoRef.current &&
+          (cropperRef.current.videoRef.current.paused || !playing) && (
+            <Button
+              size={'icon'}
+              onClick={() => cropperRef.current!.videoRef.current!.play()}
+            >
+              <Play />
+            </Button>
+          )}
+
+        {cropperRef.current?.videoRef.current && playing && (
+          <Button
+            size={'icon'}
+            onClick={() => cropperRef.current!.videoRef.current!.pause()}
+          >
+            <Pause />
+          </Button>
+        )}
+
         <FrameSlider
           duration={duration}
           onPointerDown={() => {}}

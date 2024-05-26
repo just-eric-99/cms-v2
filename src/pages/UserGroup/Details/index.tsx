@@ -34,6 +34,9 @@ import { Input } from '@/components/ui/input.tsx'
 import { Label } from '@/components/ui/label.tsx'
 import UserGroupDetailsUserDialog from '@/pages/UserGroup/Details/users/dialog.tsx'
 import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
+import {DataTable} from "@/components/table/data-table.tsx";
+import {columns} from "@/pages/Users/_table/columns.tsx";
+import CreateUserPage from "@/pages/Users/Create";
 
 type UserGroupDetailsPageProps = {
   editable: boolean
@@ -199,17 +202,17 @@ export default function UserGroupDetailsPage(props: UserGroupDetailsPageProps) {
           </Card>
 
           {/*<div className={'flex flex-row gap-5'}>*/}
-          {/*<Card>*/}
-          {/*  <CardHeader>Users</CardHeader>*/}
-          {/*  <CardContent>*/}
-          {/*    <DataTable*/}
-          {/*      columns={columns}*/}
-          {/*      data={query.data?.users ?? []}*/}
-          {/*      navigationPath={'/users'}*/}
-          {/*      createComponent={<CreateUserPage userGroupId={id} />}*/}
-          {/*    />*/}
-          {/*  </CardContent>*/}
-          {/*</Card>*/}
+          <Card>
+            <CardHeader>Users</CardHeader>
+            <CardContent>
+              <DataTable
+                columns={columns}
+                data={query.data?.users ?? []}
+                navigationPath={'/users'}
+                createComponent={<CreateUserPage userGroupId={id} />}
+              />
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader>Users</CardHeader>
             <CardContent>

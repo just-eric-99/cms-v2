@@ -3,7 +3,6 @@ import {CreateRoleRequest, Role, RoleDetails} from '@/network/roles/types.ts'
 
 export async function getAllRoles(): Promise<Role[]> {
   const roles = await fetch(API_ENDPOINT + '/role')
-  // console.log(roles.json())
   return roles.json()
 }
 

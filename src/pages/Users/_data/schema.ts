@@ -22,6 +22,7 @@ export const updateUserSchema = z.object({
     .number()
     .min(0, 'Please choose an avatar')
     .max(1, 'Please choose an avatar'),
+  organizationId: z.string().min(1, 'Please select an organization.'),
   centerId: z.string().min(1, 'Please select a center.'),
   userGroupId: z.string().min(1, 'Please select a user group.'),
 })

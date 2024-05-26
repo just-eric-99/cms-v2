@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button.tsx'
 import RoleDetailsForm from '@/pages/Roles/Details/form.tsx'
 import RoleDetailsPermissions from '@/pages/Roles/Details/permissions'
 import { Permission, Scope } from '@/enum/exercisePermission.ts'
-import RoleDetailsAdminSummary from '@/pages/Roles/Details/admins'
+// import RoleDetailsAdminSummary from '@/pages/Roles/Details/admins'
 
 type RoleDetailsPageProps = {
   editable: boolean
@@ -94,6 +94,8 @@ export default function RoleDetailsPage(props: RoleDetailsPageProps) {
       form.reset({
         title: role.title,
         titleEn: role.titleEn,
+        organizationId: role.organizationId,
+        centerId: role.centerId,
         permissions: role.rolePermissions,
       })
       return role
@@ -167,12 +169,12 @@ export default function RoleDetailsPage(props: RoleDetailsPageProps) {
                 <RoleDetailsPermissions canEdit={canEdit} />
               </div>
             )}
-            <div className={'flex-[5]'}>
-              <RoleDetailsAdminSummary
-                adminSummary={query.data?.admins ?? []}
-                roleId={id ?? ''}
-              />
-            </div>
+            {/*<div className={'flex-[5]'}>*/}
+            {/*  <RoleDetailsAdminSummary*/}
+            {/*    adminSummary={query.data?.admins ?? []}*/}
+            {/*    roleId={id ?? ''}*/}
+            {/*  />*/}
+            {/*</div>*/}
           </div>
         </LayoutBody>
       </Layout>

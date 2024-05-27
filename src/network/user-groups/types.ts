@@ -1,9 +1,11 @@
 import { User } from '@/network/users/types.ts'
+import {Center} from "@/network/centers/types.ts";
 
 export type UserGroup = {
   id: string
   name: string
   centerId: string
+  center: Center
   createdAt: string
   updatedAt: string
 }

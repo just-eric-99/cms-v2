@@ -11,11 +11,19 @@ export const columns: ColumnDef<UserGroup>[] = [
     },
   },
   {
-    accessorKey: 'centerId',
-    header: () => <div className='pl-2 text-left'>Center Id</div>,
+    accessorKey: 'organization',
+    header: () => <div className='pl-2 text-left'>Organisation</div>,
     cell: ({ row }) => {
-      const centerId = row.getValue('centerId') as string
-      return <div className='pl-2 text-left font-medium'>{centerId}</div>
+      const org = row.original.center.organization.name
+      return <div className='pl-2 text-left font-medium'>{org}</div>
+    },
+  },
+  {
+    accessorKey: 'center',
+    header: () => <div className='pl-2 text-left'>Center</div>,
+    cell: ({ row }) => {
+      const center = row.original.center.name
+      return <div className='pl-2 text-left font-medium'>{center}</div>
     },
   },
 ]

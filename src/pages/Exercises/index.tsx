@@ -21,6 +21,7 @@ export default function Exercises() {
     queryFn: async () => {
       const exercises = await getAllExercises()
       return exercises.map((exercise) => ({
+        id: exercise.id,
         name: exercise.name,
         organization:
           centerQuery.data?.find((center) => center.id === exercise.centerId)

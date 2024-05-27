@@ -1,6 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 
 export type ExerciseColumn = {
+  id: string
   name: string
   organization: string
   center: string

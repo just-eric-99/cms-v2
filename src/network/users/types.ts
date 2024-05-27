@@ -1,3 +1,5 @@
+import {Center} from "@/network/centers/types.ts";
+
 export type User = {
   id: string
   name: string
@@ -9,6 +11,7 @@ export type User = {
   centerId: string
   createdAt: string
   updatedAt: string
+  center: Center
 }
 
 export type CreateUserRequest = {

@@ -162,7 +162,7 @@ export default function OrganizationDetailsPage(
                 )}
               </div>
             </div>
-            <div className='text-xl'>Organization Details</div>
+            <div className='text-xl font-bold'>Organization Details</div>
           </CardHeader>
           <CardContent>
             <FormProvider {...form}>

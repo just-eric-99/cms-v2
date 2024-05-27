@@ -15,7 +15,7 @@ import { deleteUser, getUserById, updateUser } from '@/network/users/api'
 import UserDetailsForm from '@/pages/Users/Details/form.tsx'
 import Loader from '@/components/loader.tsx'
 import UserDetailsExercisesPage from '@/pages/Users/Details/Exercises'
-import {getAllCenters} from "@/network/centers/api.ts";
+import { getAllCenters } from '@/network/centers/api.ts'
 
 type UserDetailPageProps = {
   editable: boolean
@@ -41,9 +41,11 @@ export default function UserDetailsPage(props: UserDetailPageProps) {
       form.setValue('avatar', user.avatar)
       form.setValue('centerId', user.centerId)
       form.setValue('userGroupId', user.userGroupId)
-      form.setValue('organizationId', centerQuery.data?.find(
-        (center) => center.id === user.centerId
-      )?.organizationId ?? '')
+      form.setValue(
+        'organizationId',
+        centerQuery.data?.find((center) => center.id === user.centerId)
+          ?.organizationId ?? ''
+      )
 
       return user
     },
@@ -142,9 +144,11 @@ export default function UserDetailsPage(props: UserDetailPageProps) {
       form.setValue('email', query.data?.email ?? '')
       form.setValue('phone', query.data?.phone ?? '')
       form.setValue('avatar', query.data?.avatar ?? -1)
-      form.setValue('organizationId', centerQuery.data?.find(
-        (center) => center.id === query.data?.centerId
-      )?.organizationId ?? '')
+      form.setValue(
+        'organizationId',
+        centerQuery.data?.find((center) => center.id === query.data?.centerId)
+          ?.organizationId ?? ''
+      )
       form.setValue('centerId', query.data?.centerId ?? '')
       form.setValue('userGroupId', query.data?.userGroupId ?? '')
     })
@@ -207,7 +211,7 @@ export default function UserDetailsPage(props: UserDetailPageProps) {
                   )}
                 </div>
               </div>
-              <div className='text-xl'>User Details</div>
+              <div className='text-xl font-bold'>User Details</div>
             </CardHeader>
             <CardContent>
               <FormProvider {...form}>

@@ -50,40 +50,40 @@ export const columns: ColumnDef<User>[] = [
       )
     },
   },
-  {
-    accessorKey: 'center',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant={'ghost'}
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Center
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      const name = row.original.center.name
-      return <div className='pl-2 text-left font-medium'>{name}</div>
-    },
-  },
-  {
-    accessorKey: 'organisationId',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant={'ghost'}
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Organisation
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      const name = row.original.center.organization.name
-      return <div className='pl-2 text-left font-medium'>{name}</div>
-    },
-  },
+  // {
+  //   accessorKey: 'center',
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant={'ghost'}
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+  //       >
+  //         Center
+  //         <ArrowUpDown className='ml-2 h-4 w-4' />
+  //       </Button>
+  //     )
+  //   },
+  //   cell: ({ row }) => {
+  //     const name = row.original.center.name
+  //     return <div className='pl-2 text-left font-medium'>{name}</div>
+  //   },
+  // },
+  // {
+  //   accessorKey: 'organisationId',
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant={'ghost'}
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+  //       >
+  //         Organisation
+  //         <ArrowUpDown className='ml-2 h-4 w-4' />
+  //       </Button>
+  //     )
+  //   },
+  //   cell: ({ row }) => {
+  //     const name = row.original.center.organization.name
+  //     return <div className='pl-2 text-left font-medium'>{name}</div>
+  //   },
+  // },
 ]

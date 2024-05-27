@@ -1,3 +1,6 @@
+import { Center } from '../centers/types'
+import {Role} from "@/network/roles/types.ts";
+
 export type Admin = {
   id: string
   name: string
@@ -9,6 +12,8 @@ export type Admin = {
   roleId: string
   createdAt: string
   updatedAt: string
+  role: Role
+  center: Center
 }
 
 export type CreateAdminRequest = {

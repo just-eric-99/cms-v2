@@ -5,6 +5,7 @@ import { columns } from '@/pages/Users/Details/Exercises/_table/columns.tsx'
 import Loader from '@/components/loader.tsx'
 import { useEffect } from 'react'
 import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
+// import { Exercise } from '@/network/exercises/types.ts'
 
 type UserDetailsExercisesPageProps = {
   userId: string
@@ -20,11 +21,7 @@ export default function UserDetailsExercisesPage(
   const query = useQuery({
     queryKey: ['assigned-exercises'],
     queryFn: async () => {
-      const assignedExercises = await getExerciseAssignmentsByUserId(
-        props.userId
-      )
-      console.log(assignedExercises)
-      return assignedExercises
+      return await getExerciseAssignmentsByUserId(props.userId)
     },
   })
   if (query.isLoading) return <Loader />
@@ -32,7 +29,16 @@ export default function UserDetailsExercisesPage(
   return (
     <DataTable
       columns={columns}
-      data={query.data ?? []}
+      data={
+        query.data?.map((exercise) => {
+          return {
+            id: exercise.exerciseId,
+            name: exercise.exercise.name,
+            duration: exercise.duration,
+            recurrence: exercise.recurrence,
+          }
+        }) ?? []
+      }
       navigationPath={'/exercises'}
       createComponent={
         <ExerciseAssignmentPage

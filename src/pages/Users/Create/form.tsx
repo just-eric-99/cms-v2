@@ -52,9 +52,9 @@ export default function UserCreateForm(props: UserCreateFormProps) {
           name='name'
           render={({ field }) => (
             <FormItem className='flex-1'>
-              <FormLabel className='col-span-2'>Chinese Name</FormLabel>
+              <FormLabel className='col-span-2'>Name</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='e.g. 陳大文' />
+                <Input {...field} placeholder='e.g. Chan Tai Man' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>

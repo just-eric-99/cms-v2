@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const createUserGroupSchema = z.object({
   name: z.string(),
+  organizationId: z.string(),
   centerId: z.string(),
   userIds: z.array(z.object({ userId: z.string() })),
 })

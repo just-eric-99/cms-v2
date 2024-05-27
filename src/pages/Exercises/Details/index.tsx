@@ -209,7 +209,7 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                 )}
               </div>
             </div>
-            <div className='text-xl'>Exercise Details</div>
+            <div className='text-xl font-bold'>Exercise Details</div>
           </CardHeader>
           <CardContent>
             <Form {...form}>

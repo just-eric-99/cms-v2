@@ -113,11 +113,15 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
                     <SelectContent>
                       <SelectGroup>
                         {centerQuery.data
-                          ?.filter(
-                            (center) =>
+                          ?.filter((center) => {
+                            if (form.watch('organizationId') === undefined) {
+                              return false
+                            }
+                            return (
                               form.watch('organizationId') ===
                               center.organizationId
-                          )
+                            )
+                          })
                           ?.map((center) => (
                             <SelectItem value={center.id} key={center.id}>
                               {center.name}

@@ -1,11 +1,13 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { ExerciseAssignmentDetails } from '@/network/exercise-assignment/types.ts'
-export const columns: ColumnDef<ExerciseAssignmentDetails>[] = [
+// import { ExerciseAssignmentDetails } from '@/network/exercise-assignment/types.ts'
+// import {Exercise} from "@/network/exercises/types.ts";
+import {ExerciseAssignment} from "@/network/exercise-assignment/types.ts";
+export const columns: ColumnDef<ExerciseAssignment>[] = [
   {
     accessorKey: 'name',
     header: () => <div className='pl-2 text-left'>Name</div>,
     cell: ({ row }) => {
-      const name = row.original.exercise.name
+      const name = row.original.name
       return <div className='pl-2 text-left font-medium'>{name}</div>
     },
   },

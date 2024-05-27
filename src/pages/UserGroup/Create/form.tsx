@@ -34,6 +34,7 @@ import { getAllUsers } from '@/network/users/api.ts'
 import { useEffect } from 'react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx'
 import { Plus, Trash2 } from 'lucide-react'
+import { getAllOrganization } from '@/network/organization/api.ts'
 
 type UserGroupsCreateFormProps = {
   preDefinedCenterId?: string
@@ -43,6 +44,11 @@ export default function UserGroupsCreateForm(props: UserGroupsCreateFormProps) {
   const centerQuery = useQuery({
     queryKey: ['centers'],
     queryFn: getAllCenters,
+  })
+
+  const organizationQuery = useQuery({
+    queryKey: ['organizations'],
+    queryFn: getAllOrganization,
   })
 
   const userIdsFieldArray = useFieldArray({
@@ -75,6 +81,81 @@ export default function UserGroupsCreateForm(props: UserGroupsCreateFormProps) {
             </FormItem>
           )}
         />
+        {/*<Controller*/}
+        {/*  control={form.control}*/}
+        {/*  name='centerId'*/}
+        {/*  render={({ field, fieldState }) => (*/}
+        {/*    <FormControl>*/}
+        {/*      <FormItem>*/}
+        {/*        <Label className={fieldState.error && 'text-destructive'}>*/}
+        {/*          Center*/}
+        {/*        </Label>*/}
+        {/*        <Select*/}
+        {/*          onValueChange={field.onChange}*/}
+        {/*          value={props.preDefinedCenterId ?? field.value}*/}
+        {/*          disabled={props.preDefinedCenterId !== undefined}*/}
+        {/*        >*/}
+        {/*          <SelectTrigger>*/}
+        {/*            <SelectValue placeholder='Select Center' />*/}
+        {/*          </SelectTrigger>*/}
+        {/*          <SelectContent>*/}
+        {/*            <SelectGroup>*/}
+        {/*              {centerQuery.data?.map((center) => (*/}
+        {/*                <SelectItem value={center.id} key={center.id}>*/}
+        {/*                  {center.name}*/}
+        {/*                </SelectItem>*/}
+        {/*              ))}*/}
+        {/*            </SelectGroup>*/}
+        {/*          </SelectContent>*/}
+        {/*        </Select>*/}
+        {/*        <FormMessage {...field} />*/}
+
+        {/*        {fieldState.error && (*/}
+        {/*          <p className={'text-sm font-medium text-destructive'}>*/}
+        {/*            {fieldState.error?.message}*/}
+        {/*          </p>*/}
+        {/*        )}*/}
+        {/*      </FormItem>*/}
+        {/*    </FormControl>*/}
+        {/*  )}*/}
+        {/*/>*/}
+        <Controller
+          control={form.control}
+          name='organizationId'
+          render={({ field, fieldState }) => {
+            return (
+              <FormControl>
+                <FormItem>
+                  <Label className={fieldState.error && 'text-destructive'}>
+                    Organisation
+                  </Label>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder='Select Organisation' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {organizationQuery.data?.map((org) => (
+                          <SelectItem value={org.id} key={org.id}>
+                            {org.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage {...field} />
+
+                  {fieldState.error && (
+                    <p className={'text-sm font-medium text-destructive'}>
+                      {fieldState.error?.message}
+                    </p>
+                  )}
+                </FormItem>
+              </FormControl>
+            )
+          }}
+        />
+
         <Controller
           control={form.control}
           name='centerId'
@@ -94,11 +175,17 @@ export default function UserGroupsCreateForm(props: UserGroupsCreateFormProps) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {centerQuery.data?.map((center) => (
-                        <SelectItem value={center.id} key={center.id}>
-                          {center.name}
-                        </SelectItem>
-                      ))}
+                      {centerQuery.data
+                        ?.filter(
+                          (center) =>
+                            form.watch('organizationId') ===
+                            center.organizationId
+                        )
+                        ?.map((center) => (
+                          <SelectItem value={center.id} key={center.id}>
+                            {center.name}
+                          </SelectItem>
+                        ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -180,7 +267,7 @@ export default function UserGroupsCreateForm(props: UserGroupsCreateFormProps) {
                         <Button
                           onClick={() => userIdsFieldArray.remove(index)}
                           size={'icon'}
-                          variant={"destructive"}
+                          variant={'destructive'}
                         >
                           <Trash2 />
                         </Button>

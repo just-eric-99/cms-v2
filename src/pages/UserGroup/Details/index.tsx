@@ -31,10 +31,10 @@ import { Input } from '@/components/ui/input.tsx'
 import { Label } from '@/components/ui/label.tsx'
 import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
 import { DataTable } from '@/components/table/data-table.tsx'
-import { columns } from '@/pages/Users/_table/columns.tsx'
-import CreateUserPage from '@/pages/Users/Create'
+// import CreateUserPage from '@/pages/Users/Create'
 import { getAllCenters } from '@/network/centers/api.ts'
 import { getAllOrganization } from '@/network/organization/api.ts'
+import {columns} from "@/pages/UserGroup/Details/users/_table/columns.tsx";
 
 type UserGroupDetailsPageProps = {
   editable: boolean
@@ -177,6 +177,14 @@ export default function UserGroupDetailsPage(props: UserGroupDetailsPageProps) {
                   {!canEdit && (
                     <Button onClick={() => setCanEdit(true)}>Edit</Button>
                   )}
+                  <div className={'flex flex-row gap-4'}>
+                    <ExerciseAssignmentPage
+                      type={'userGroup'}
+                      assignedExercises={[]}
+                      userGroupId={id ?? ''}
+                    />
+                    {/*<CreateUserPage userGroupId={id} />*/}
+                  </div>
                 </div>
               </div>
               <div className='text-xl font-bold'>User Group Details</div>
@@ -232,22 +240,17 @@ export default function UserGroupDetailsPage(props: UserGroupDetailsPageProps) {
 
           {/*<div className={'flex flex-row gap-5'}>*/}
           <Card>
-            <CardHeader>Users</CardHeader>
+            <CardHeader>
+              <div className={'text-xl font-bold'}>Users</div>
+            </CardHeader>
             <CardContent>
               <DataTable
                 columns={columns}
                 data={query.data?.users ?? []}
                 navigationPath={'/users'}
-                createComponent={
-                  <div className={'flex flex-row gap-4'}>
-                    <ExerciseAssignmentPage
-                      type={'userGroup'}
-                      assignedExercises={[]}
-                      userGroupId={id ?? ''}
-                    />
-                    <CreateUserPage userGroupId={id} />
-                  </div>
-                }
+                // createComponent={
+                //
+                // }
               />
             </CardContent>
           </Card>

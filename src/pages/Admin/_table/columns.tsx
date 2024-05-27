@@ -51,25 +51,43 @@ export const columns: ColumnDef<Admin>[] = [
     },
   },
   {
-    accessorKey: 'centerId',
+    accessorKey: 'center',
     header: ({ column }) => {
       return (
         <Button
           variant={'ghost'}
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Center Id
+          Center
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       )
     },
     cell: ({ row }) => {
-      const name = row.getValue('displayName') as string
+      const name = row.original.center.name
       return <div className='pl-2 text-left font-medium'>{name}</div>
     },
   },
   {
-    accessorKey: 'roleId',
+    accessorKey: 'organisation',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant={'ghost'}
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Organisation
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const name = row.original.center.organization.name
+      return <div className='pl-2 text-left font-medium'>{name}</div>
+    },
+  },
+  {
+    accessorKey: 'role',
     header: ({ column }) => {
       return (
         <Button
@@ -80,6 +98,10 @@ export const columns: ColumnDef<Admin>[] = [
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       )
+    },
+    cell: ({ row }) => {
+      const name = row.original.role.title
+      return <div className='pl-2 text-left font-medium'>{name}</div>
     },
   },
 ]

@@ -20,9 +20,6 @@ import {
 import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import Loader from '@/components/loader.tsx'
-// import { DataTable } from '@/sortable/table/data-table.tsx'
-// import { columns } from '@/pages/Users/_table/columns.tsx'
-// import CreateUserPage from '@/pages/Users/Create'
 import {
   FormControl,
   FormField,
@@ -32,11 +29,12 @@ import {
 } from '@/components/ui/form.tsx'
 import { Input } from '@/components/ui/input.tsx'
 import { Label } from '@/components/ui/label.tsx'
-import UserGroupDetailsUserDialog from '@/pages/UserGroup/Details/users/dialog.tsx'
 import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
-import {DataTable} from "@/components/table/data-table.tsx";
-import {columns} from "@/pages/Users/_table/columns.tsx";
-import CreateUserPage from "@/pages/Users/Create";
+import { DataTable } from '@/components/table/data-table.tsx'
+import { columns } from '@/pages/Users/_table/columns.tsx'
+import CreateUserPage from '@/pages/Users/Create'
+import { getAllCenters } from '@/network/centers/api.ts'
+import { getAllOrganization } from '@/network/organization/api.ts'
 
 type UserGroupDetailsPageProps = {
   editable: boolean
@@ -114,6 +112,16 @@ export default function UserGroupDetailsPage(props: UserGroupDetailsPageProps) {
     },
   })
 
+  const centerQuery = useQuery({
+    queryKey: ['centers'],
+    queryFn: getAllCenters,
+  })
+
+  const organizationQuery = useQuery({
+    queryKey: ['organizations'],
+    queryFn: getAllOrganization,
+  })
+
   const handleBack = () => {
     form.reset()
     navigate(-1)
@@ -171,7 +179,7 @@ export default function UserGroupDetailsPage(props: UserGroupDetailsPageProps) {
                   )}
                 </div>
               </div>
-              <div className='text-xl font-bold'>Role Details</div>
+              <div className='text-xl font-bold'>User Group Details</div>
             </CardHeader>
             <CardContent>
               <div className={'flex flex-col gap-5'}>
@@ -192,10 +200,31 @@ export default function UserGroupDetailsPage(props: UserGroupDetailsPageProps) {
                     </FormItem>
                   )}
                 />
-
+                <div className={'flex flex-col gap-2'}>
+                  <Label>Organisation</Label>
+                  <Input
+                    value={
+                      organizationQuery.data?.find(
+                        (organization) =>
+                          organization.id ===
+                          centerQuery.data?.filter(
+                            (center) => center.id === query.data?.centerId
+                          )[0].organizationId
+                      )?.name ?? ''
+                    }
+                    disabled
+                  />
+                </div>
                 <div className={'flex flex-col gap-2'}>
                   <Label>Center</Label>
-                  <Input value={query.data?.centerId} disabled />
+                  <Input
+                    value={
+                      centerQuery.data?.find(
+                        (center) => center.id === query.data?.centerId
+                      )?.name ?? ''
+                    }
+                    disabled
+                  />
                 </div>
               </div>
             </CardContent>
@@ -209,28 +238,37 @@ export default function UserGroupDetailsPage(props: UserGroupDetailsPageProps) {
                 columns={columns}
                 data={query.data?.users ?? []}
                 navigationPath={'/users'}
-                createComponent={<CreateUserPage userGroupId={id} />}
+                createComponent={
+                  <div className={'flex flex-row gap-4'}>
+                    <ExerciseAssignmentPage
+                      type={'userGroup'}
+                      assignedExercises={[]}
+                      userGroupId={id ?? ''}
+                    />
+                    <CreateUserPage userGroupId={id} />
+                  </div>
+                }
               />
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader>Users</CardHeader>
-            <CardContent>
-              <div className={'flex flex-col gap-5'}>
-                <div className={'flex flex-row justify-end'}>
-                  <ExerciseAssignmentPage
-                    type={'userGroup'}
-                    assignedExercises={[]}
-                    userGroupId={id ?? ''}
-                  />
-                </div>
-                <UserGroupDetailsUserDialog
-                  centerId={query.data?.centerId ?? ''}
-                  canEdit={canEdit}
-                />
-              </div>
-            </CardContent>
-          </Card>
+          {/*<Card>*/}
+          {/*  <CardHeader>Users</CardHeader>*/}
+          {/*  <CardContent>*/}
+          {/*    <div className={'flex flex-col gap-5'}>*/}
+          {/*      <div className={'flex flex-row justify-end'}>*/}
+          {/*        <ExerciseAssignmentPage*/}
+          {/*          type={'userGroup'}*/}
+          {/*          assignedExercises={[]}*/}
+          {/*          userGroupId={id ?? ''}*/}
+          {/*        />*/}
+          {/*      </div>*/}
+          {/*      <UserGroupDetailsUserDialog*/}
+          {/*        centerId={query.data?.centerId ?? ''}*/}
+          {/*        canEdit={canEdit}*/}
+          {/*      />*/}
+          {/*    </div>*/}
+          {/*  </CardContent>*/}
+          {/*</Card>*/}
           {/*</div>*/}
         </LayoutBody>
       </Layout>

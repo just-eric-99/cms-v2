@@ -48,7 +48,7 @@ export default function AdminDetailsForm({ canEdit }: AdminDetailsFormProps) {
               <FormControl className='col-span-5'>
                 <Input
                   {...field}
-                  placeholder='chinese name'
+                  placeholder='e.g. 陳大文'
                   disabled={!canEdit}
                 />
               </FormControl>
@@ -65,7 +65,7 @@ export default function AdminDetailsForm({ canEdit }: AdminDetailsFormProps) {
               <FormControl className='col-span-5'>
                 <Input
                   {...field}
-                  placeholder='english name'
+                  placeholder='e.g. Chan Tai Man'
                   disabled={!canEdit}
                 />
               </FormControl>
@@ -83,7 +83,7 @@ export default function AdminDetailsForm({ canEdit }: AdminDetailsFormProps) {
               <FormControl className='col-span-5'>
                 <Input
                   {...field}
-                  placeholder='display name'
+                  placeholder='e.g. super_lim'
                   disabled={!canEdit}
                 />
               </FormControl>
@@ -99,7 +99,7 @@ export default function AdminDetailsForm({ canEdit }: AdminDetailsFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Email</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='email' disabled />
+                <Input {...field} placeholder='e.g. chantaiman@email.com' disabled />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>
@@ -112,7 +112,7 @@ export default function AdminDetailsForm({ canEdit }: AdminDetailsFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Phone</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='phone' disabled={!canEdit} />
+                <Input {...field} placeholder='+85212345678' disabled={!canEdit} />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>

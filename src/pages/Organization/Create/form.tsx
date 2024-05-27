@@ -21,7 +21,7 @@ export default function OrganizationCreateForm() {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Chinese Name</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='chinese name' />
+                <Input {...field} placeholder='e.g. 新生會' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>
@@ -34,7 +34,7 @@ export default function OrganizationCreateForm() {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>English Name</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='english name' />
+                <Input {...field} placeholder='e.g. Club Monaco' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>

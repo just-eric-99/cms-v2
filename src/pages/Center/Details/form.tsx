@@ -45,7 +45,7 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
               <FormControl className='col-span-5'>
                 <Input
                   {...field}
-                  placeholder='chinese name'
+                  placeholder='e.g. 香港中心'
                   disabled={!canEdit}
                 />
               </FormControl>
@@ -62,7 +62,7 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
               <FormControl className='col-span-5'>
                 <Input
                   {...field}
-                  placeholder='english name'
+                  placeholder='e.g. Hong Kong Center'
                   disabled={!canEdit}
                 />
               </FormControl>
@@ -80,7 +80,7 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
               <FormControl className='col-span-5'>
                 <Textarea
                   {...field}
-                  placeholder='address (chinese)'
+                  placeholder='e.g. 旺角道'
                   disabled={!canEdit}
                 />
               </FormControl>
@@ -98,7 +98,7 @@ export default function CenterDetailsForm({ canEdit }: CenterDetailsFormProps) {
               <FormControl className='col-span-5'>
                 <Textarea
                   {...field}
-                  placeholder='address (english)'
+                  placeholder='e.g. Mong Kok Street'
                   disabled={!canEdit}
                 />
               </FormControl>

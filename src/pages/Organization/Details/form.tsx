@@ -31,7 +31,7 @@ export default function OrganizationDetailsForm({
               <FormControl className='col-span-5'>
                 <Input
                   {...field}
-                  placeholder='chinese name'
+                  placeholder='e.g. 新生會'
                   disabled={!canEdit}
                 />
               </FormControl>
@@ -48,7 +48,7 @@ export default function OrganizationDetailsForm({
               <FormControl className='col-span-5'>
                 <Input
                   {...field}
-                  placeholder='english name'
+                  placeholder='e.g. Club Monaco'
                   disabled={!canEdit}
                 />
               </FormControl>

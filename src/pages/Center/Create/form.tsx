@@ -47,7 +47,7 @@ export default function CenterCreateForm(props: CenterCreateFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Chinese Name</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='chinese name' />
+                <Input {...field} placeholder='e.g. 香港中心' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>
@@ -60,7 +60,7 @@ export default function CenterCreateForm(props: CenterCreateFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>English Name</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='english name' />
+                <Input {...field} placeholder='e.g. Hong Kong Center' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>
@@ -74,7 +74,7 @@ export default function CenterCreateForm(props: CenterCreateFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Address (Chinese)</FormLabel>
               <FormControl className='col-span-5'>
-                <Textarea {...field} placeholder='address (chinese)' />
+                <Textarea {...field} placeholder='e.g. 旺角道' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>
@@ -88,7 +88,7 @@ export default function CenterCreateForm(props: CenterCreateFormProps) {
               <FormLabel className='col-span-2'>Address (English)</FormLabel>
 
               <FormControl className='col-span-5'>
-                <Textarea {...field} placeholder='address (english)' />
+                <Textarea {...field} placeholder='e.g. Mong Kok Street' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>

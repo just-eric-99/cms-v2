@@ -53,7 +53,7 @@ export default function RoleCreateForm() {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Title (Chinese)</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='chinese name' />
+                <Input {...field} placeholder='e.g. 管理員' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>
@@ -66,7 +66,7 @@ export default function RoleCreateForm() {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Title (English)</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='title (english)' />
+                <Input {...field} placeholder='e.g. Approve User' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>

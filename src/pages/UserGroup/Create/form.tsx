@@ -69,7 +69,7 @@ export default function UserGroupsCreateForm(props: UserGroupsCreateFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Name</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='name' />
+                <Input {...field} placeholder='e.g. 初學者組' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>

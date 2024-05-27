@@ -59,7 +59,7 @@ export default function AdminCreateForm(props: AdminCreateFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Chinese Name</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='chinese name' />
+                <Input {...field} placeholder='e.g. 陳大文' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>
@@ -72,7 +72,7 @@ export default function AdminCreateForm(props: AdminCreateFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>English Name</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='english name' />
+                <Input {...field} placeholder='e.g. Chan Tai Man' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>
@@ -86,7 +86,7 @@ export default function AdminCreateForm(props: AdminCreateFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Display Name</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='display name' />
+                <Input {...field} placeholder='e.g. super_chan' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>
@@ -100,7 +100,7 @@ export default function AdminCreateForm(props: AdminCreateFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Email</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='email' />
+                <Input {...field} placeholder='e.g. chantaiman@email.com' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>
@@ -113,7 +113,7 @@ export default function AdminCreateForm(props: AdminCreateFormProps) {
             <FormItem className='flex-1'>
               <FormLabel className='col-span-2'>Phone</FormLabel>
               <FormControl className='col-span-5'>
-                <Input {...field} placeholder='phone' />
+                <Input {...field} placeholder='e.g. +85212345678' />
               </FormControl>
               <FormMessage className='col-span-5 col-start-3' />
             </FormItem>

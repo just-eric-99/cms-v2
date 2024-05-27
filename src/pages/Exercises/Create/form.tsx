@@ -146,7 +146,7 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input
-                  placeholder='name'
+                  placeholder='e.g. Warm Up Exercise'
                   {...field}
                   disabled={props.canEdit != undefined && !props.canEdit}
                 />
@@ -163,7 +163,7 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder='description'
+                  placeholder='e.g. Warm up exercise for beginners'
                   {...field}
                   disabled={props.canEdit != undefined && !props.canEdit}
                 />

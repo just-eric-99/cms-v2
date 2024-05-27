@@ -192,7 +192,7 @@ export default function UserGroupDetailsPage(props: UserGroupDetailsPageProps) {
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder='name'
+                          placeholder='e.g. 初學者組'
                           disabled={!canEdit}
                         />
                       </FormControl>

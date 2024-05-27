@@ -50,7 +50,7 @@ export default function RoleDetailsForm({ canEdit }: RoleDetailsFormProps) {
               <FormControl className='col-span-5'>
                 <Input
                   {...field}
-                  placeholder='chinese name'
+                  placeholder='e.g. 管理員'
                   disabled={!canEdit}
                 />
               </FormControl>
@@ -67,7 +67,7 @@ export default function RoleDetailsForm({ canEdit }: RoleDetailsFormProps) {
               <FormControl className='col-span-5'>
                 <Input
                   {...field}
-                  placeholder='title (english)'
+                  placeholder='e.g. Approve User'
                   disabled={!canEdit}
                 />
               </FormControl>

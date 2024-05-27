@@ -89,7 +89,7 @@ export default function SortableExerciseCard(props: SortableExerciseCardProps) {
                   <FormControl className=' col-span-5'>
                     <Input
                       {...field}
-                      placeholder=' duration'
+                      placeholder='duration'
                       value={field.value as number}
                       onChange={(e) => {
                         field.onChange(parseFloat(e.target.value))

@@ -64,6 +64,8 @@ export const columns: ColumnDef<Admin>[] = [
       )
     },
     cell: ({ row }) => {
+      if (!row.original.center)
+        return <div className='pl-2 text-left font-medium'>-</div>
       const name = row.original.center.name
       return <div className='pl-2 text-left font-medium'>{name}</div>
     },
@@ -82,6 +84,8 @@ export const columns: ColumnDef<Admin>[] = [
       )
     },
     cell: ({ row }) => {
+      if (!row.original.center)
+        return <div className='pl-2 text-left font-medium'>-</div>
       const name = row.original.center.organization.name
       return <div className='pl-2 text-left font-medium'>{name}</div>
     },

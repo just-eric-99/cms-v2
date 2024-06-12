@@ -97,8 +97,9 @@ export default function ReadyPose(props: ReadyPoseProps) {
       {props.canEdit != undefined && !props.canEdit && (
         <div className={'absolute aspect-[11/16] h-[400px]'}></div>
       )}
-      <div className='flex justify-center align-middle'>
-        <div className='grid w-max grid-cols-3 justify-center gap-2 px-5'>
+
+      <div className='flex '>
+        <div className='flex min-w-full flex-row flex-wrap gap-5 px-5'>
           {landmarkBodyParts.map((bodyParts) => (
             <FormField
               control={form.control}

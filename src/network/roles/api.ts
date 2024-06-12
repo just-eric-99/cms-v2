@@ -1,5 +1,5 @@
 import { API_ENDPOINT } from '@/constants/network'
-import {CreateRoleRequest, Role, RoleDetails} from '@/network/roles/types.ts'
+import { CreateRoleRequest, Role, RoleDetails } from '@/network/roles/types.ts'
 
 export async function getAllRoles(): Promise<Role[]> {
   const roles = await fetch(API_ENDPOINT + '/role')
@@ -17,7 +17,14 @@ export async function createRole(role: CreateRoleRequest): Promise<void> {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(role),
+    body: JSON.stringify({
+      title: role.title,
+      titleEn: role.titleEn,
+      permissions: role.permissions,
+      organizationId:
+        role.organizationId == '' ? undefined : role.organizationId,
+      centerId: role.centerId == '' ? undefined : role.centerId,
+    }),
   })
 
   if (!response.ok) {

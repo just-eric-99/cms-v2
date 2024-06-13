@@ -84,7 +84,7 @@ export function DataTable<TData, TValue>({
 
           return (
             <Input
-              key={columnFilter.columnDef.id}
+              key={child}
               placeholder={`Filter ${placeholder}`}
               value={columnFilter.getFilterValue() as string}
               onChange={(event) =>

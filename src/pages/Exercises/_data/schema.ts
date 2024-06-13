@@ -20,8 +20,8 @@ export const landmarkObject = z.object({
   ),
   jointDirectionsWeights: z
     .array(z.number())
-    .refine((weights) => weights.reduce((a, b) => a + b, 0) > 1, {
-      message: 'Sum of weights must be greater than 1',
+    .refine((weights) => weights.reduce((a, b) => a + b, 0) >= 1, {
+      message: 'Sum of weights must be greater than or equal to 1',
     }),
 })
 

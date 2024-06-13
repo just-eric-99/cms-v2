@@ -77,8 +77,8 @@ export default function CreateExercisePage() {
       }
       return createExercise(createExerciseRequest)
     },
-    onMutate: (data) => {
-      console.log(data)
+    onMutate: () => {
+      // console.log(data)
       setLoading(true)
     },
     onError: (error) => {
@@ -105,6 +105,15 @@ export default function CreateExercisePage() {
 
   const onSubmit = form.handleSubmit(
     (data) => {
+      console.log(
+        'data.readyLandmark.jointDirectionsWeights',
+        data.readyLandmark.jointDirectionsWeights
+      )
+      console.log(
+        'data.startLandmark.jointDirectionsWeights',
+        data.startLandmark.jointDirectionsWeights
+      )
+      console.log('data', data)
       createExerciseMutation.mutate(data)
     },
     (errors) => {
@@ -120,13 +129,13 @@ export default function CreateExercisePage() {
       }
 
       if (
-        errors.readyLandmark?.jointDirectionsWeights ||
-        errors.startLandmark?.jointDirectionsWeights
+        errors.readyLandmark!.jointDirectionsWeights ||
+        errors.startLandmark!.jointDirectionsWeights
       ) {
         if (errorMessages == '') {
-          errorMessages += 'Sum of weights must be greater than 1'
+          errorMessages += 'Set at least one joint weight as 1'
         } else {
-          errorMessages += ', Sum of weights must be greater than 1'
+          errorMessages += ', Sum of weights cannot be 0'
         }
       }
       setErrMsg(errorMessages)

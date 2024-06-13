@@ -43,6 +43,7 @@ type ExerciseDetailsPageProps = {
 }
 
 export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
+  const [errMsg, setErrMsg] = useState('')
   const [loading, setLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [canEdit, setCanEdit] = useState(props.editable)
@@ -104,8 +105,8 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
     mutationFn: async (data: z.infer<typeof createExerciseSchema>) => {
       return updateExercise(data, id ?? '')
     },
-    onMutate: (data) => {
-      console.log(data)
+    onMutate: () => {
+      // console.log(data)
       setLoading(true)
     },
     onError: (error) => {
@@ -155,9 +156,36 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
     }
   }, [form, query.data, setReadyPoseLandmarks, setStartPoseLandmarks])
 
-  const handleSave = () => {
-    updateExerciseMutation.mutate(form.getValues())
-  }
+  const handleSave = form.handleSubmit(
+    (data) => {
+      updateExerciseMutation.mutate(data)
+      setErrMsg('')
+    },
+    (errors) => {
+      let errorMessages = ''
+      if (
+        errors.name ||
+        errors.description ||
+        errors.difficulty ||
+        errors.permission ||
+        errors.centerId
+      ) {
+        errorMessages += 'Please fill all required fields'
+      }
+
+      if (
+        errors.readyLandmark?.jointDirectionsWeights ||
+        errors.startLandmark?.jointDirectionsWeights
+      ) {
+        if (errorMessages == '') {
+          errorMessages += 'Set at least one joint weight as 1'
+        } else {
+          errorMessages += ', Sum of weights cannot be 0'
+        }
+      }
+      setErrMsg(errorMessages)
+    }
+  )
 
   const handleDelete = () => {
     deleteExerciseMutation.mutate()
@@ -170,6 +198,7 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
 
   const handleBack = () => {
     form.reset()
+    setErrMsg('')
     navigate(-1)
   }
 
@@ -217,17 +246,20 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                 value={currentTab}
                 onValueChange={(value) => setCurrentTab(value)}
               >
-                <TabsList>
-                  <TabsTrigger className='min-w-32' value='form'>
-                    Details
-                  </TabsTrigger>
-                  <TabsTrigger className='min-w-32' value='readyPose'>
-                    Ready Pose
-                  </TabsTrigger>
-                  <TabsTrigger className='min-w-32' value='startPose'>
-                    Start Pose
-                  </TabsTrigger>
-                </TabsList>
+                <div className={'flex flex-row items-center justify-between'}>
+                  <TabsList>
+                    <TabsTrigger className='min-w-32' value='form'>
+                      Details
+                    </TabsTrigger>
+                    <TabsTrigger className='min-w-32' value='readyPose'>
+                      Ready Pose
+                    </TabsTrigger>
+                    <TabsTrigger className='min-w-32' value='startPose'>
+                      Start Pose
+                    </TabsTrigger>
+                  </TabsList>
+                  <div className={'text-destructive'}>{errMsg}</div>
+                </div>
                 <div className='min-h-[500px]'>
                   <TabsContent
                     forceMount

@@ -99,6 +99,8 @@ export default function StartPose(props: StartPoseProps) {
       normalizedLandmarks,
       worldLandmarks,
     })
+    form.setValue('startLandmark.normalizedLandmarks', normalizedLandmarks)
+    form.setValue('startLandmark.worldLandmarks', worldLandmarks)
   }, [startPoseLandmarks])
 
   return (

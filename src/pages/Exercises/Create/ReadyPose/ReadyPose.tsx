@@ -92,6 +92,8 @@ export default function ReadyPose(props: ReadyPoseProps) {
       normalizedLandmarks,
       worldLandmarks,
     })
+    form.setValue('readyLandmark.normalizedLandmarks', normalizedLandmarks)
+    form.setValue('readyLandmark.worldLandmarks', worldLandmarks)
   }, [readyPoseLandmarks])
 
   return (

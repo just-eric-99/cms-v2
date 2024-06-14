@@ -4,11 +4,12 @@ import { createExerciseSchema } from '../../_data/schema'
 import { z } from 'zod'
 import { FormField } from '@/components/ui/form'
 import { Slider } from '@/components/ui/slider'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useAtom } from 'jotai'
 import { openReadyDialogAtom, readyPoseLandmarksAtom } from '../atom'
 import { DrawingUtils, PoseLandmarker } from '@mediapipe/tasks-vision'
 import ReadySelectPoseDialog from './ReadyDialog'
+import { Button } from '@/components/ui/button.tsx'
 
 const landmarkBodyParts = [
   { index: 0, name: 'Face' },
@@ -33,7 +34,7 @@ export default function ReadyPose(props: ReadyPoseProps) {
   const poseLandmarkRef = useRef<HTMLCanvasElement>(null)
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
   const [openDialog, setOpenDialog] = useAtom(openReadyDialogAtom)
-  const [readyPoseLandmarks] = useAtom(readyPoseLandmarksAtom)
+  const [readyPoseLandmarks, setReadyPoseLandmarks] = useAtom(readyPoseLandmarksAtom)
 
   useEffect(() => {
     const drawLandmarks = () => {
@@ -78,18 +79,40 @@ export default function ReadyPose(props: ReadyPoseProps) {
     }
   }, [form])
 
+  const onMirror = useCallback(() => {
+    const normalizedLandmarks = readyPoseLandmarks.normalizedLandmarks.map((normalizedLandmark) => {
+      normalizedLandmark.x = 1 - normalizedLandmark.x
+      return normalizedLandmark
+    })
+    const worldLandmarks = readyPoseLandmarks.worldLandmarks.map((normalizedLandmark) => {
+      normalizedLandmark.x = 1 - normalizedLandmark.x
+      return normalizedLandmark
+    })
+    setReadyPoseLandmarks({
+      normalizedLandmarks,
+      worldLandmarks,
+    })
+  }, [readyPoseLandmarks])
+
   return (
     <div className='flex flex-1 flex-row py-4'>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogTrigger
-          asChild
-          disabled={props.canEdit != undefined && !props.canEdit}
-        >
-          <canvas
-            ref={poseLandmarkRef}
-            className='aspect-[11/16] h-[400px] rounded-lg border bg-slate-900'
-          ></canvas>
-        </DialogTrigger>
+        <div>
+          <DialogTrigger
+            asChild
+            disabled={props.canEdit != undefined && !props.canEdit}
+          >
+            <canvas
+              ref={poseLandmarkRef}
+              className='aspect-[11/16] h-[400px] rounded-lg border bg-slate-900'
+            ></canvas>
+          </DialogTrigger>
+          <div className='my-2 flex justify-center'>
+            <Button variant={'outline'} onClick={onMirror}>
+              Mirror
+            </Button>
+          </div>
+        </div>
         <DialogContent className='align-top sm:max-w-[1200px]'>
           <ReadySelectPoseDialog />
         </DialogContent>

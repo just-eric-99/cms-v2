@@ -148,7 +148,9 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
       await queryClient.invalidateQueries({ queryKey: ['exercise', id] })
       setCopyLoading(false)
       toast.success(`Exercise copied successfully`)
-      navigate(`/exercises/${data.id}`)
+      navigate(`/exercises/${data.id}`, {
+        replace: true,
+      })
       window.location.reload()
     },
   })

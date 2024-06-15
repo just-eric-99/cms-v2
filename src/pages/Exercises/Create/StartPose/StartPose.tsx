@@ -117,7 +117,11 @@ export default function StartPose(props: StartPoseProps) {
             ></canvas>
           </DialogTrigger>
           <div className='my-2 flex justify-center'>
-            <Button variant={'outline'} onClick={onMirror}>
+            <Button
+              variant={'secondary'}
+              onClick={onMirror}
+              disabled={!props.canEdit}
+            >
               Mirror
             </Button>
           </div>

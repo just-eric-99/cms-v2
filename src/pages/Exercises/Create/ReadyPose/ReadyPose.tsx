@@ -34,7 +34,9 @@ export default function ReadyPose(props: ReadyPoseProps) {
   const poseLandmarkRef = useRef<HTMLCanvasElement>(null)
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
   const [openDialog, setOpenDialog] = useAtom(openReadyDialogAtom)
-  const [readyPoseLandmarks, setReadyPoseLandmarks] = useAtom(readyPoseLandmarksAtom)
+  const [readyPoseLandmarks, setReadyPoseLandmarks] = useAtom(
+    readyPoseLandmarksAtom
+  )
 
   useEffect(() => {
     const drawLandmarks = () => {
@@ -80,14 +82,18 @@ export default function ReadyPose(props: ReadyPoseProps) {
   }, [form])
 
   const onMirror = useCallback(() => {
-    const normalizedLandmarks = readyPoseLandmarks.normalizedLandmarks.map((normalizedLandmark) => {
-      normalizedLandmark.x = 1 - normalizedLandmark.x
-      return normalizedLandmark
-    })
-    const worldLandmarks = readyPoseLandmarks.worldLandmarks.map((normalizedLandmark) => {
-      normalizedLandmark.x = 1 - normalizedLandmark.x
-      return normalizedLandmark
-    })
+    const normalizedLandmarks = readyPoseLandmarks.normalizedLandmarks.map(
+      (normalizedLandmark) => {
+        normalizedLandmark.x = 1 - normalizedLandmark.x
+        return normalizedLandmark
+      }
+    )
+    const worldLandmarks = readyPoseLandmarks.worldLandmarks.map(
+      (normalizedLandmark) => {
+        normalizedLandmark.x = 1 - normalizedLandmark.x
+        return normalizedLandmark
+      }
+    )
     setReadyPoseLandmarks({
       normalizedLandmarks,
       worldLandmarks,
@@ -110,7 +116,11 @@ export default function ReadyPose(props: ReadyPoseProps) {
             ></canvas>
           </DialogTrigger>
           <div className='my-2 flex justify-center'>
-            <Button variant={'outline'} onClick={onMirror}>
+            <Button
+              variant={'secondary'}
+              onClick={onMirror}
+              disabled={!props.canEdit}
+            >
               Mirror
             </Button>
           </div>

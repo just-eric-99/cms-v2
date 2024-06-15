@@ -1,5 +1,6 @@
 import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import { Landmark, NormalizedLandmark } from '@mediapipe/tasks-vision'
+import { Center } from '@/network/centers/types.ts'
 
 export type Exercise = {
   id: string
@@ -21,6 +22,7 @@ export type ExerciseDetails = {
   permission: ExercisePermission
   createdAt: string
   updatedAt: string
+  center: Center
   readyPose: PoseLandmarkDto
   startPose: PoseLandmarkDto
 }

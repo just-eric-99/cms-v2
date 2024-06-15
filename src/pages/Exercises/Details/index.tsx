@@ -76,20 +76,13 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
     },
   })
 
-  const centerQuery = useQuery({
-    queryKey: ['centers'],
-    queryFn: getAllCenters,
-  })
-
   const query = useQuery({
     queryKey: ['exercise'],
     retryOnMount: true,
     queryFn: async () => {
       const exercise = await getExerciseById(id ?? '')
       form.reset({
-        organizationId: centerQuery.data?.find(
-          (center) => center.id === exercise.centerId
-        )?.organizationId,
+        organizationId: exercise.center.organizationId,
         centerId: exercise.centerId,
         name: exercise.name,
         description: exercise.description,

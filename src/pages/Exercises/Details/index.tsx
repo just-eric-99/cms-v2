@@ -16,6 +16,7 @@ import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import { useLayoutEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
+  copyExercise,
   deleteExercise,
   getExerciseById,
   updateExercise,
@@ -45,6 +46,7 @@ type ExerciseDetailsPageProps = {
 export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
   const [loading, setLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState(false)
+  const [copyLoading, setCopyLoading] = useState(false)
   const [canEdit, setCanEdit] = useState(props.editable)
   const [currentTab, setCurrentTab] = useState('form')
   const { id } = useParams()
@@ -139,6 +141,26 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
     },
   })
 
+  const copyExerciseMutation = useMutation({
+    mutationFn: async () => {
+      return copyExercise(id ?? '')
+    },
+    onMutate: () => {
+      setCopyLoading(true)
+    },
+    onError: (error) => {
+      setCopyLoading(false)
+      toast.error(error.message ?? 'Error copying exercise')
+    },
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ['exercise', id] })
+      setCopyLoading(false)
+      toast.success(`Exercise copied successfully`)
+      navigate(`/exercises/${data.id}`)
+      window.location.reload()
+    },
+  })
+
   useLayoutEffect(() => {
     if (query.data) {
       setReadyPoseLandmarks({
@@ -161,6 +183,10 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
 
   const handleDelete = () => {
     deleteExerciseMutation.mutate()
+  }
+
+  const handleCopy = () => {
+    copyExerciseMutation.mutate()
   }
 
   const handleCancel = () => {
@@ -186,6 +212,13 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                 Back
               </Button>
               <div className='flex flex-1 justify-end gap-4'>
+                <Button
+                  variant={'secondary'}
+                  onClick={handleCopy}
+                  loading={copyLoading}
+                >
+                  Copy
+                </Button>
                 <Button
                   variant={'destructive'}
                   onClick={handleDelete}

@@ -36,7 +36,6 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx'
 import { Button } from '@/components/ui/button.tsx'
 
 import { toast } from 'sonner'
-import { getAllCenters } from '@/network/centers/api.ts'
 
 type ExerciseDetailsPageProps = {
   editable: boolean

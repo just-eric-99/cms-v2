@@ -63,3 +63,15 @@ export async function deleteExercise(exerciseId: string) {
     throw new Error('Failed to delete exercise')
   }
 }
+
+export async function copyExercise(exerciseId: string): Promise<ExerciseDetails> {
+  const response = await fetch(API_ENDPOINT + `/exercise/copy/${exerciseId}`, {
+    method: 'POST',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to copy exercise')
+  }
+
+  return response.json()
+}

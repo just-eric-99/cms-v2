@@ -4,11 +4,12 @@ import { createExerciseSchema } from '../../_data/schema'
 import { z } from 'zod'
 import { FormField } from '@/components/ui/form'
 import { Slider } from '@/components/ui/slider'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useAtom } from 'jotai'
 import { openStartDialogAtom, startPoseLandmarksAtom } from '../atom'
 import { DrawingUtils, PoseLandmarker } from '@mediapipe/tasks-vision'
 import StartSelectPoseDialog from './StartDialog'
+import { Button } from '@/components/ui/button.tsx'
 
 const landmarkBodyParts = [
   { index: 0, name: 'Face' },
@@ -33,7 +34,7 @@ export default function StartPose(props: StartPoseProps) {
   const poseLandmarkRef = useRef<HTMLCanvasElement>(null)
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
   const [openDialog, setOpenDialog] = useAtom(openStartDialogAtom)
-  const [startPoseLandmarks] = useAtom(startPoseLandmarksAtom)
+  const [startPoseLandmarks, setStartPoseLandmarks] = useAtom(startPoseLandmarksAtom)
 
   useEffect(() => {
     const drawLandmarks = () => {
@@ -70,9 +71,7 @@ export default function StartPose(props: StartPoseProps) {
       }
     }
     drawLandmarks()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch(`startLandmark.normalizedLandmarks`)])
-  // to fix dependency warning
+  }, [startPoseLandmarks.normalizedLandmarks])
 
   useEffect(() => {
     if (form.watch(`startLandmark`).normalizedLandmarks.length === 0) {
@@ -85,18 +84,48 @@ export default function StartPose(props: StartPoseProps) {
       if (!ctx) return
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch(`startLandmark`)])
+  }, [form])
+
+  const onMirror = useCallback(() => {
+    const normalizedLandmarks = startPoseLandmarks.normalizedLandmarks.map((normalizedLandmark) => {
+      normalizedLandmark.x = 1 - normalizedLandmark.x
+      return normalizedLandmark
+    })
+    const worldLandmarks = startPoseLandmarks.worldLandmarks.map((normalizedLandmark) => {
+      normalizedLandmark.x = 1 - normalizedLandmark.x
+      return normalizedLandmark
+    })
+    setStartPoseLandmarks({
+      normalizedLandmarks,
+      worldLandmarks,
+    })
+    form.setValue('startLandmark.normalizedLandmarks', normalizedLandmarks)
+    form.setValue('startLandmark.worldLandmarks', worldLandmarks)
+  }, [startPoseLandmarks])
 
   return (
     <div className='flex flex-1 flex-row py-4'>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogTrigger asChild>
-          <canvas
-            ref={poseLandmarkRef}
-            className='aspect-[11/16] h-[400px]  rounded-lg border bg-slate-900'
-          ></canvas>
-        </DialogTrigger>
+        <div>
+          <DialogTrigger
+            asChild
+            disabled={props.canEdit != undefined && !props.canEdit}
+          >
+            <canvas
+              ref={poseLandmarkRef}
+              className='aspect-[11/16] h-[400px] rounded-lg border bg-slate-900'
+            ></canvas>
+          </DialogTrigger>
+          <div className='my-2 flex justify-center'>
+            <Button
+              variant={'secondary'}
+              onClick={onMirror}
+              disabled={!props.canEdit}
+            >
+              Mirror
+            </Button>
+          </div>
+        </div>
         <DialogContent className='align-top sm:max-w-[1200px]'>
           <StartSelectPoseDialog />
         </DialogContent>

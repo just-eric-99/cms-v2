@@ -343,6 +343,7 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                       callback={() => {
                         console.log('callback')
                       }}
+                      canEdit={canEdit}
                     />
                   </TabsContent>
                 </div>

@@ -22,18 +22,22 @@ export default function AnimationEditor(props: AnimationEditorProps) {
     requestFullscreen,
     addEventListener,
     removeEventListener,
+    unload,
   } = useUnityContext(unityConfig)
 
   useEffect(() => {
     sendMessage('LoadController', 'SetExerciseData', props.json)
-  }, [sendMessage, unityProvider])
+  }, [props.json, sendMessage, unityProvider])
 
-  const handleSetKeyframeData = useCallback((jsonResult: string) => {
-    console.log('handleSetKeyframeData')
-    // console.log(json)
-    // json = jsonResult;
-    props.callback(jsonResult)
-  }, [])
+  const handleSetKeyframeData = useCallback(
+    (jsonResult: string) => {
+      console.log('handleSetKeyframeData')
+      // console.log(json)
+      // json = jsonResult;
+      props.callback(jsonResult)
+    },
+    [props]
+  )
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -46,9 +50,16 @@ export default function AnimationEditor(props: AnimationEditorProps) {
     }
   }, [addEventListener, removeEventListener, handleSetKeyframeData])
 
+  useEffect(() => {
+    return () => {
+      unload().then((r) => console.log(r))
+    }
+  }, [unload])
+
   return (
     <div className={'relative aspect-video h-[500px]'}>
       <Unity
+        tabIndex={93763}
         className={'absolute inset-0'}
         style={{ width: '100%', height: '100%' }}
         unityProvider={unityProvider}

@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { getAllCenters } from '@/network/centers/api'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -26,6 +26,11 @@ import { Slider } from '@/components/ui/slider'
 import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import Loader from '@/components/loader.tsx'
 import { getAllOrganization } from '@/network/organization/api.ts'
+import { RefreshCcw } from 'lucide-react'
+import { Button } from '@/components/ui/button.tsx'
+import { generateVoice } from '@/network/text-to-speech/api.ts'
+import { useState } from 'react'
+import AudioPlayer from '@/components/audio-player.tsx'
 
 type CreateExerciseFormProps = {
   canEdit?: boolean
@@ -33,6 +38,9 @@ type CreateExerciseFormProps = {
 
 export default function CreateExerciseForm(props: CreateExerciseFormProps) {
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
+  const [currentFilename, setCurrentFilename] = useState('')
+
+  // const queryClient = useQueryClient()
 
   const organizationQuery = useQuery({
     queryKey: ['organizations'],
@@ -42,6 +50,14 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
   const centerQuery = useQuery({
     queryKey: ['centers'],
     queryFn: getAllCenters,
+  })
+
+  const textToSpeechMutation = useMutation({
+    mutationFn: generateVoice,
+    onSuccess: (data) => {
+      console.log('setting current filename', data.filename)
+      setCurrentFilename(data.filename)
+    },
   })
 
   if (centerQuery.isLoading || organizationQuery.isLoading) {
@@ -166,12 +182,29 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder='e.g. Warm up exercise for beginners'
-                  {...field}
-                  disabled={props.canEdit != undefined && !props.canEdit}
-                />
+                <div className={'flex flex-row  space-x-2'}>
+                  <Textarea
+                    placeholder='e.g. Warm up exercise for beginners'
+                    {...field}
+                    disabled={props.canEdit != undefined && !props.canEdit}
+                  />
+                  {(props.canEdit == undefined || props.canEdit) &&
+                    field.value != '' && (
+                      <Button
+                        size={'icon'}
+                        onClick={() => {
+                          console.log('current field value', field.value)
+                          textToSpeechMutation.mutate({
+                            text: field.value,
+                          })
+                        }}
+                      >
+                        <RefreshCcw />
+                      </Button>
+                    )}
+                </div>
               </FormControl>
+              <AudioPlayer src={currentFilename} />
               <FormMessage />
             </FormItem>
           )}

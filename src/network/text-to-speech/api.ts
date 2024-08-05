@@ -2,7 +2,7 @@ import { API_ENDPOINT } from '@/constants/network.ts'
 import { GenerateVoiceRequest, GenerateVoiceResponse } from '@/network/text-to-speech/types.ts'
 
 export async function getVoice(filename: string) {
-  const response = await fetch(`${API_ENDPOINT}?filename=${filename}`);
+  const response = await fetch(`${API_ENDPOINT}/text-to-speech?filename=${filename}`);
 
   if (!response.ok) {
     const error = await response.json()
@@ -14,7 +14,7 @@ export async function getVoice(filename: string) {
 }
 
 export async function generateVoice(generateVoiceRequest: GenerateVoiceRequest): Promise<GenerateVoiceResponse> {
-  const response = await fetch(API_ENDPOINT + '/generateVoice', {
+  const response = await fetch(API_ENDPOINT + '/text-to-speech', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

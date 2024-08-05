@@ -204,7 +204,7 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
                     )}
                 </div>
               </FormControl>
-              <AudioPlayer src={currentFilename} />
+              {currentFilename && <AudioPlayer src={currentFilename} />}
               <FormMessage />
             </FormItem>
           )}

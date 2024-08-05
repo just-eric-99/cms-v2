@@ -37,6 +37,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card.tsx'
 import { Button } from '@/components/ui/button.tsx'
 
 import { toast } from 'sonner'
+import AnimationEditor from '@/components/animation-editor.tsx'
 
 type ExerciseDetailsPageProps = {
   editable: boolean
@@ -222,6 +223,7 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
     navigate(-1)
   }
 
+  // unity
   if (query.isLoading) return <Loader />
 
   return (
@@ -284,6 +286,9 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                     <TabsTrigger className='min-w-32' value='startPose'>
                       Start Pose
                     </TabsTrigger>
+                    <TabsTrigger className='min-w-32' value='animationEditor'>
+                      Animation Editor
+                    </TabsTrigger>
                   </TabsList>
                   <div className={'text-destructive'}>{errMsg}</div>
                 </div>
@@ -309,6 +314,36 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                     className={`${currentTab === 'startPose' ? 'block' : 'hidden'}`}
                   >
                     <StartPose canEdit={canEdit} />
+                  </TabsContent>
+
+                  <TabsContent
+                    forceMount
+                    value='animationEditor'
+                    className={`${currentTab === 'animationEditor' ? 'block' : 'hidden'}`}
+                  >
+                    {/*<AnimationEditor*/}
+                    {/*  exerciseId={id ?? ''}*/}
+                    {/*  callback={() => {*/}
+                    {/*    console.log('callback')*/}
+                    {/*  }}*/}
+                    {/*/>*/}
+
+                    {/*<Unity*/}
+                    {/*  style={{ width: '100%', height: '100%' }}*/}
+                    {/*  unityProvider={unityProvider}*/}
+                    {/*/>*/}
+
+                    {/*<Unity*/}
+                    {/*  style={{ width: '100%', height: '100%' }}*/}
+                    {/*  unityProvider={unityProvider}*/}
+                    {/*/>*/}
+
+                    <AnimationEditor
+                      json={JSON.stringify(query.data)}
+                      callback={() => {
+                        console.log('callback')
+                      }}
+                    />
                   </TabsContent>
                 </div>
               </Tabs>

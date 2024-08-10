@@ -34,4 +34,5 @@ export const createExerciseSchema = z.object({
   readyLandmark: landmarkObject,
   startLandmark: landmarkObject,
   permission: z.nativeEnum(ExercisePermission),
+  voiceFilename: z.string().optional()
 })

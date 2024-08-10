@@ -30,15 +30,16 @@ import { RefreshCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button.tsx'
 import { generateVoice } from '@/network/text-to-speech/api.ts'
 import { useState } from 'react'
-import AudioPlayer from '@/components/audio-player.tsx'
+import AudioPlayer from "@/components/audio-player.tsx";
+import {useParams} from "react-router-dom";
 
-type CreateExerciseFormProps = {
+type UpdateExerciseFormProps = {
   canEdit?: boolean
 }
 
-export default function CreateExerciseForm(props: CreateExerciseFormProps) {
+export default function UpdateExerciseForm(props: UpdateExerciseFormProps) {
+  const { id } = useParams()
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
-  const [currentFilename, setCurrentFilename] = useState('')
 
   // const queryClient = useQueryClient()
 
@@ -52,11 +53,16 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
     queryFn: getAllCenters,
   })
 
-  const textToSpeechMutation = useMutation({
+  const [audioGenerated, setAudioGenerated] = useState<boolean>(false)
+  const [filename, setFilename] = useState<string>('')
+
+  const generateVoiceFromTextMutation = useMutation({
     mutationFn: generateVoice,
     onSuccess: (data) => {
-      console.log('setting current filename', data.filename)
-      setCurrentFilename(data.filename)
+      setAudioGenerated(true)
+      console.log('data', data)
+      setFilename(data.filename)
+      form.setValue('voiceFilename', data.filename)
     },
   })
 
@@ -191,10 +197,10 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
                   {(props.canEdit == undefined || props.canEdit) &&
                     field.value != '' && (
                       <Button
+                        disabled={field.value === ''}
                         size={'icon'}
                         onClick={() => {
-                          console.log('current field value', field.value)
-                          textToSpeechMutation.mutate({
+                          generateVoiceFromTextMutation.mutate({
                             text: field.value,
                           })
                         }}
@@ -204,7 +210,11 @@ export default function CreateExerciseForm(props: CreateExerciseFormProps) {
                     )}
                 </div>
               </FormControl>
-              {currentFilename && <AudioPlayer src={currentFilename} />}
+              {audioGenerated ? (
+                <AudioPlayer filename={filename} />
+              ) : (
+                <AudioPlayer exerciseId={id} />
+              )}
               <FormMessage />
             </FormItem>
           )}

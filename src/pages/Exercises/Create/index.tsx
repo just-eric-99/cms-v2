@@ -16,7 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useEffect, useState } from 'react'
-import CreateExerciseForm from './form'
+import UpdateExerciseForm from './form'
 import StartPose from './StartPose/StartPose'
 import ReadyPose from './ReadyPose/ReadyPose'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -74,6 +74,7 @@ export default function CreateExercisePage() {
           worldLandmarks: data.startLandmark.worldLandmarks,
           jointDirectionsWeights: data.startLandmark.jointDirectionsWeights,
         },
+        voiceFilename: data.voiceFilename ?? '',
       }
       return createExercise(createExerciseRequest)
     },
@@ -117,21 +118,27 @@ export default function CreateExercisePage() {
       createExerciseMutation.mutate(data)
     },
     (errors) => {
+      console.log("inside invalid")
+      console.log(errors)
       let errorMessages = ''
       if (
         errors.name ||
         errors.description ||
         errors.difficulty ||
         errors.permission ||
-        errors.centerId
+        errors.centerId ||
+        errors.voiceFilename
       ) {
         errorMessages += 'Please fill all required fields'
       }
 
+      console.log(errors.readyLandmark)
+      console.log(errors.startLandmark)
       if (
-        errors.readyLandmark!.jointDirectionsWeights ||
-        errors.startLandmark!.jointDirectionsWeights
+        errors.readyLandmark?.jointDirectionsWeights ||
+        errors.startLandmark?.jointDirectionsWeights
       ) {
+        console.log('inside error')
         if (errorMessages == '') {
           errorMessages += 'Set at least one joint weight as 1'
         } else {
@@ -185,7 +192,7 @@ export default function CreateExercisePage() {
                   value='form'
                   className={`${currentTab === 'form' ? 'block' : 'hidden'}`}
                 >
-                  <CreateExerciseForm />
+                  <UpdateExerciseForm />
                 </TabsContent>
 
                 <TabsContent

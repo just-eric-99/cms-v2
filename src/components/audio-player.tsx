@@ -1,39 +1,62 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { Loader2 } from 'lucide-react'
+import { getExerciseVoiceById } from '@/network/exercises/api.ts'
 import { getVoice } from '@/network/text-to-speech/api.ts'
-import { LoaderCircle } from 'lucide-react'
 
 type AudioPlayerProps = {
-  src: string
+  exerciseId?: string
+  filename?: string
 }
-export default function AudioPlayer(props: AudioPlayerProps) {
-  const audioRef = React.useRef<HTMLAudioElement>(null)
 
-  const getTextToSpeech = useQuery({
-    queryKey: ['text-to-speech', props.src],
-    queryFn: async () => getVoice(props.src),
+export default function AudioPlayer(props: AudioPlayerProps) {
+  const audioRef = React.useRef<HTMLAudioElement>(null!)
+
+  const getVoiceByExerciseIdQuery = useQuery({
+    enabled: props.exerciseId !== undefined,
+    queryKey: ['voice', props.exerciseId],
+    queryFn: async () => getExerciseVoiceById(props.exerciseId ?? ''),
   })
 
-  React.useEffect(() => {
+  const getVoiceByFilenameQuery = useQuery({
+    enabled: props.filename !== undefined,
+    retryDelay: 4000,
+    queryKey: ['voice', props.filename],
+    queryFn: async () => getVoice(props.filename ?? ''),
+  })
+
+  useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.src = props.src
+      if (props.exerciseId) {
+        audioRef.current.src = getVoiceByExerciseIdQuery.data ?? ''
+      } else if (props.filename) {
+        audioRef.current.src = getVoiceByFilenameQuery.data ?? ''
+      }
       audioRef.current.load()
     }
-  }, [props.src])
+  }, [
+    getVoiceByExerciseIdQuery.data,
+    getVoiceByFilenameQuery.data,
+    props.exerciseId,
+    props.filename,
+  ])
 
-  if (props.src === '') {
-    return null
-  }
-  if (getTextToSpeech.isLoading) {
-    return <LoaderCircle className='animate-spin' size={32} />
+  if (
+    getVoiceByExerciseIdQuery.isLoading ||
+    getVoiceByFilenameQuery.isLoading
+  ) {
+    return <Loader2 size={32} className='animate-spin' />
   }
 
-  return (
-    <audio
-      ref={audioRef}
-      controls
-      src={getTextToSpeech.data}
-      key={getTextToSpeech.data}
-    />
-  )
+  if (props.exerciseId !== undefined) {
+    return (
+      <audio ref={audioRef} controls src={getVoiceByExerciseIdQuery.data} />
+    )
+  }
+
+  if (props.filename !== undefined) {
+    return <audio ref={audioRef} controls src={getVoiceByFilenameQuery.data} />
+  }
+
+  return null
 }

@@ -18,6 +18,18 @@ export async function getExerciseById(id: string): Promise<ExerciseDetails> {
   return response.json()
 }
 
+export async function getExerciseVoiceById(id: string): Promise<string> {
+  const response = await fetch(API_ENDPOINT + `/exercise/${id}/voice`)
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.message ?? 'No such voice found')
+  }
+
+  const blob = await response.blob()
+  return URL.createObjectURL(blob)
+}
+
 export async function createExercise(
   exercise: CreateExerciseRequest
 ): Promise<void> {
@@ -33,7 +45,7 @@ export async function createExercise(
     // toast('Error', {
     //   description: (response.body? ).join('\n'),
     // })
-    throw new Error('Failed to create exercise')
+    throw await response.json()
   }
 }
 
@@ -64,7 +76,9 @@ export async function deleteExercise(exerciseId: string) {
   }
 }
 
-export async function copyExercise(exerciseId: string): Promise<ExerciseDetails> {
+export async function copyExercise(
+  exerciseId: string
+): Promise<ExerciseDetails> {
   const response = await fetch(API_ENDPOINT + `/exercise/copy/${exerciseId}`, {
     method: 'POST',
   })

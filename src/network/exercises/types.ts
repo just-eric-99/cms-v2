@@ -25,6 +25,7 @@ export type ExerciseDetails = {
   center: Center
   readyPose: PoseLandmarkDto
   startPose: PoseLandmarkDto
+  voiceFilename: string
 }
 
 export type PoseLandmarkDto = {
@@ -41,6 +42,7 @@ export type CreateExerciseRequest = {
   readyLandmark: PoseLandmarkDto
   startLandmark: PoseLandmarkDto
   permission: ExercisePermission
+  voiceFilename: string
 }
 
 export type UpdateExerciseRequest = {
@@ -51,4 +53,5 @@ export type UpdateExerciseRequest = {
   readyLandmark: PoseLandmarkDto
   startLandmark: PoseLandmarkDto
   permission: ExercisePermission
+  voiceFilename?: string
 }

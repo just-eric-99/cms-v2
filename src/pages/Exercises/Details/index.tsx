@@ -5,7 +5,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs.tsx'
-import CreateExerciseForm from '@/pages/Exercises/Create/form.tsx'
+import UpdateExerciseForm from '@/pages/Exercises/Create/form.tsx'
 import ReadyPose from '@/pages/Exercises/Create/ReadyPose/ReadyPose.tsx'
 import StartPose from '@/pages/Exercises/Create/StartPose/StartPose.tsx'
 import { useForm } from 'react-hook-form'
@@ -91,6 +91,7 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
         permission: exercise.permission,
         readyLandmark: exercise.readyPose,
         startLandmark: exercise.startPose,
+        voiceFilename: exercise.voiceFilename
       })
       return exercise
     },
@@ -175,10 +176,12 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
 
   const handleSave = form.handleSubmit(
     (data) => {
+      console.log('edit details', data)
       updateExerciseMutation.mutate(data)
       setErrMsg('')
     },
     (errors) => {
+      console.log('edit details error', errors)
       let errorMessages = ''
       if (
         errors.name ||
@@ -223,7 +226,8 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
     navigate(-1)
   }
 
-  // unity
+  // state of voice filename
+
   if (query.isLoading) return <Loader />
 
   return (
@@ -298,7 +302,7 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                     value='form'
                     className={`${currentTab === 'form' ? 'block' : 'hidden'}`}
                   >
-                    <CreateExerciseForm canEdit={canEdit} />
+                    <UpdateExerciseForm canEdit={canEdit} />
                   </TabsContent>
 
                   <TabsContent
@@ -340,8 +344,8 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
 
                     <AnimationEditor
                       json={JSON.stringify(query.data)}
-                      callback={() => {
-                        console.log('callback')
+                      callback={(json: string) => {
+                        console.log(json)
                       }}
                       canEdit={canEdit}
                     />

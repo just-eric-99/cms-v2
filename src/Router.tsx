@@ -16,7 +16,8 @@ import RoleDetailsPage from '@/pages/Roles/Details'
 import UserGroups from '@/pages/UserGroup'
 import UserGroupDetailsPage from '@/pages/UserGroup/Details'
 import ExerciseDetailsPage from '@/pages/Exercises/Details'
-// import ExerciseAssignmentPage from '@/pages/ExerciseAssignment'
+import Records from '@/pages/Records'
+import RecordDetails from '@/pages/Records/Details'
 
 export default function Router() {
   return (
@@ -68,6 +69,11 @@ export default function Router() {
               path=':id'
               element={<UserGroupDetailsPage editable={false} />}
             />
+          </Route>
+
+          <Route path='/records'>
+            <Route index element={<Records />} />
+            <Route path=':id' element={<RecordDetails />} />
           </Route>
         </Route>
         <Route path='*' element={<NotFoundError />} />

@@ -7,6 +7,7 @@ import {
   SquareActivity,
   // UserCog,
   UsersRound,
+  Video,
 } from 'lucide-react'
 
 export interface NavLink {
@@ -62,6 +63,12 @@ export const sidelinks: SideLink[] = [
     label: '',
     href: '/user-groups',
     icon: <Boxes size={18} />,
+  },
+  {
+    title: 'Records',
+    label: '',
+    href: '/records',
+    icon: <Video size={18} />,
   },
   // {
   //   title: 'Exercise Assignments',

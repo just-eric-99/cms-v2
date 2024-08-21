@@ -94,27 +94,27 @@ export default function RecordDetails() {
                   <Input disabled value={query.data?.score} />
                 </div>
 
-                <div className={'flex-1 space-y-2'}>
-                  <Label>Created At</Label>
-                  <Input
-                    disabled
-                    value={format(
-                      query.data?.createdAt ?? '',
-                      'yyyy-MM-dd HH:mm:ss'
-                    )}
-                  />
-                </div>
+                {/*<div className={'flex-1 space-y-2'}>*/}
+                {/*  <Label>Created At</Label>*/}
+                {/*  <Input*/}
+                {/*    disabled*/}
+                {/*    value={format(*/}
+                {/*      query.data?.createdAt ?? '',*/}
+                {/*      'yyyy-MM-dd HH:mm:ss'*/}
+                {/*    )}*/}
+                {/*  />*/}
+                {/*</div>*/}
 
-                <div className={'flex-1 space-y-2'}>
-                  <Label>Updated At</Label>
-                  <Input
-                    disabled
-                    value={format(
-                      query.data?.updatedAt ?? '',
-                      'yyyy-MM-dd HH:mm:ss'
-                    )}
-                  />
-                </div>
+                {/*<div className={'flex-1 space-y-2'}>*/}
+                {/*  <Label>Updated At</Label>*/}
+                {/*  <Input*/}
+                {/*    disabled*/}
+                {/*    value={format(*/}
+                {/*      query.data?.updatedAt ?? '',*/}
+                {/*      'yyyy-MM-dd HH:mm:ss'*/}
+                {/*    )}*/}
+                {/*  />*/}
+                {/*</div>*/}
               </div>
             </CardContent>
           </Card>
@@ -139,7 +139,7 @@ export default function RecordDetails() {
                           <DialogTrigger asChild>
                             <Button variant={'link'}>{recordName}</Button>
                           </DialogTrigger>
-                          <DialogContent className={'flex'}>
+                          <DialogContent className={'flex p-10'}>
                             <VideoPlayerWithLandmarks
                               userExerciseId={userExerciseRecord.id}
                             />

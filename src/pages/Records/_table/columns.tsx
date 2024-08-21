@@ -5,40 +5,6 @@ import { ArrowUpDown } from 'lucide-react'
 import { format } from 'date-fns'
 
 export const columns: ColumnDef<Record>[] = [
-  // {
-  //   accessorKey: 'id',
-  //   header: ({ column }) => (
-  //     <Button
-  //       variant={'ghost'}
-  //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-  //     >
-  //       ID
-  //       <ArrowUpDown className='ml-2 h-4 w-4' />
-  //     </Button>
-  //   ),
-  //   cell: ({ row }) => {
-  //     const id = row.getValue('id') as string
-  //     return <div className='pl-2 text-left font-medium'>{id}</div>
-  //   },
-  // },
-  {
-    accessorKey: 'userExerciseSetId',
-    header: ({ column }) => (
-      <Button
-        variant={'ghost'}
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        User Exercise Set ID
-        <ArrowUpDown className='ml-2 h-4 w-4' />
-      </Button>
-    ),
-    cell: ({ row }) => {
-      const userExerciseSetId = row.getValue('userExerciseSetId') as string
-      return (
-        <div className='pl-2 text-left font-medium'>{userExerciseSetId}</div>
-      )
-    },
-  },
   {
     accessorKey: 'userName',
     header: ({ column }) => (

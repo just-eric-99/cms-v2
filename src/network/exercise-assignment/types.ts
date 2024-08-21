@@ -42,5 +42,16 @@ export type ExerciseAssignmentDetails = {
   order: number
   createdAt: string
   updatedAt: string
+  deletedAt: string | null
+  userExerciseSetData: UserExerciseSetData[]
+}
+
+export type UserExerciseSetData = {
+  id: string
+  userExerciseSetId: string
+  exerciseId: string
+  recurrence: number
+  duration: number
+  order: number
   exercise: Exercise
 }

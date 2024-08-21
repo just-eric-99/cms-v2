@@ -21,7 +21,10 @@ export default function UserDetailsExercisesPage(
   const query = useQuery({
     queryKey: ['assigned-exercises'],
     queryFn: async () => {
-      return await getExerciseAssignmentsByUserId(props.userId)
+      const exerciseAssignment = await getExerciseAssignmentsByUserId(
+        props.userId
+      )
+      return exerciseAssignment.userExerciseSetData
     },
   })
   if (query.isLoading) return <Loader />
@@ -32,7 +35,7 @@ export default function UserDetailsExercisesPage(
       data={
         query.data?.map((exercise) => {
           return {
-            id: exercise.exerciseId,
+            id: exercise.id,
             name: exercise.exercise.name,
             duration: exercise.duration,
             recurrence: exercise.recurrence,

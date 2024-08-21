@@ -55,7 +55,7 @@ export async function assignExerciseToUserGroup(
 
 export async function getExerciseAssignmentsByUserId(
   userId: string
-): Promise<ExerciseAssignmentDetails[]> {
+): Promise<ExerciseAssignmentDetails> {
   const response = await fetch(API_ENDPOINT + `/exercise-assignment/${userId}`)
   return response.json()
 }

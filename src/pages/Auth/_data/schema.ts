@@ -9,3 +9,13 @@ export const inputPasswordSchema = z.object({
   password: z.string(),
   isRemember: z.boolean(),
 })
+
+export const updatePasswordSchema = z
+  .object({
+    password: z.string().min(8),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })

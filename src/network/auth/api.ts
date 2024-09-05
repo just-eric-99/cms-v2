@@ -96,3 +96,19 @@ export async function verifyMagicLink(token: string): Promise<void> {
     throw new Error('Failed to verify magic link')
   }
 }
+
+export async function updatePassword(password: string): Promise<void> {
+  const response = await fetch(API_ENDPOINT + `/auth/new-password`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      password: password,
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to update password')
+  }
+}

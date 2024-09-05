@@ -61,9 +61,9 @@ export default function InputPassword() {
     onSuccess: (data) => {
       console.log('data.challengeName', data.challengeName)
       if (data.challengeName === 'NEW_PASSWORD_REQUIRED') {
-        // navigate('/update-password', {
-        //   state: { email: form.watch('email') },
-        // })
+        navigate('/update-password', {
+          state: { email: form.watch('email') },
+        })
       } else if (data.challengeName === 'CUSTOM_CHALLENGE') {
         navigate('/email-sent-message')
       }

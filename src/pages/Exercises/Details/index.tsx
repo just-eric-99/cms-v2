@@ -91,7 +91,8 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
         permission: exercise.permission,
         readyLandmark: exercise.readyPose,
         startLandmark: exercise.startPose,
-        voiceFilename: exercise.voiceFilename
+        voiceFilename: exercise.voiceFilename,
+        snapshots: exercise.snapshots
       })
       return exercise
     },
@@ -345,7 +346,10 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                     <AnimationEditor
                       json={JSON.stringify(query.data)}
                       callback={(json: string) => {
-                        console.log(json)
+                        console.log('callback')
+                        console.log("snapshots", json)
+                        // convert json to object
+                        form.setValue('snapshots', JSON.parse(json))
                       }}
                       canEdit={canEdit}
                     />

@@ -26,6 +26,7 @@ export type ExerciseDetails = {
   readyPose: PoseLandmarkDto
   startPose: PoseLandmarkDto
   voiceFilename: string
+  snapshots: Keyframe[]
 }
 
 export type PoseLandmarkDto = {
@@ -54,4 +55,28 @@ export type UpdateExerciseRequest = {
   startLandmark: PoseLandmarkDto
   permission: ExercisePermission
   voiceFilename?: string
+  snapshots?: Keyframe[]
+}
+
+export type KeypointCoordinates = {
+  x: number
+  y: number
+  z: number
+  w: number
+}
+
+export type Keyframe = {
+  timeframe: number
+  keypoint: {
+    chestRot: KeypointCoordinates
+    pelvisRot: KeypointCoordinates
+    leftShoulderRot: KeypointCoordinates
+    rightShoulderRot: KeypointCoordinates
+    leftElbowRot: KeypointCoordinates
+    rightElbowRot: KeypointCoordinates
+    leftHipRot: KeypointCoordinates
+    rightHipRot: KeypointCoordinates
+    leftKneeRot: KeypointCoordinates
+    rightKneeRot: KeypointCoordinates
+  }
 }

@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import Router from '@/Router'
@@ -11,14 +10,15 @@ import { store } from './state/global'
 export const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-          <Router />
-          <Toaster />
-        </ThemeProvider>
-      </Provider>
-    </QueryClientProvider>
-  </React.StrictMode>
+  // removing this due to mediapipe video not working with it https://github.com/google-ai-edge/mediapipe/issues/3807
+  // <React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
+      <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+        <Router />
+        <Toaster />
+      </ThemeProvider>
+    </Provider>
+  </QueryClientProvider>
+  // </React.StrictMode>
 )

@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getAllRecords } from '@/network/records/api.ts'
 import { columns } from '@/pages/Records/_table/columns.tsx'
 import { getUserById } from '@/network/users/api.ts'
+import Loader from '@/components/loader.tsx'
 
 export default function Records() {
   const query = useQuery({
@@ -24,6 +25,10 @@ export default function Records() {
         )
       ),
   })
+
+  if (query.isLoading) {
+    return <Loader />
+  }
 
   return (
     <Layout>

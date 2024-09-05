@@ -27,6 +27,7 @@ export default function AnimationEditor(props: AnimationEditorProps) {
   } = useUnityContext(unityConfig)
 
   useEffect(() => {
+    console.log("props.json", props.json)
     sendMessage('LoadController', 'SetExerciseData', props.json)
   }, [props.json, sendMessage, unityProvider])
 

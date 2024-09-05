@@ -52,3 +52,47 @@ export async function refreshToken(): Promise<void> {
     throw new Error('Failed to refresh token')
   }
 }
+
+export async function checkEmail(email: string): Promise<boolean> {
+  const response = await fetch(API_ENDPOINT + `/auth/check-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email,
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to check email')
+  }
+
+  return response.json()
+}
+
+export async function login(request: LoginRequest): Promise<LoginResponse> {
+  const response = await fetch(API_ENDPOINT + `/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(request),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to login')
+  }
+
+  return response.json()
+}
+
+export async function verifyMagicLink(token: string): Promise<void> {
+  const response = await fetch(API_ENDPOINT + `/auth/callback/${token}`, {
+    method: 'POST',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to verify magic link')
+  }
+}

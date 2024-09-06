@@ -9,10 +9,6 @@ export default function VerifyMagicLink() {
   const navigate = useNavigate()
   // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpzbWdjdGZ3QGhvdG1haWwuY29tIiwiY29kZSI6IjA5MjM0NiIsImV4cCI6MTcyNTU1MzAxNywiaWF0IjoxNzI1NTUyODM3fQ.ZFxGJLC-GPPjWSMLiVIMgCYlttT-fp-x__v0LqGPVyI
 
-  // if (!params.get('token')) {
-  //   return <Navigate to='/check-email' replace />
-  // }
-
   const verifyMagicLinkMutation = useMutation({
     mutationFn: verifyMagicLink,
     onMutate: () => {
@@ -21,7 +17,7 @@ export default function VerifyMagicLink() {
     onError: (error) => {
       console.log(error)
       // toast.error(error.message ?? 'Please try again')
-      navigate('/check-email')
+      // navigate('/check-email')
     },
     onSuccess: (data) => {
       console.log('onSuccess', data)
@@ -41,14 +37,20 @@ export default function VerifyMagicLink() {
         onAutoClose: () => navigate('/check-email'),
       })
     }
-  }, [navigate, params])
+  }, [])
 
   return (
     <div>
-      {verifyMagicLinkMutation.isPending ? (
+      {verifyMagicLinkMutation.isPending && (
         <div>Verifying...</div>
-      ) : (
-        <div>Invalid token</div>
+      )}
+
+      {verifyMagicLinkMutation.isError && (
+        <div>Error verifying</div>
+      )}
+
+      {verifyMagicLinkMutation.isSuccess && (
+        <div>Verified</div>
       )}
     </div>
   )

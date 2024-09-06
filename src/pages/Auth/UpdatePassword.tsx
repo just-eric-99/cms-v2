@@ -120,8 +120,8 @@ export default function UpdatePassword() {
         </CardContent>
         <CardFooter className={'flex-1'}>
           <Button
-            // onClick={handleSubmit}
-            onClick={() => setAuthenticated(true)}
+            onClick={handleSubmit}
+            // onClick={() => setAuthenticated(true)}
             loading={loading}
             disabled={loading}
             className={'flex-1'}

@@ -153,14 +153,12 @@ export default function ReadyPose(props: ReadyPoseProps) {
                       className='w-24'
                       disabled={props.canEdit != undefined && !props.canEdit}
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-expect-error
                       value={[field.value]}
                       onValueChange={(value) => {
                         form.setValue(field.name, value[0])
                       }}
                     />
                     {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-                    {/* @ts-expect-error */}
                     <div>{field.value}</div>
                   </div>
                 </div>

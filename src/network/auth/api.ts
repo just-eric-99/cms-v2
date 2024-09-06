@@ -90,6 +90,7 @@ export async function login(request: LoginRequest): Promise<LoginResponse> {
 export async function verifyMagicLink(token: string): Promise<void> {
   const response = await fetch(API_ENDPOINT + `/auth/callback/${token}`, {
     method: 'POST',
+    credentials: 'include',
   })
 
   if (!response.ok) {

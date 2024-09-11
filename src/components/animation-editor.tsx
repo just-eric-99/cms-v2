@@ -24,18 +24,24 @@ export default function AnimationEditor(props: AnimationEditorProps) {
     addEventListener,
     removeEventListener,
     unload,
+    // UNSAFE__unityInstance,
   } = useUnityContext(unityConfig)
-
   useEffect(() => {
-    console.log("props.json", props.json)
-    sendMessage('LoadController', 'SetExerciseData', props.json)
+    console.log("JSON.parse(props.json).readyPose.worldLandmarks.length", JSON.parse(props.json).readyPose.worldLandmarks.length)
+    console.log("JSON.parse(props.json).startPose.worldLandmarks.length", JSON.parse(props.json).startPose.worldLandmarks.length)
+    if (JSON.parse(props.json).readyPose.worldLandmarks.length != 0 && JSON.parse(props.json).startPose.worldLandmarks.length != 0) {
+      console.log("inside here")
+      sendMessage('MainController', 'Reset')
+      setTimeout(() => {
+        sendMessage('LoadController', 'SetData', props.json)
+      }, 100)
+    }
+
   }, [props.json, sendMessage, unityProvider])
 
   const handleSetKeyframeData = useCallback(
     (jsonResult: string) => {
       console.log('handleSetKeyframeData')
-      // console.log(json)
-      // json = jsonResult;
       props.callback(jsonResult)
     },
     [props]
@@ -59,27 +65,24 @@ export default function AnimationEditor(props: AnimationEditorProps) {
   }, [unload])
 
   return (
-    <>
-      <div className={'relative aspect-video h-[500px]'}>
-        <Unity
-          tabIndex={93763}
-          className={'absolute inset-0'}
-          style={{ width: '100%', height: '100%' }}
-          unityProvider={unityProvider}
-        />
-        <Button
-          className={'absolute right-2 top-2'}
-          size={'icon'}
-          onClick={() => {
-            requestFullscreen(true)
-          }}
-        >
-          <Maximize />
-        </Button>
-        <div
-          className={`absolute aspect-video h-[500px] bg-black opacity-20 ${props.canEdit ? 'hidden' : 'block'}`}
-        />
-      </div>
-    </>
+    <div className={'relative h-full w-full'}>
+      <Unity
+        className={'h-full w-full'}
+        unityProvider={unityProvider}
+        style={{
+          pointerEvents: props.canEdit ? 'auto' : 'none',
+        }}
+        tabIndex={8282}
+      />
+      <Button
+        className={'absolute right-2 top-2'}
+        size={'icon'}
+        onClick={() => {
+          requestFullscreen(true)
+        }}
+      >
+        <Maximize />
+      </Button>
+    </div>
   )
 }

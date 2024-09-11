@@ -23,7 +23,7 @@ import {
 } from '@/network/exercises/api.ts'
 import Loader from '@/components/loader.tsx'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useAtom } from 'jotai/index'
+import { useAtom } from 'jotai'
 import {
   readyPoseLandmarksAtom,
   startPoseLandmarksAtom,
@@ -92,7 +92,7 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
         readyLandmark: exercise.readyPose,
         startLandmark: exercise.startPose,
         voiceFilename: exercise.voiceFilename,
-        snapshots: exercise.snapshots
+        keyframes: exercise.keyframes,
       })
       return exercise
     },
@@ -227,8 +227,6 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
     navigate(-1)
   }
 
-  // state of voice filename
-
   if (query.isLoading) return <Loader />
 
   return (
@@ -324,35 +322,33 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
                   <TabsContent
                     forceMount
                     value='animationEditor'
-                    className={`${currentTab === 'animationEditor' ? 'block' : 'hidden'}`}
+                    className={`${currentTab === 'animationEditor' ? 'block' : 'hidden'} h-full w-full content-center align-middle`}
                   >
-                    {/*<AnimationEditor*/}
-                    {/*  exerciseId={id ?? ''}*/}
-                    {/*  callback={() => {*/}
-                    {/*    console.log('callback')*/}
-                    {/*  }}*/}
-                    {/*/>*/}
-
-                    {/*<Unity*/}
-                    {/*  style={{ width: '100%', height: '100%' }}*/}
-                    {/*  unityProvider={unityProvider}*/}
-                    {/*/>*/}
-
-                    {/*<Unity*/}
-                    {/*  style={{ width: '100%', height: '100%' }}*/}
-                    {/*  unityProvider={unityProvider}*/}
-                    {/*/>*/}
-
-                    <AnimationEditor
-                      json={JSON.stringify(query.data)}
-                      callback={(json: string) => {
-                        console.log('callback')
-                        console.log("snapshots", json)
-                        // convert json to object
-                        form.setValue('snapshots', JSON.parse(json))
+                    <div
+                      className={'aspect-video max-h-[700px]'}
+                      onLoad={() => {
+                        console.log(query.data)
                       }}
-                      canEdit={canEdit}
-                    />
+                    >
+                      <AnimationEditor
+                        json={JSON.stringify({
+                          keyframes:
+                            form.getFieldState('readyLandmark').isDirty ||
+                            form.getFieldState('startLandmark').isDirty
+                              ? null
+                              : form.watch('keyframes'),
+                          readyPose: form.watch('readyLandmark'),
+                          startPose: form.watch('startLandmark'),
+                        })}
+                        callback={(json: string) => {
+                          console.log('callback')
+                          console.log('snapshots', json)
+                          // convert json to object
+                          form.setValue('keyframes', JSON.parse(json))
+                        }}
+                        canEdit={canEdit}
+                      />
+                    </div>
                   </TabsContent>
                 </div>
               </Tabs>

@@ -6,4 +6,4 @@ import {atom, createStore} from 'jotai'
 export const store = createStore()
 
 // to change to using actual user data
-export const isAuthenticatedAtom = atom(false)
+export const isAuthenticatedAtom = atom(true)

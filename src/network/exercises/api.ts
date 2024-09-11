@@ -33,6 +33,7 @@ export async function getExerciseVoiceById(id: string): Promise<string> {
 export async function createExercise(
   exercise: CreateExerciseRequest
 ): Promise<void> {
+  console.log('exercise', exercise)
   const response = await fetch(API_ENDPOINT + '/exercise', {
     method: 'POST',
     headers: {

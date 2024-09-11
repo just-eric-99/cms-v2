@@ -25,6 +25,7 @@ import { CreateExerciseRequest } from '@/network/exercises/types'
 import { toast } from 'sonner'
 import { useAtom } from 'jotai'
 import { uploadFileAtom } from './atom'
+import AnimationEditor from '@/components/animation-editor.tsx'
 
 export default function CreateExercisePage() {
   const [loading, setLoading] = useState(false)
@@ -75,6 +76,7 @@ export default function CreateExercisePage() {
           jointDirectionsWeights: data.startLandmark.jointDirectionsWeights,
         },
         voiceFilename: data.voiceFilename ?? '',
+        keyframes: data.keyframes,
       }
       return createExercise(createExerciseRequest)
     },
@@ -118,8 +120,9 @@ export default function CreateExercisePage() {
       createExerciseMutation.mutate(data)
     },
     (errors) => {
-      console.log("inside invalid")
+      console.log('inside invalid')
       console.log(errors)
+      console.log("data", form.getValues())
       let errorMessages = ''
       if (
         errors.name ||
@@ -231,6 +234,26 @@ export default function CreateExercisePage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <div className={'hidden'}>
+        {form.watch('readyLandmark') != null &&
+          form.watch('startLandmark') != null && (
+            <>
+              <div>Animation Editor</div>
+              <AnimationEditor
+                json={JSON.stringify({
+                  readyPose: form.watch('readyLandmark'),
+                  startPose: form.watch('startLandmark'),
+                })}
+                callback={(json) => {
+                  console.log('json when readyPose or startPose updated', json)
+                  // serialisa into Keyframe[]
+                  form.setValue('keyframes', JSON.parse(json))
+                }}
+                canEdit={false}
+              />
+            </>
+          )}
+      </div>
     </FormProvider>
   )
 }

@@ -1,6 +1,13 @@
 import { ExercisePermission } from '@/enum/exercisePermission.ts'
 import { z } from 'zod'
 
+export const rotationObject = z.object({
+  x: z.number(),
+  y: z.number(),
+  z: z.number(),
+  w: z.number(),
+})
+
 export const landmarkObject = z.object({
   normalizedLandmarks: z.array(
     z.object({
@@ -25,6 +32,25 @@ export const landmarkObject = z.object({
     }),
 })
 
+export const keyframeObject = z.object({
+  timeframe: z.number(),
+  keypoint: z.object({
+    pelvisRot: rotationObject,
+    spineRot: rotationObject,
+    chestRot: rotationObject,
+    leftShoulderRot: rotationObject,
+    rightShoulderRot: rotationObject,
+    leftElbowRot: rotationObject,
+    rightElbowRot: rotationObject,
+    leftHipRot: rotationObject,
+    rightHipRot: rotationObject,
+    leftKneeRot: rotationObject,
+    rightKneeRot: rotationObject,
+    leftAnkleRot: rotationObject,
+    rightAnkleRot: rotationObject,
+  }),
+})
+
 export const createExerciseSchema = z.object({
   organizationId: z.string().min(1),
   centerId: z.string().min(1),
@@ -35,5 +61,5 @@ export const createExerciseSchema = z.object({
   startLandmark: landmarkObject,
   permission: z.nativeEnum(ExercisePermission),
   voiceFilename: z.string().optional(),
-  snapshots: z.any().optional()
+  keyframes: z.array(keyframeObject),
 })

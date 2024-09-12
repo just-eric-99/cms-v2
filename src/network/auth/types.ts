@@ -1,14 +1,18 @@
+import { ChallengeNameType } from '@aws-sdk/client-cognito-identity-provider'
+
 export type LoginRequest = {
   email: string
   password: string
   isRemember: boolean
 }
 
-export type LoginResponse = {
-  challengeName: ChallengeName
+export type RespondCustomChallengeRequest = {
+  sub: string
+  session: string
+  answer: string
+  method?: 'EMAIL' | 'SMS'
 }
 
-enum ChallengeName {
-  NEW_PASSWORD_REQUIRED = 'NEW_PASSWORD_REQUIRED',
-  CUSTOM_CHALLENGE = 'CUSTOM_CHALLENGE',
+export type LoginResponse = {
+  challengeName: ChallengeNameType
 }

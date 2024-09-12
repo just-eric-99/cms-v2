@@ -10,12 +10,18 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useSetAtom } from 'jotai'
-import { isAuthenticatedAtom } from '@/state/global.ts'
+import { useCallback } from 'react'
+import { useCookies } from 'react-cookie'
 
 // to add user atom
 export function UserNav() {
-  const setAuthenticated = useSetAtom(isAuthenticatedAtom)
+  const [, , removeCookie] = useCookies()
+
+  const onLogoutClick = useCallback(() => {
+    removeCookie('accessToken')
+    removeCookie('refreshToken')
+  }, [removeCookie])
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -52,7 +58,7 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => setAuthenticated(false)}>
+        <DropdownMenuItem onClick={onLogoutClick}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

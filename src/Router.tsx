@@ -24,20 +24,25 @@ import UserGroupDetailsPage from '@/pages/UserGroup/Details'
 import ExerciseDetailsPage from '@/pages/Exercises/Details'
 import Records from '@/pages/Records'
 import RecordDetails from '@/pages/Records/Details'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { isAuthenticatedAtom } from '@/state/global.ts'
 import { useEffect } from 'react'
-import CheckEmail from "@/pages/Auth/CheckEmail.tsx";
-import InputPassword from "@/pages/Auth/InputPassword.tsx";
-import UpdatePassword from "@/pages/Auth/UpdatePassword.tsx";
-import EmailSentMessage from "@/pages/Auth/EmailSentMessage.tsx";
-import VerifyMagicLink from "@/pages/Auth/VerifyMagicLink.tsx";
+import CheckEmail from '@/pages/Auth/CheckEmail.tsx'
+import InputPassword from '@/pages/Auth/InputPassword.tsx'
+import UpdatePassword from '@/pages/Auth/UpdatePassword.tsx'
+import EmailSentMessage from '@/pages/Auth/EmailSentMessage.tsx'
+import VerifyMagicLink from '@/pages/Auth/VerifyMagicLink.tsx'
+import { useCookies } from 'react-cookie'
 
 export default function Router() {
   const authenticated = useAtomValue(isAuthenticatedAtom)
+  const setAuthenticated = useSetAtom(isAuthenticatedAtom)
+  const [cookies] = useCookies()
+
   useEffect(() => {
-    console.log('inside router authenticated', authenticated)
-  }, [authenticated])
+    setAuthenticated(!!cookies.accessToken)
+  }, [cookies, setAuthenticated])
+
   return (
     <BrowserRouter>
       <Routes>

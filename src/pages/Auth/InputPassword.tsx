@@ -21,18 +21,21 @@ import { z } from 'zod'
 import { inputPasswordSchema } from '@/pages/Auth/_data/schema.ts'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { login } from '@/network/auth/api.ts'
+import { initAuth } from '@/network/auth/api.ts'
 import { toast } from 'sonner'
 import { Checkbox } from '@/components/ui/checkbox.tsx'
 import { Label } from '@/components/ui/label.tsx'
 import { useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { PasswordInput } from '@/components/custom/password-input.tsx'
+import { useCookies } from 'react-cookie'
+import { AWS_COGNITO_AUTH_SESSION_AGE } from '@/constants/network.ts'
 
 export default function InputPassword() {
   const [loading, setLoading] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
+  const [, setCookie] = useCookies()
 
   if (!location.state?.email) {
     return <Navigate to='/check-email' replace />
@@ -50,16 +53,25 @@ export default function InputPassword() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const loginMutation = useMutation({
-    mutationFn: login,
+    mutationFn: initAuth,
     onMutate: () => {
       setLoading(true)
     },
     onError: (error) => {
       console.log(error)
+      // if (error instanceof NotAuthorizedException)
       toast.error(error.message ?? 'Please try again')
     },
     onSuccess: (data) => {
-      console.log('data.challengeName', data.challengeName)
+      setCookie('sub', data.sub, {
+        maxAge: AWS_COGNITO_AUTH_SESSION_AGE,
+      })
+      setCookie('session', data.session, {
+        maxAge: AWS_COGNITO_AUTH_SESSION_AGE,
+      })
+      setCookie('isRemember', data.isRemember, {
+        maxAge: AWS_COGNITO_AUTH_SESSION_AGE,
+      })
       if (data.challengeName === 'NEW_PASSWORD_REQUIRED') {
         navigate('/update-password', {
           state: { email: form.watch('email') },

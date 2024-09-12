@@ -48,7 +48,7 @@ export default function CheckEmail() {
     onSuccess: (data) => {
       if (data) {
         navigate('/input-password', {
-          state: { email: form.watch('email') },
+          state: { email: form.watch('email'), initAuthResponse: data },
         })
       } else {
         toast.error('Invalid email')

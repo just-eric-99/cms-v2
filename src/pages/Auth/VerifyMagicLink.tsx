@@ -1,16 +1,18 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import { verifyMagicLink } from '@/network/auth/api.ts'
+import { respondCustomChallenge } from '@/network/auth/api.ts'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
+import { useCookies } from 'react-cookie'
+import { AWS_COGNITO_AUTH_SESSION_AGE } from '@/constants/network.ts'
 
 export default function VerifyMagicLink() {
   const [params] = useSearchParams()
   const navigate = useNavigate()
-  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpzbWdjdGZ3QGhvdG1haWwuY29tIiwiY29kZSI6IjA5MjM0NiIsImV4cCI6MTcyNTU1MzAxNywiaWF0IjoxNzI1NTUyODM3fQ.ZFxGJLC-GPPjWSMLiVIMgCYlttT-fp-x__v0LqGPVyI
+  const [cookies, setCookie, removeCookie] = useCookies()
 
   const verifyMagicLinkMutation = useMutation({
-    mutationFn: verifyMagicLink,
+    mutationFn: respondCustomChallenge,
     onMutate: () => {
       console.log('onMutate')
     },
@@ -20,6 +22,31 @@ export default function VerifyMagicLink() {
       // navigate('/check-email')
     },
     onSuccess: (data) => {
+      if (data.AuthenticationResult) {
+        const isRemember = cookies.isRemember
+        setCookie('accessToken', data.AuthenticationResult?.AccessToken, {
+          maxAge: data.AuthenticationResult?.ExpiresIn
+        })
+        if (isRemember) {
+          setCookie('refreshToken', data.AuthenticationResult?.RefreshToken, {
+            maxAge: data.AuthenticationResult?.ExpiresIn
+          })
+        }
+        // remove
+        removeCookie('sub')
+        removeCookie('session')
+        removeCookie('isRemember')
+      } else {
+        setCookie('sub', cookies['sub'], {
+          maxAge: AWS_COGNITO_AUTH_SESSION_AGE,
+        })
+        setCookie('session', data.Session, {
+          maxAge: AWS_COGNITO_AUTH_SESSION_AGE,
+        })
+        setCookie('isRemember', cookies['isRemember'], {
+          maxAge: AWS_COGNITO_AUTH_SESSION_AGE,
+        })
+      }
       console.log('onSuccess', data)
     },
     onSettled: () => {
@@ -30,7 +57,11 @@ export default function VerifyMagicLink() {
   useEffect(() => {
     const token = params.get('token')
     if (token) {
-      verifyMagicLinkMutation.mutate(token)
+      verifyMagicLinkMutation.mutate({
+        sub: cookies.sub,
+        session: cookies.session,
+        answer: token
+      })
     } else {
       toast.error('Invalid token', {
         duration: 5000,

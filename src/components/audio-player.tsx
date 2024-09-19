@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
-import { getExerciseVoiceById } from '@/network/exercises/api.ts'
-import { getVoice } from '@/network/text-to-speech/api.ts'
+import { getExerciseVoiceByExerciseIdAndFilename } from '@/network/exercises/api.ts'
 
 type AudioPlayerProps = {
   exerciseId?: string
@@ -14,15 +13,12 @@ export default function AudioPlayer(props: AudioPlayerProps) {
 
   const getVoiceByExerciseIdQuery = useQuery({
     enabled: props.exerciseId !== undefined,
-    queryKey: ['voice', props.exerciseId],
-    queryFn: async () => getExerciseVoiceById(props.exerciseId ?? ''),
-  })
-
-  const getVoiceByFilenameQuery = useQuery({
-    enabled: props.filename !== undefined,
-    retryDelay: 4000,
-    queryKey: ['voice', props.filename],
-    queryFn: async () => getVoice(props.filename ?? ''),
+    queryKey: ['voice', "" + props.exerciseId + props.filename],
+    queryFn: async () =>
+      getExerciseVoiceByExerciseIdAndFilename(
+        props.exerciseId ?? '',
+        props.filename ?? ''
+      ),
   })
 
   useEffect(() => {
@@ -30,21 +26,17 @@ export default function AudioPlayer(props: AudioPlayerProps) {
       if (props.exerciseId) {
         audioRef.current.src = getVoiceByExerciseIdQuery.data ?? ''
       } else if (props.filename) {
-        audioRef.current.src = getVoiceByFilenameQuery.data ?? ''
+        audioRef.current.src = getVoiceByExerciseIdQuery.data ?? ''
       }
       audioRef.current.load()
     }
   }, [
     getVoiceByExerciseIdQuery.data,
-    getVoiceByFilenameQuery.data,
     props.exerciseId,
     props.filename,
   ])
 
-  if (
-    getVoiceByExerciseIdQuery.isLoading ||
-    getVoiceByFilenameQuery.isLoading
-  ) {
+  if (getVoiceByExerciseIdQuery.isLoading) {
     return <Loader2 size={32} className='animate-spin' />
   }
 
@@ -52,10 +44,6 @@ export default function AudioPlayer(props: AudioPlayerProps) {
     return (
       <audio ref={audioRef} controls src={getVoiceByExerciseIdQuery.data} />
     )
-  }
-
-  if (props.filename !== undefined) {
-    return <audio ref={audioRef} controls src={getVoiceByFilenameQuery.data} />
   }
 
   return null

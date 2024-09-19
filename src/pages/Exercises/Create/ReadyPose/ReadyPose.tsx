@@ -7,7 +7,12 @@ import { Slider } from '@/components/ui/slider'
 import { useCallback, useEffect, useRef } from 'react'
 import { useAtom } from 'jotai'
 import { openReadyDialogAtom, readyPoseLandmarksAtom } from '../atom'
-import { DrawingUtils, PoseLandmarker } from '@mediapipe/tasks-vision'
+import {
+  DrawingUtils,
+  Landmark,
+  NormalizedLandmark,
+  PoseLandmarker,
+} from '@mediapipe/tasks-vision'
 import ReadySelectPoseDialog from './ReadyDialog'
 import { Button } from '@/components/ui/button.tsx'
 
@@ -82,18 +87,50 @@ export default function ReadyPose(props: ReadyPoseProps) {
   }, [form])
 
   const onMirror = useCallback(() => {
-    const normalizedLandmarks = readyPoseLandmarks.normalizedLandmarks.map(
-      (normalizedLandmark) => {
-        normalizedLandmark.x = 1 - normalizedLandmark.x
-        return normalizedLandmark
-      }
-    )
-    const worldLandmarks = readyPoseLandmarks.worldLandmarks.map(
-      (normalizedLandmark) => {
-        normalizedLandmark.x = 1 - normalizedLandmark.x
-        return normalizedLandmark
-      }
-    )
+    // const normalizedLandmarks = readyPoseLandmarks.normalizedLandmarks.map(
+    //   (normalizedLandmark) => {
+    //     normalizedLandmark.x = 1 - normalizedLandmark.x
+    //     return normalizedLandmark
+    //   }
+    // )
+
+    // const worldLandmarks = readyPoseLandmarks.worldLandmarks.map(
+    //   (worldLandmarks) => {
+    //     worldLandmarks.x = 1 - worldLandmarks.x
+    //     return worldLandmarks
+    //   }
+    // )
+
+    const deepCopy = (obj: unknown) => {
+      return JSON.parse(JSON.stringify(obj))
+    }
+
+    const normalizedLandmarks = deepCopy(
+      readyPoseLandmarks.normalizedLandmarks
+    ) as NormalizedLandmark[]
+    for (let i = 11; i < normalizedLandmarks.length; i = i + 2) {
+      const leftLandmark = normalizedLandmarks[i]
+      normalizedLandmarks[i] = normalizedLandmarks[i + 1]
+      normalizedLandmarks[i + 1] = leftLandmark
+    }
+
+    normalizedLandmarks.forEach((landmark) => {
+      landmark.x = 1 - landmark.x
+    })
+
+    const worldLandmarks = deepCopy(
+      readyPoseLandmarks.worldLandmarks
+    ) as Landmark[]
+    for (let i = 11; i < worldLandmarks.length; i = i + 2) {
+      const leftLandmark = worldLandmarks[i]
+      worldLandmarks[i] = worldLandmarks[i + 1]
+      worldLandmarks[i + 1] = leftLandmark
+    }
+
+    worldLandmarks.forEach((landmark) => {
+      landmark.x = 1 - landmark.x
+    })
+
     setReadyPoseLandmarks({
       normalizedLandmarks,
       worldLandmarks,

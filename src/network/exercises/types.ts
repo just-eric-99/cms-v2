@@ -6,7 +6,10 @@ export type Exercise = {
   id: string
   centerId: string
   name: string
-  description: string
+  readyPoseDescription: string
+  startPoseDescription: string
+  readyPoseVoiceName: string
+  startPoseVoiceName: string
   difficulty: number
   permission: ExercisePermission
   createdAt: string
@@ -17,7 +20,10 @@ export type ExerciseDetails = {
   id: string
   centerId: string
   name: string
-  description: string
+  readyPoseDescription: string
+  startPoseDescription: string
+  readyPoseVoiceName: string
+  startPoseVoiceName: string
   difficulty: number
   permission: ExercisePermission
   createdAt: string
@@ -25,7 +31,6 @@ export type ExerciseDetails = {
   center: Center
   readyPose: PoseLandmarkDto
   startPose: PoseLandmarkDto
-  voiceFilename: string
   keyframes: Keyframe[]
 }
 
@@ -38,25 +43,30 @@ export type PoseLandmarkDto = {
 export type CreateExerciseRequest = {
   centerId: string
   name: string
-  description: string
+  readyPoseDescription: string
+  startPoseDescription: string
+  readyPoseVoiceName?: string | undefined
+  startPoseVoiceName?: string | undefined
   difficulty: number
   readyLandmark: PoseLandmarkDto
   startLandmark: PoseLandmarkDto
   permission: ExercisePermission
-  voiceFilename: string
   keyframes: Keyframe[]
 }
 
 export type UpdateExerciseRequest = {
   centerId: string
   name: string
-  description: string
+  readyPoseDescription: string
+  startPoseDescription: string
+  readyPoseVoiceName?: string | undefined
+  startPoseVoiceName?: string | undefined
   difficulty: number
   readyLandmark: PoseLandmarkDto
   startLandmark: PoseLandmarkDto
   permission: ExercisePermission
   voiceFilename?: string
-  keyframes?: Keyframe[]
+  keyframes?: Keyframe[] | null
 }
 
 export type KeypointCoordinates = {

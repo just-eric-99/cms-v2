@@ -18,8 +18,8 @@ export async function getExerciseById(id: string): Promise<ExerciseDetails> {
   return response.json()
 }
 
-export async function getExerciseVoiceById(id: string): Promise<string> {
-  const response = await fetch(API_ENDPOINT + `/exercise/${id}/voice`)
+export async function getExerciseVoiceByExerciseIdAndFilename(id: string, filename: string): Promise<string> {
+  const response = await fetch(API_ENDPOINT + `/exercise/${id}/voice?filename=${filename}`)
 
   if (!response.ok) {
     const error = await response.json()

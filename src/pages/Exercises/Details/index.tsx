@@ -52,8 +52,8 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
   const [currentTab, setCurrentTab] = useState('form')
   const { id } = useParams()
   const navigate = useNavigate()
-  const [, setReadyPoseLandmarks] = useAtom(readyPoseLandmarksAtom)
-  const [, setStartPoseLandmarks] = useAtom(startPoseLandmarksAtom)
+  const [readyPose, setReadyPoseLandmarks] = useAtom(readyPoseLandmarksAtom)
+  const [startPose, setStartPoseLandmarks] = useAtom(startPoseLandmarksAtom)
   const queryClient = useQueryClient()
   const form = useForm<z.infer<typeof createExerciseSchema>>({
     resolver: zodResolver(createExerciseSchema),
@@ -61,7 +61,7 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
     defaultValues: {
       centerId: '',
       name: '',
-      description: '',
+
       difficulty: 0,
       permission: ExercisePermission.PRIVATE,
       readyLandmark: {
@@ -86,20 +86,42 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
         organizationId: exercise.center.organizationId,
         centerId: exercise.centerId,
         name: exercise.name,
-        description: exercise.description,
+        readyPoseDescription: exercise.readyPoseDescription,
+        startPoseDescription: exercise.startPoseDescription,
+        readyPoseVoiceName: exercise.readyPoseVoiceName,
+        startPoseVoiceName: exercise.startPoseVoiceName,
         difficulty: exercise.difficulty,
         permission: exercise.permission,
         readyLandmark: exercise.readyPose,
         startLandmark: exercise.startPose,
-        voiceFilename: exercise.voiceFilename,
         keyframes: exercise.keyframes,
       })
       return exercise
     },
   })
 
+  const checkIfPoseDirty = () => {
+    return query.data?.readyPose.worldLandmarks !== readyPose.worldLandmarks
+      || query.data?.readyPose.normalizedLandmarks !== readyPose.normalizedLandmarks
+      || query.data?.startPose.worldLandmarks !== startPose.worldLandmarks
+      || query.data?.startPose.normalizedLandmarks !== startPose.normalizedLandmarks
+  }
+
   const updateExerciseMutation = useMutation({
     mutationFn: async (data: z.infer<typeof createExerciseSchema>) => {
+      console.log("checkIfPoseDirty()", checkIfPoseDirty())
+
+      if (checkIfPoseDirty()) {
+        data.keyframes = []
+      }
+
+      if (query.data?.readyPoseVoiceName === data.readyPoseVoiceName) {
+        data.readyPoseVoiceName = undefined
+      }
+
+      if (query.data?.startPoseVoiceName === data.startPoseVoiceName) {
+        data.startPoseVoiceName = undefined
+      }
       return updateExercise(data, id ?? '')
     },
     onMutate: () => {
@@ -186,7 +208,10 @@ export default function ExerciseDetailsPage(props: ExerciseDetailsPageProps) {
       let errorMessages = ''
       if (
         errors.name ||
-        errors.description ||
+        errors.readyPoseDescription ||
+        errors.startPoseDescription ||
+        errors.readyPoseVoiceName ||
+        errors.startPoseVoiceName ||
         errors.difficulty ||
         errors.permission ||
         errors.centerId

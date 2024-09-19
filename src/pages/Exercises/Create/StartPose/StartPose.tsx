@@ -7,7 +7,12 @@ import { Slider } from '@/components/ui/slider'
 import { useCallback, useEffect, useRef } from 'react'
 import { useAtom } from 'jotai'
 import { openStartDialogAtom, startPoseLandmarksAtom } from '../atom'
-import { DrawingUtils, PoseLandmarker } from '@mediapipe/tasks-vision'
+import {
+  DrawingUtils,
+  Landmark,
+  NormalizedLandmark,
+  PoseLandmarker,
+} from '@mediapipe/tasks-vision'
 import StartSelectPoseDialog from './StartDialog'
 import { Button } from '@/components/ui/button.tsx'
 
@@ -34,7 +39,9 @@ export default function StartPose(props: StartPoseProps) {
   const poseLandmarkRef = useRef<HTMLCanvasElement>(null)
   const form = useFormContext<z.infer<typeof createExerciseSchema>>()
   const [openDialog, setOpenDialog] = useAtom(openStartDialogAtom)
-  const [startPoseLandmarks, setStartPoseLandmarks] = useAtom(startPoseLandmarksAtom)
+  const [startPoseLandmarks, setStartPoseLandmarks] = useAtom(
+    startPoseLandmarksAtom
+  )
 
   useEffect(() => {
     const drawLandmarks = () => {
@@ -87,14 +94,66 @@ export default function StartPose(props: StartPoseProps) {
   }, [form])
 
   const onMirror = useCallback(() => {
-    const normalizedLandmarks = startPoseLandmarks.normalizedLandmarks.map((normalizedLandmark) => {
-      normalizedLandmark.x = 1 - normalizedLandmark.x
-      return normalizedLandmark
+    // const normalizedLandmarks = startPoseLandmarks.normalizedLandmarks.map((normalizedLandmark) => {
+    //   normalizedLandmark.x = 1 - normalizedLandmark.x
+    //   return normalizedLandmark
+    // })
+    // const worldLandmarks = startPoseLandmarks.worldLandmarks.map((worldLandmarks) => {
+    //   worldLandmarks.x = 1 - worldLandmarks.x
+    //   return worldLandmarks
+    // })
+
+    // const normalizedLandmarks = { ...startPoseLandmarks.normalizedLandmarks }
+    // for (let i = 10; i < normalizedLandmarks.length; i = i + 2) {
+    //   const leftLandmark = normalizedLandmarks[i]
+    //   normalizedLandmarks[i] = normalizedLandmarks[i + 1]
+    //   normalizedLandmarks[i + 1] = leftLandmark
+    // }
+
+    // for (let i = 10; i < normalizedLandmarks.length; i++) {
+    //   normalizedLandmarks[i].x = 1 - normalizedLandmarks[i].x
+    // }
+
+    // const worldLandmarks = { ...startPoseLandmarks.worldLandmarks }
+    // for (let i = 10; i < worldLandmarks.length; i = i + 2) {
+    //   const leftLandmark = worldLandmarks[i]
+    //   worldLandmarks[i] = worldLandmarks[i + 1]
+    //   worldLandmarks[i + 1] = leftLandmark
+    // }
+
+    // for (let i = 10; i < worldLandmarks.length; i++) {
+    //   worldLandmarks[i].x = 1 - worldLandmarks[i].x
+    // }
+
+    const deepCopy = (obj: unknown) => {
+      return JSON.parse(JSON.stringify(obj))
+    }
+
+    const normalizedLandmarks = deepCopy(
+      startPoseLandmarks.normalizedLandmarks
+    ) as NormalizedLandmark[]
+
+    for (let i = 11; i < normalizedLandmarks.length; i = i + 2) {
+      const leftLandmark = normalizedLandmarks[i]
+      normalizedLandmarks[i] = normalizedLandmarks[i + 1]
+      normalizedLandmarks[i + 1] = leftLandmark
+    }
+
+    normalizedLandmarks.forEach((landmark) => {
+      landmark.x = 1 - landmark.x
     })
-    const worldLandmarks = startPoseLandmarks.worldLandmarks.map((normalizedLandmark) => {
-      normalizedLandmark.x = 1 - normalizedLandmark.x
-      return normalizedLandmark
+
+    const worldLandmarks = deepCopy(startPoseLandmarks.worldLandmarks) as Landmark[]
+    for (let i = 11; i < worldLandmarks.length; i = i + 2) {
+      const leftLandmark = worldLandmarks[i]
+      worldLandmarks[i] = worldLandmarks[i + 1]
+      worldLandmarks[i + 1] = leftLandmark
+    }
+
+    worldLandmarks.forEach((landmark) => {
+      landmark.x = 1 - landmark.x
     })
+
     setStartPoseLandmarks({
       normalizedLandmarks,
       worldLandmarks,
@@ -154,12 +213,14 @@ export default function StartPose(props: StartPoseProps) {
                       className='w-24'
                       disabled={props.canEdit != undefined && !props.canEdit}
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
                       value={[field.value]}
                       onValueChange={(value) => {
                         form.setValue(field.name, value[0])
                       }}
                     />
                     {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                    {/* @ts-ignore */}
                     <div>{field.value}</div>
                   </div>
                 </div>

@@ -53,16 +53,28 @@ export default function UpdateExerciseForm(props: UpdateExerciseFormProps) {
     queryFn: getAllCenters,
   })
 
-  const [audioGenerated, setAudioGenerated] = useState<boolean>(false)
-  const [filename, setFilename] = useState<string>('')
+  const [readyPoseAudioGenerated, setReadyPoseAudioGenerated] = useState<boolean>(false)
+  const [startPoseAudioGenerated, setStartPoseAudioGenerated] = useState<boolean>(false)
+  const [readyPosefilename, setReadyPoseFilename] = useState<string>('')
+  const [startPosefilename, setStartPoseFilename] = useState<string>('')
 
-  const generateVoiceFromTextMutation = useMutation({
+  const generateReadyPoseVoiceFromTextMutation = useMutation({
     mutationFn: generateVoice,
     onSuccess: (data) => {
-      setAudioGenerated(true)
-      console.log('data', data)
-      setFilename(data.filename)
-      form.setValue('voiceFilename', data.filename)
+      setReadyPoseAudioGenerated(true)
+      // console.log('data', data)
+      setReadyPoseFilename(data.filename)
+      form.setValue('readyPoseVoiceName', data.filename)
+    },
+  })
+
+  const generateStartPoseVoiceFromTextMutation = useMutation({
+    mutationFn: generateVoice,
+    onSuccess: (data) => {
+      setStartPoseAudioGenerated(true)
+      // console.log('data', data)
+      setStartPoseFilename(data.filename)
+      form.setValue('startPoseVoiceName', data.filename)
     },
   })
 
@@ -183,10 +195,10 @@ export default function UpdateExerciseForm(props: UpdateExerciseFormProps) {
         />
         <FormField
           control={form.control}
-          name='description'
+          name='readyPoseDescription'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Ready Pose Description</FormLabel>
               <FormControl>
                 <div className={'flex flex-row  space-x-2'}>
                   <Textarea
@@ -200,7 +212,7 @@ export default function UpdateExerciseForm(props: UpdateExerciseFormProps) {
                         disabled={field.value === ''}
                         size={'icon'}
                         onClick={() => {
-                          generateVoiceFromTextMutation.mutate({
+                          generateReadyPoseVoiceFromTextMutation.mutate({
                             text: field.value,
                           })
                         }}
@@ -210,15 +222,55 @@ export default function UpdateExerciseForm(props: UpdateExerciseFormProps) {
                     )}
                 </div>
               </FormControl>
-              {audioGenerated ? (
-                <AudioPlayer filename={filename} />
+              {readyPoseAudioGenerated ? (
+                <AudioPlayer exerciseId={id} filename={readyPosefilename == '' ? form.getValues("readyPoseVoiceName") : readyPosefilename} />
               ) : (
-                <AudioPlayer exerciseId={id} />
+                <AudioPlayer exerciseId={id} filename={readyPosefilename == '' ? form.getValues("readyPoseVoiceName") : readyPosefilename}/>
               )}
               <FormMessage />
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name='startPoseDescription'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Start Pose Description</FormLabel>
+              <FormControl>
+                <div className={'flex flex-row  space-x-2'}>
+                  <Textarea
+                    placeholder='e.g. Warm up exercise for beginners'
+                    {...field}
+                    disabled={props.canEdit != undefined && !props.canEdit}
+                  />
+                  {(props.canEdit == undefined || props.canEdit) &&
+                    field.value != '' && (
+                      <Button
+                        disabled={field.value === ''}
+                        size={'icon'}
+                        onClick={() => {
+                          generateStartPoseVoiceFromTextMutation.mutate({
+                            text: field.value,
+                          })
+                        }}
+                      >
+                        <RefreshCcw />
+                      </Button>
+                    )}
+                </div>
+              </FormControl>
+              {startPoseAudioGenerated ? (
+                <AudioPlayer exerciseId={id} filename={startPosefilename == '' ? form.getValues("startPoseVoiceName") : startPosefilename}/>
+              ) : (
+                <AudioPlayer exerciseId={id} filename={startPosefilename == '' ? form.getValues("startPoseVoiceName") : startPosefilename}/>
+              )}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name='difficulty'

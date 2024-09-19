@@ -37,7 +37,10 @@ export default function CreateExercisePage() {
     defaultValues: {
       centerId: '',
       name: '',
-      description: '',
+      readyPoseDescription: '',
+      startPoseDescription: '',
+      readyPoseVoiceName: '',
+      startPoseVoiceName: '',
       difficulty: 1,
       permission: ExercisePermission.PRIVATE,
 
@@ -62,7 +65,10 @@ export default function CreateExercisePage() {
       const createExerciseRequest: CreateExerciseRequest = {
         centerId: data.centerId,
         name: data.name,
-        description: data.description,
+        readyPoseDescription: data.readyPoseDescription,
+        startPoseDescription: data.startPoseDescription,
+        readyPoseVoiceName: data.readyPoseVoiceName,
+        startPoseVoiceName: data.startPoseVoiceName,
         difficulty: data.difficulty,
         permission: data.permission,
         readyLandmark: {
@@ -75,7 +81,6 @@ export default function CreateExercisePage() {
           worldLandmarks: data.startLandmark.worldLandmarks,
           jointDirectionsWeights: data.startLandmark.jointDirectionsWeights,
         },
-        voiceFilename: data.voiceFilename ?? '',
         keyframes: data.keyframes,
       }
       return createExercise(createExerciseRequest)
@@ -126,11 +131,13 @@ export default function CreateExercisePage() {
       let errorMessages = ''
       if (
         errors.name ||
-        errors.description ||
+        errors.readyPoseDescription ||
+        errors.startPoseDescription ||
+        errors.readyPoseVoiceName ||
+        errors.startPoseVoiceName ||
         errors.difficulty ||
         errors.permission ||
-        errors.centerId ||
-        errors.voiceFilename
+        errors.centerId
       ) {
         errorMessages += 'Please fill all required fields'
       }
